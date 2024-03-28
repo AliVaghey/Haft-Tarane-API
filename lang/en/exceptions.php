@@ -1,0 +1,7 @@
+<?php
+
+return [
+    'place-not-found' => "Place not found.",
+    'place-exists' => "This place already exists.",
+    'not-admin' => "Only admin users are allowed to do that."
+];
