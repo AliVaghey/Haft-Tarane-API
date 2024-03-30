@@ -4,8 +4,12 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PlaceController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\Auth\RegisteredUserController;
 
 Route::middleware(['auth:sanctum', 'isAdmin'])->prefix('admin/')->group(function () {
+
+    //------------------------- Profile Info -------------------------
+    Route::get('info', [RegisteredUserController::class, 'getInfo']);
 
     //----------------------- Place Management -----------------------
     Route::post('city', [PlaceController::class, 'create']);
