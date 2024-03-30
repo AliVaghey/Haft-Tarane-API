@@ -2,6 +2,7 @@
 
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 
 Artisan::command('inspire', function () {
@@ -9,7 +10,7 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote')->hourly();
 
 Artisan::command('new_admin', function () {
-    $name = $this->ask('Enter your admin name');
+    $name = $this->ask('Enter your user name');
     $phone = $this->ask('Enter your phone');
     $password = $this->secret('Enter your password');
     $confirmation = $this->secret('Please repeat your password');
@@ -26,4 +27,4 @@ Artisan::command('new_admin', function () {
     ]);
 
     $this->info("Admin User has been created successfully.");
-})->purpose('Make new admin user.');
+})->purpose('Make new user user.');

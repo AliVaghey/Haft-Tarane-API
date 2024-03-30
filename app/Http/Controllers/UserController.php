@@ -33,7 +33,7 @@ class UserController extends Controller
     }
 
     /**
-     * Get the information of a single user by admin users.
+     * Get the information of a single user by user users.
      */
     public function getUser(Request $request, $id)
     {
@@ -51,7 +51,7 @@ class UserController extends Controller
     }
 
     /**
-     * Update a user information by admin.
+     * Update a user information by user.
      */
     public function updateUser(Request $request, $id)
     {
@@ -85,7 +85,7 @@ class UserController extends Controller
     }
 
     /**
-     * It modifies the access_type of a user by admin.
+     * It modifies the access_type of a user by user.
      */
     public function changeAccess(Request $request, $id)
     {

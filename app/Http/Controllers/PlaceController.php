@@ -4,17 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\PlaceResource;
 use App\Models\Place;
-use http\Env\Response;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\ResourceCollection;
-use Illuminate\Http\Resources\Json\ResourceResponse;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Auth\Access\AuthorizationException;
 
 class PlaceController extends Controller
 {
     /**
-     * It lets admin users to create a new place/destination/city.
+     * It lets user users to create a new place/destination/city.
      */
     public function create(Request $request)
     {
@@ -46,7 +43,7 @@ class PlaceController extends Controller
     }
 
     /**
-     * It lets admin users to delete a place.
+     * It lets user users to delete a place.
      */
     public function deleteCity(Request $request, $id)
     {
