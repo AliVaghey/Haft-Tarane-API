@@ -11,9 +11,9 @@ class PlacePolicy
     /**
      * Checks to see whether the place already exists or not.
      */
-    public function exists(Place $place)
+    public function exists(User $user, Place $place)
     {
-        return Place::where('name', $place->name)->get() ?
+        return Place::where('name', $place->name)->get()->isNotEmpty() ?
             Response::deny(__('exceptions.place-exists')) :
             Response::allow();
     }
