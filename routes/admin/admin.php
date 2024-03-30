@@ -9,8 +9,9 @@ Route::middleware(['auth:sanctum'])->prefix('admin/')->group(function () {
 
     //----------------------- Place Management -----------------------
     Route::post('city', [PlaceController::class, 'create']);
+    Route::delete('city/{id}', [PlaceController::class, 'deleteCity']);
     Route::get('cities', [PlaceController::class, 'getAllPlaces']);
-    Route::delete('city', [PlaceController::class, 'deleteCity']);
+    Route::put('city/{id}', [PlaceController::class, 'edit']);
 
     //------------------------- User Control -------------------------
     Route::get('user/{id}', [UserController::class, 'getUser']);

@@ -56,7 +56,7 @@ class User extends Authenticatable
      */
     public function isAdmin(): bool
     {
-        return $this->access_type === UserAccessType::Admin;
+        return $this->access_type == UserAccessType::Admin;
     }
 
     /**
