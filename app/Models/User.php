@@ -32,6 +32,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
+        'access_type',
         'password',
         'remember_token',
     ];
@@ -51,7 +52,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Determines whether the user is admin or not.
+     * Determines whether the user is user or not.
      * @return bool
      */
     public function isAdmin(): bool
