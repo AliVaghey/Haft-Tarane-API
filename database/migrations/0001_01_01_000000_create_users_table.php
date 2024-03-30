@@ -14,7 +14,13 @@ return new class extends Migration {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('national_code')->nullable();
-            $table->string('name');
+            $table->string('username');
+            $table->string('first_name_fa')->nullable();
+            $table->string('last_name_fa')->nullable();
+            $table->string('first_name_en')->nullable();
+            $table->string('last_name_en')->nullable();
+            $table->date('birth_date')->nullable();
+            $table->enum('gender', ['female', 'male'])->nullable();
             $table->string('phone')->unique();
             $table->string('email')->unique()->nullable();
             $table->enum('access_type', UserAccessType::values())->default(UserAccessType::User);
