@@ -26,7 +26,7 @@ class UserController extends Controller
         }
 
         $users = DB::table('users');
-        $users = $request->query('name') ? $users->where('name', $request->query('name')) : $users;
+        $users = $request->query('username') ? $users->where('username', $request->query('username')) : $users;
         $users = $request->query('phone') ? $users->where('phone', $request->query('phone')) : $users;
 
         return UserResource::collection($users->paginate(10));
@@ -65,7 +65,7 @@ class UserController extends Controller
             return response(['message' => __('exceptions.user-not-found')], 404);
         }
         $rules = [
-            'name' => ['required', 'string', 'max:255'],
+            'username' => ['required', 'string', 'max:255'],
             'access_type' => ['required', Rule::enum(UserAccessType::class)],
             'national_code' => ['nullable', 'numeric', 'regex:/^\d{10}$/'],
         ];
@@ -74,7 +74,7 @@ class UserController extends Controller
         $request->validate($rules);
 
         $user->fill([
-            'name' => $request->name,
+            'username' => $request->username,
             'phone' => $request->phone,
             'email' => $request->email,
             'access_type' => $request->access_type,

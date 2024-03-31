@@ -16,11 +16,16 @@ class UserResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
-            'phone' => $this->phone,
-            'email' => $this->email,
             'national_code' => $this->national_code,
-            'access_type' => $this->access_type
+            'phone' => $this->phone,
+            'username' => $this->username,
+            'gender' => $this->gender,
+            'first_name_fa' => $this->first_name_fa,
+            'last_name_fa' => $this->last_name_fa,
+            'first_name_en' => $this->first_name_en,
+            'last_name_en' => $this->last_name_en,
+            'email' => $this->email,
+            'access_type' => $this->when($request->user()->isAdmin(), $this->access_type),
         ];
     }
 }
