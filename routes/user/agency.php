@@ -7,7 +7,7 @@ use App\Http\Controllers\AgencyInfoController;
 Route::middleware(['auth:sanctum', 'isAgency'])->prefix('agency/')->group(function () {
 
     //------------------------- Profile Info -------------------------
-    Route::get('info', [RegisteredUserController::class, 'getInfo']);//TODO: migrate it to the agencyInfoController.
+    Route::get('info', [AgencyInfoController::class, 'getInfo']);
     Route::put('info', [AgencyInfoController::class, 'updateOrMake']);
 
 });

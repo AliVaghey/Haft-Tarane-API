@@ -2,11 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\AgencyInfoResource;
 use App\Models\AgencyInfo;
 use Illuminate\Http\Request;
 
 class AgencyInfoController extends Controller
 {
+    /**
+     * Get the agency info resource.
+     */
+    public function getInfo(Request $request)
+    {
+        return new AgencyInfoResource($request->user());
+    }
+
     /**
      * It updates an agency info and if agency info doesn't exist It'll create a new one.
      */
