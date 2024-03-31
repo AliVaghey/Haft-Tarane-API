@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Enums\UserAccessType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -74,5 +75,13 @@ class User extends Authenticatable
     public function isAgency(): bool
     {
         return $this->access_type === UserAccessType::Agency;
+    }
+
+    /**
+     * Get the agency_info model.
+     */
+    public function agencyInfo(): HasOne
+    {
+        return $this->hasOne(AgencyInfo::class, 'user_id');
     }
 }
