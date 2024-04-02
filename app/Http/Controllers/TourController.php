@@ -125,9 +125,19 @@ class TourController extends Controller
     /**
      * Delete a tour.
      */
-    public function delete()
+    public function delete(Request $request, $id)
     {
-        //TODO
+        if (!$tour = Tour::find($id)) {
+            return response(['message' => __('exceptions.tour-not-found')], 404);
+        }
+        try {
+            Gate::authorize('isTourOwner', $tour);
+        } catch (AuthorizationException $exception) {
+            return response(['message' => $exception->getMessage()]);
+        }
+
+        $tour->delete();
+        return response()->noContent();
     }
 
     /**
