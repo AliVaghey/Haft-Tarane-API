@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\AgencyInfoResource;
 use App\Models\AgencyInfo;
 use Illuminate\Http\Request;
+use App\Models\User;
 
 class AgencyInfoController extends Controller
 {
@@ -47,5 +48,19 @@ class AgencyInfoController extends Controller
         }
 
         return response()->noContent();
+    }
+
+    /**
+     * Checks to see if an agency model exists, If not it'll make a new one.
+     */
+    static public function makeModel(User $user)
+    {
+        if ($user->agencyInfo) {
+            return;
+        } else {
+            AgencyInfo::create([
+                'user_id' => $user->id
+            ]);
+        }
     }
 }

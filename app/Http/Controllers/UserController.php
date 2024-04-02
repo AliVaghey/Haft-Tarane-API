@@ -81,6 +81,10 @@ class UserController extends Controller
             'national_code' => $request->national_code,
         ])->save();
 
+        if ($request->access_type == UserAccessType::Agency) {
+            AgencyInfoController::makeModel($user);
+        }
+
         return response()->noContent();
     }
 
@@ -98,8 +102,13 @@ class UserController extends Controller
         if (!$user = User::find($id)) {
             return response(['message' => __('exceptions.user-not-found')], 404);
         }
+
         $request->validate(['access_type' => ['required', Rule::enum(UserAccessType::class)]]);
         $user->fill(['access_type' => $request->access_type])->save();
+
+        if ($request->access_type == UserAccessType::Agency) {
+            AgencyInfoController::makeModel($user);
+        }
 
         return response()->noContent();
     }
