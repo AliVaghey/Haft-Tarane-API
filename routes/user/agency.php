@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\AgencyInfoController;
 use App\Http\Controllers\TourController;
 

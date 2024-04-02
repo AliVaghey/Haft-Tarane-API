@@ -44,6 +44,8 @@ class Tour extends Model
         return [
             'status' => TourStatus::class,
             'tour_styles' => AsCollection::class,
+            'evening_support' => 'boolean',
+            'midnight_support' => 'boolean',
         ];
     }
 

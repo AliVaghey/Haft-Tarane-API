@@ -81,7 +81,7 @@ class UserController extends Controller
             'national_code' => $request->national_code,
         ])->save();
 
-        if ($request->access_type == UserAccessType::Agency) {
+        if ($request->access_type == UserAccessType::Agency->value) {
             AgencyInfoController::makeModel($user);
         }
 
@@ -106,7 +106,7 @@ class UserController extends Controller
         $request->validate(['access_type' => ['required', Rule::enum(UserAccessType::class)]]);
         $user->fill(['access_type' => $request->access_type])->save();
 
-        if ($request->access_type == UserAccessType::Agency) {
+        if ($request->access_type == UserAccessType::Agency->value) {
             AgencyInfoController::makeModel($user);
         }
 

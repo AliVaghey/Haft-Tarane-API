@@ -26,6 +26,8 @@ return new class extends Migration {
             $table->integer('staying_nights');
             $table->string('transportation_type');
             $table->enum('status', TourStatus::values())->default(TourStatus::Draft);
+            $table->date('start')->nullable();
+            $table->date('end')->nullable();
             $table->timestamps();
         });
     }
