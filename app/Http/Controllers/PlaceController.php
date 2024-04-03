@@ -19,7 +19,7 @@ class PlaceController extends Controller
         $request->validate(['name' => ['required', 'string']]);
         $place = Place::make([
             'name' => $request->name,
-            'author' => $user->name,
+            'author' => $user->username,
         ]);
 
         try {
@@ -73,7 +73,7 @@ class PlaceController extends Controller
 
         $place->fill([
             'name' => $request->name,
-            'author' => $user->name,
+            'author' => $user->username,
         ]);
 
         try {
