@@ -30,5 +30,7 @@ Route::middleware(['auth:sanctum', 'isAdmin'])->prefix('admin/')->group(function
     Route::post('hotel', [HotelController::class, 'create']);
     Route::put('hotel/{id}', [HotelController::class, 'edit']);
     Route::delete('hotel/{id}', [HotelController::class, 'delete']);
+    Route::post('hotel/{id}/photos', [HotelController::class, 'uploadGallery']);
+    Route::delete('hotel/{hotel_id}/photo/{photo_id}', [HotelController::class, 'deleteFromGallery']);
 
 });
