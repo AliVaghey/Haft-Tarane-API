@@ -8,4 +8,6 @@ return [
     'tour-not-found' => "Tour not found.",
     'not-own-the-tour' => "You don't own this tour.",
     'midnight-support-rule' => "In order to select the midnight support you have to select the evening support too.",
+    'hotel-not-found' => 'Hotel not found.',
+    'not-own-hotel' => "You're not the owner of this hotel.",
 ];
