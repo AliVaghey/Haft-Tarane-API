@@ -6,6 +6,7 @@ use App\Http\Resources\HotelResource;
 use App\Models\Hotel;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
@@ -85,6 +86,7 @@ class HotelController extends Controller
             'state' => ['nullable', 'string'],
             'city' => ['nullable', 'string'],
         ]);
+
         $hotel->fill([
             'name' => $request->name,
             'address' => $request->address,
@@ -92,6 +94,44 @@ class HotelController extends Controller
             'state' => $request->state,
             'city' => $request->city,
         ])->save();
+
+        return response()->noContent();
+    }
+
+    /**
+     * Uploads 5 images to the storage and returns the paths.
+     */
+    public function uploadGallery(Request $request, $id)
+    {
+        if (!$hotel = Hotel::find($id)) {
+            return response(['message' => __('exceptions.hotel-not-found')]);
+        }
+        try {
+            Gate::authorize('isOwner', $hotel);
+        } catch (AuthorizationException $exception) {
+            return response(['message' => $exception->getMessage()], 403);
+        }
+
+        $request->validate([
+            'photo_0' => ['nullable', 'mimes:jpg,jpeg,png', 'max:1024'],
+            'photo_1' => ['nullable', 'mimes:jpg,jpeg,png', 'max:1024'],
+            'photo_2' => ['nullable', 'mimes:jpg,jpeg,png', 'max:1024'],
+            'photo_3' => ['nullable', 'mimes:jpg,jpeg,png', 'max:1024'],
+            'photo_4' => ['nullable', 'mimes:jpg,jpeg,png', 'max:1024'],
+        ]);
+
+        $gallery = collect();
+        for ($i = 0; $i < 5; $i++) {
+            $name = 'photo_' . $i;
+            if ($request->hasFile($name)) {
+                $path = $request->$name->store('hotel-images');
+                if ($hotel->gallery && $hotel->gallery->has($i)) {
+                    Storage::delete($hotel->gallery->get($i));
+                }
+                $gallery->put($i, $path);
+            }
+        }
+        $hotel->fill(['gallery' => $gallery])->save();
 
         return response()->noContent();
     }
@@ -111,45 +151,6 @@ class HotelController extends Controller
         }
 
         $hotel->delete();
-
-        return response()->noContent();
-    }
-
-    /**
-     * Uploads 5 images to the hotel gallery.
-     */
-    public function uploadGallery(Request $request, $id)
-    {
-        if (!$hotel = Hotel::find($id)) {
-            return response(['message' => __('exceptions.hotel-not-found')]);
-        }
-        try {
-            Gate::authorize('isOwner', $hotel);
-        } catch (AuthorizationException $exception) {
-            return response(['message' => $exception->getMessage()], 403);
-        }
-        $request->validate([
-            'photo_0' => ['nullable', 'mimes:jpg,jpeg,png', 'max:1024'],
-            'photo_1' => ['nullable', 'mimes:jpg,jpeg,png', 'max:1024'],
-            'photo_2' => ['nullable', 'mimes:jpg,jpeg,png', 'max:1024'],
-            'photo_3' => ['nullable', 'mimes:jpg,jpeg,png', 'max:1024'],
-            'photo_4' => ['nullable', 'mimes:jpg,jpeg,png', 'max:1024'],
-        ]);
-
-        $gallery = collect();
-
-        for ($i = 0; $i < 5; $i++) {
-            $name = 'photo_' . $i;
-            if ($request->hasFile($name)) {
-                $path = $request->$name->store('hotel-images');
-                if ($hotel->gallery && $hotel->gallery->get($i)) {
-
-                }
-                $gallery->put($i, $path);
-            }
-        }
-        $hotel->gallery = $gallery;
-        $hotel->save();
 
         return response()->noContent();
     }
@@ -175,5 +176,7 @@ class HotelController extends Controller
                 $hotel->save();
             }
         }
+
+        return response()->noContent();
     }
 }
