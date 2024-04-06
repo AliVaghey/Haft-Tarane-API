@@ -93,4 +93,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(Hotel::class, 'admin_id');
     }
+
+    /**
+     * Get the Support team of agency users.
+     */
+    public function supports(): HasMany
+    {
+        return $this->hasMany(Support::class, 'agency_id');
+    }
 }

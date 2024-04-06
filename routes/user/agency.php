@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AgencyInfoController;
 use App\Http\Controllers\TourController;
+use App\Http\Controllers\SupportController;
 
 Route::middleware(['auth:sanctum', 'isAgency'])->prefix('agency/')->group(function () {
 
@@ -16,5 +17,11 @@ Route::middleware(['auth:sanctum', 'isAgency'])->prefix('agency/')->group(functi
     Route::put('tour/{id}', [TourController::class, 'update']);
     Route::delete('tour/{id}', [TourController::class, 'delete']);
     Route::put('tour/{id}/certificates', [TourController::class, 'updateCertificate']);
+
+    //------------------------- Support Team -------------------------
+    Route::post('support', [SupportController::class, 'new']);
+    Route::get('supports', [SupportController::class, 'getAll']);
+    Route::put('support/{id}', [SupportController::class, 'edit']);
+    Route::delete('support/{id}', [SupportController::class, 'delete']);
 
 });
