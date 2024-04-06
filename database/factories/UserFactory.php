@@ -33,7 +33,7 @@ class UserFactory extends Factory
             'last_name_en' => $f_en->lastName(),
             'birth_date' => $f->date(),
             'gender' => $f->randomElement(['female', 'male']),
-            'phone' => $f->phoneNumber(),
+            'phone' => '09' . $f->randomNumber(9, true),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
