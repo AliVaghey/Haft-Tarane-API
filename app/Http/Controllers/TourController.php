@@ -31,7 +31,7 @@ class TourController extends Controller
         ]);
         if ($request->midnight_support) {
             if (!$request->evening_support) {
-                return response(['message' => __('exceptions.midnight-support-rule')]);
+                return response(['message' => __('exceptions.midnight-support-rule')], 403);
             }
         }
 
@@ -65,7 +65,7 @@ class TourController extends Controller
         try {
             Gate::authorize('isTourOwner', $tour);
         } catch (AuthorizationException $exception) {
-            return response(['message' => $exception->getMessage()]);
+            return response(['message' => $exception->getMessage()], 403);
         }
         return new TourResource($tour);
     }
@@ -90,7 +90,7 @@ class TourController extends Controller
         ]);
         if ($request->midnight_support) {
             if (!$request->evening_support) {
-                return response(['message' => __('exceptions.midnight-support-rule')]);
+                return response(['message' => __('exceptions.midnight-support-rule')], 403);
             }
         }
 
@@ -101,7 +101,7 @@ class TourController extends Controller
         try {
             Gate::authorize('isTourOwner', $tour);
         } catch (AuthorizationException $exception) {
-            return response(['message' => $exception->getMessage()]);
+            return response(['message' => $exception->getMessage()], 403);
         }
 
         $tour->fill([
@@ -133,7 +133,7 @@ class TourController extends Controller
         try {
             Gate::authorize('isTourOwner', $tour);
         } catch (AuthorizationException $exception) {
-            return response(['message' => $exception->getMessage()]);
+            return response(['message' => $exception->getMessage()], 403);
         }
 
         $tour->delete();
