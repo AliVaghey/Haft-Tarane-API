@@ -22,6 +22,7 @@ class AgencyInfoResource extends JsonResource
             'id' => $this->id,
             'username' => $this->username,
             'user_phone' => $this->phone,
+            'admin' => $info->admin->username,
             'agency_name' => $info ? $info->name : null,
             'agency_address' => $info ? $info->address : null,
             'agency_c_phone' => $info ? $info->c_phone : null,

@@ -72,9 +72,9 @@ class AgencyInfoController extends Controller
      */
     public function getAll(Request $request)
     {
-        return AgencyInfoResource::collection(
-            User::where('access_type', 'agency')->paginate(10)
-        );
+        return $request->query('name') ?
+            AgencyResource::collection(AgencyInfo::where('name', $request->query('name'))->get()) :
+            AgencyInfoResource::collection(User::where('access_type', 'agency')->paginate(10));
     }
 
     /**
@@ -83,8 +83,8 @@ class AgencyInfoController extends Controller
     public function getMyAgencies(Request $request)
     {
         $admin = $request->user();
-        return AgencyResource::collection(
-            $admin->agencies()->paginate(10)
-        );
+        return $request->query('name') ?
+            AgencyResource::collection($admin->agencies()->where('name', $request->query('name'))->get()) :
+            AgencyResource::collection($admin->agencies()->paginate(10));
     }
 }

@@ -17,11 +17,12 @@ class AgencyResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $user = $this->user();
+        $user = $this->user;
         return [
             'id' => $user->id,
             'username' => $user->username,
             'user_phone' => $user->phone,
+            'admin' => $this->admin->username,
             'agency_name' => $this->name,
             'agency_address' => $this->address,
             'agecny_c_phone' => $this->c_phone,
