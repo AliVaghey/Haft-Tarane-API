@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\UserAccessType;
 use App\Http\Resources\AgencyInfoResource;
+use App\Http\Resources\AgencyResource;
 use App\Models\AgencyInfo;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -63,5 +65,26 @@ class AgencyInfoController extends Controller
                 'admin_id' => $admin->id,
             ]);
         }
+    }
+
+    /**
+     * It returns all the agencies for admin users.
+     */
+    public function getAll(Request $request)
+    {
+        return AgencyInfoResource::collection(
+            User::where('access_type', 'agency')->paginate(10)
+        );
+    }
+
+    /**
+     * It returns all the agencies that belong to the admin user.
+     */
+    public function getMyAgencies(Request $request)
+    {
+        $admin = $request->user();
+        return AgencyResource::collection(
+            $admin->agencies()->paginate(10)
+        );
     }
 }

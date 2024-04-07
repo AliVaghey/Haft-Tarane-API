@@ -5,6 +5,9 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * This resource receives a user model which has agency info.
+ */
 class AgencyInfoResource extends JsonResource
 {
     /**
