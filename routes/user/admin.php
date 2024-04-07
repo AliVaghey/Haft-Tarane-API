@@ -6,6 +6,7 @@ use App\Http\Controllers\PlaceController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\HotelController;
+use App\Http\Controllers\AgencyInfoController;
 
 Route::middleware(['auth:sanctum', 'isAdmin'])->prefix('admin/')->group(function () {
 
@@ -32,5 +33,10 @@ Route::middleware(['auth:sanctum', 'isAdmin'])->prefix('admin/')->group(function
     Route::delete('hotel/{id}', [HotelController::class, 'delete']);
     Route::post('hotel/{id}/photos', [HotelController::class, 'uploadGallery']);
     Route::delete('hotel/{hotel_id}/photo/{photo_id}', [HotelController::class, 'deleteFromGallery']);
+
+    //---------------------- Agency Management -----------------------
+    Route::get('agencies', [AgencyInfoController::class, 'getAll']);
+    Route::get('my-agencies', [AgencyInfoController::class, 'getMyAgencies']);
+
 
 });

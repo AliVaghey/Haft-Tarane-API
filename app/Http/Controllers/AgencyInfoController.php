@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\UserAccessType;
 use App\Http\Resources\AgencyInfoResource;
+use App\Http\Resources\AgencyResource;
 use App\Models\AgencyInfo;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -53,14 +55,36 @@ class AgencyInfoController extends Controller
     /**
      * Checks to see if an agency model exists, If not it'll make a new one.
      */
-    static public function makeModel(User $user)
+    static public function makeModel(User $user, User $admin)
     {
         if ($user->agencyInfo) {
             return;
         } else {
             AgencyInfo::create([
-                'user_id' => $user->id
+                'user_id' => $user->id,
+                'admin_id' => $admin->id,
             ]);
         }
+    }
+
+    /**
+     * It returns all the agencies for admin users.
+     */
+    public function getAll(Request $request)
+    {
+        return $request->query('name') ?
+            AgencyResource::collection(AgencyInfo::where('name', $request->query('name'))->get()) :
+            AgencyInfoResource::collection(User::where('access_type', 'agency')->paginate(10));
+    }
+
+    /**
+     * It returns all the agencies that belong to the admin user.
+     */
+    public function getMyAgencies(Request $request)
+    {
+        $admin = $request->user();
+        return $request->query('name') ?
+            AgencyResource::collection($admin->agencies()->where('name', $request->query('name'))->get()) :
+            AgencyResource::collection($admin->agencies()->paginate(10));
     }
 }

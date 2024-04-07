@@ -18,6 +18,7 @@ class AgencyInfo extends Model
      */
     protected $fillable = [
         'user_id',
+        'admin_id',
         'name',
         'address',
         'c_phone',
@@ -40,5 +41,13 @@ class AgencyInfo extends Model
     public function tours(): HasMany
     {
         return $this->hasMany(Tour::class, 'agency_id');
+    }
+
+    /**
+     * Get the admin model of the agency.
+     */
+    public function admin(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'admin_id');
     }
 }

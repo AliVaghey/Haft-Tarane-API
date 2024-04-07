@@ -82,7 +82,7 @@ class UserController extends Controller
         ])->save();
 
         if ($request->access_type == UserAccessType::Agency->value) {
-            AgencyInfoController::makeModel($user);
+            AgencyInfoController::makeModel($user, $admin);
         }
 
         return response()->noContent();
@@ -107,7 +107,7 @@ class UserController extends Controller
         $user->fill(['access_type' => $request->access_type])->save();
 
         if ($request->access_type == UserAccessType::Agency->value) {
-            AgencyInfoController::makeModel($user);
+            AgencyInfoController::makeModel($user, $admin);
         }
 
         return response()->noContent();
