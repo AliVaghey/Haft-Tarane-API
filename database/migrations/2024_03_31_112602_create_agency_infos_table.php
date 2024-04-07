@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('agency_infos', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id');
+            $table->foreignId('admin_id');
             $table->string('name')->nullable();
             $table->string('address')->nullable();
             $table->string('c_phone')->nullable();

@@ -101,4 +101,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(Support::class, 'agency_id');
     }
+
+    /**
+     * Get the agencies of admin users.
+     */
+    public function agencies(): HasMany
+    {
+        return $this->hasMany(AgencyInfo::class, 'admin_id');
+    }
 }

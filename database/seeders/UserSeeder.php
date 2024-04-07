@@ -24,9 +24,10 @@ class UserSeeder extends Seeder
         User::factory(2)->create([
             'access_type' => UserAccessType::Agency,
         ]);
+
         $agencies = User::where('access_type', 'agency')->get();
         foreach ($agencies as $agency) {
-            AgencyInfoController::makeModel($agency);
+            AgencyInfoController::makeModel($agency, $agency);
         }
 
         //Normal user :

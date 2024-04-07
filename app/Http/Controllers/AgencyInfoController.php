@@ -53,13 +53,14 @@ class AgencyInfoController extends Controller
     /**
      * Checks to see if an agency model exists, If not it'll make a new one.
      */
-    static public function makeModel(User $user)
+    static public function makeModel(User $user, User $admin)
     {
         if ($user->agencyInfo) {
             return;
         } else {
             AgencyInfo::create([
-                'user_id' => $user->id
+                'user_id' => $user->id,
+                'admin_id' => $admin->id,
             ]);
         }
     }
