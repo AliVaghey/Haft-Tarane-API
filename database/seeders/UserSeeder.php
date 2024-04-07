@@ -16,18 +16,19 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         //Admin user :
-        User::factory(1)->create([
+        $admins = User::factory(3)->create([
             'access_type' => UserAccessType::Admin,
         ]);
 
         //Agency user :
-        User::factory(2)->create([
+        $agencies = User::factory(9)->create([
             'access_type' => UserAccessType::Agency,
         ]);
-
-        $agencies = User::where('access_type', 'agency')->get();
-        foreach ($agencies as $agency) {
-            AgencyInfoController::makeModel($agency, $agency);
+        $i = 0;
+        foreach ($admins as $admin) {
+            for ($j = 0; $j < 3; $j++, $i++) {
+                AgencyInfoController::makeModel($agencies[$i], $admin);
+            }
         }
 
         //Normal user :
