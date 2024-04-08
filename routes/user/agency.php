@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AgencyInfoController;
 use App\Http\Controllers\TourController;
 use App\Http\Controllers\SupportController;
+use App\Http\Controllers\HotelController;
 
 Route::middleware(['auth:sanctum', 'isAgency'])->prefix('agency/')->group(function () {
 
@@ -23,5 +24,8 @@ Route::middleware(['auth:sanctum', 'isAgency'])->prefix('agency/')->group(functi
     Route::get('supports', [SupportController::class, 'getAll']);
     Route::put('support/{id}', [SupportController::class, 'edit']);
     Route::delete('support/{id}', [SupportController::class, 'delete']);
+
+    //---------------------------- Hotels ----------------------------
+    Route::get('hotels', [HotelController::class, 'GetAll']);
 
 });
