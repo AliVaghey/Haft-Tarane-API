@@ -17,7 +17,7 @@ Route::middleware(['auth:sanctum', 'isAgency'])->prefix('agency/')->group(functi
     Route::get('tour/{id}', [TourController::class, 'read']);
     Route::put('tour/{id}', [TourController::class, 'update']);
     Route::delete('tour/{id}', [TourController::class, 'delete']);
-    Route::put('tour/{id}/certificates', [TourController::class, 'updateCertificate']);
+    Route::post('tour/certificates', [TourController::class, 'updateCertificate']);
 
     //------------------------- Support Team -------------------------
     Route::post('support', [SupportController::class, 'new']);

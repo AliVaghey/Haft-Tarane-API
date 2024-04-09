@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\TourStatus;
 use App\Http\Resources\TourResource;
+use App\Models\certificate;
 use App\Models\Tour;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\Gate;
@@ -20,6 +21,7 @@ class TourController extends Controller
             'title' => ['required', 'string', 'max:255'],
             'trip_type' => ['required', 'string'],
             'expiration' => ['required', 'numeric'],
+            'capacity' => ['required', 'numeric'],
             'selling_type' => ['required', 'string'],
             'tour-styles' => ['nullable', 'json'],
             'evening_support' => ['required', 'boolean'],
@@ -35,11 +37,12 @@ class TourController extends Controller
             }
         }
 
-        Tour::create([
+        $tour = Tour::create([
             'agency_id' => $request->user()->agencyInfo->id,
             'title' => $request->title,
             'trip_type' => $request->trip_type,
             'expiration' => $request->expiration,
+            'capacity' => $request->capacity,
             'selling_type' => $request->selling_type,
             'tour-styles' => collect(json_decode($request->tour_styles, true)),
             'evening_support' => $request->evening_support,
@@ -51,7 +54,7 @@ class TourController extends Controller
             'status' => TourStatus::Draft,
         ]);
 
-        return response()->noContent();
+        return new TourResource($tour);
     }
 
     /**
@@ -143,8 +146,36 @@ class TourController extends Controller
     /**
      * Update or make Certificates for tour.
      */
-    public function updateCertificate()
+    public function updateCertificate(Request $request)
     {
-        //TODO
+        $request->validate([
+            'tour_id' => ['required', 'exists:tours,id'],
+            'free_services' => ['nullable', 'json'],
+            'certificates' => ['nullable', 'json'],
+            'descriptions' => ['nullable', 'string'],
+            'cancel_rules' => ['nullable', 'string'],
+        ]);
+
+        if (!$tour = Tour::find($request->tour_id)) {
+            return response(['message' => __('exceptions.tour-not-found')], 404);
+        }
+        if ($tour->certificate) {
+            $tour->certificate->fill([
+                'free_services' => collect(json_decode($request->free_services, true)),
+                'certificates' => collect(json_decode($request->certificates, true)),
+                'descriptions' => $request->descriptions,
+                'cancel_rules' => $request->cancel_rules,
+            ]);
+        } else {
+            certificate::create([
+                'tour_id' => $tour->id,
+                'free_services' => collect(json_decode($request->free_services, true)),
+                'certificates' => collect(json_decode($request->certificates, true)),
+                'descriptions' => $request->descriptions,
+                'cancel_rules' => $request->cancel_rules,
+            ]);
+        }
+
+        return response()->noContent();
     }
 }

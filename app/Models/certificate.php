@@ -34,8 +34,6 @@ class certificate extends Model
         return [
             'free_services' => AsCollection::class,
             'certificates' => AsCollection::class,
-            'descriptions' => AsCollection::class,
-            'cancel_rules' => AsCollection::class,
         ];
     }
 

@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->foreignId('tour_id');
             $table->json('free_services')->nullable();
             $table->json('certificates')->nullable();
-            $table->json('descriptions')->nullable();
+            $table->text('descriptions')->nullable();
             $table->text('cancel_rules')->nullable();
             $table->timestamps();
         });
