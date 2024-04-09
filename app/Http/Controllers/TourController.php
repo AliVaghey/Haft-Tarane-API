@@ -6,6 +6,7 @@ use App\Enums\TourStatus;
 use App\Http\Resources\TourResource;
 use App\Models\certificate;
 use App\Models\Tour;
+use Carbon\Carbon;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
@@ -219,6 +220,34 @@ class TourController extends Controller
         } else {
             return response(['message' => __('exceptions.hotel-not-selected')], 403);
         }
+
+        return response()->noContent();
+    }
+
+    /**
+     * It adds date to a tour and puts it in pending status.
+     */
+    public function addDateAndPending(Request $request, $id)
+    {
+        $request->validate([
+            'start' => ['required', 'date'],
+            'end' => ['required', 'date'],
+        ]);
+        if (!$tour = Tour::find($id)) {
+            return response(['message' => __('exceptions.tour-not-found')], 404);
+        }
+
+        $start = new Carbon($request->start);
+        $end = new Carbon($request->end);
+        if ($end <= $start) {
+            return response(['message' => __('exceptions.date-invalid')], 403);
+        }
+
+        $tour->fill([
+            'start' => $start->format('Y-m-d'),
+            'end' => $end->format('Y-m-d'),
+            'status' => TourStatus::Pending,
+        ])->save();
 
         return response()->noContent();
     }
