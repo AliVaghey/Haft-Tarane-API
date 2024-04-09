@@ -251,4 +251,16 @@ class TourController extends Controller
 
         return response()->noContent();
     }
+
+    /**
+     * It sets the status of tour to draft.
+     */
+    public function setToDraft(Request $request, $id)
+    {
+        if (!$tour = Tour::find($id)) {
+            return response(['message' => __('exceptions.tour-not-found')], 404);
+        }
+        $tour->fill(['status' => TourStatus::Draft])->save();
+        return response()->noContent();
+    }
 }
