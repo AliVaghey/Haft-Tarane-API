@@ -52,6 +52,7 @@ class TourController extends Controller
             'staying_nights' => $request->staying_nights,
             'transportation_type' => $request->transportation_type,
             'status' => TourStatus::Draft,
+            'hotels' => collect(),
         ]);
 
         return new TourResource($tour);
@@ -174,6 +175,49 @@ class TourController extends Controller
                 'descriptions' => $request->descriptions,
                 'cancel_rules' => $request->cancel_rules,
             ]);
+        }
+
+        return response()->noContent();
+    }
+
+    /**
+     * Link a hotel to the tour.
+     */
+    public function linkHotel(Request $request, $id)
+    {
+        $request->validate([
+            'hotel_id' => ['required', 'exists:hotels,id'],
+        ]);
+        if (!$tour = Tour::find($id)) {
+            return response(['message' => __('exceptions.tour-not-found')], 404);
+        }
+        if ($tour->hotels->search($request->hotel_id) === false) {
+            $tour->hotels->push($request->hotel_id);
+            $tour->save();
+        } else {
+            return response(['message' => __('exceptions.hotel-exists')], 403);
+        }
+
+        return response()->noContent();
+    }
+
+    /**
+     * Unlink a hotel from the tour.
+     */
+    public function unlinkHotel(Request $request, $id)
+    {
+        $request->validate([
+            'hotel_id' => ['required', 'exists:hotels,id'],
+        ]);
+        if (!$tour = Tour::find($id)) {
+            return response(['message' => __('exceptions.tour-not-found')], 404);
+        }
+        $index = $tour->hotels->search($request->hotel_id);
+        if ($index !== false) {
+            $tour->hotels->forget($index);
+            $tour->save();
+        } else {
+            return response(['message' => __('exceptions.hotel-not-selected')], 403);
         }
 
         return response()->noContent();

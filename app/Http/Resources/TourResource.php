@@ -32,6 +32,7 @@ class TourResource extends JsonResource
             'staying_nights' => $this->staying_nights,
             'transportation_type' => $this->transportation_type,
             'status' => $this->status,
+            'hotels' => $this->hotels,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'certificate' => $this->when($certificate, [

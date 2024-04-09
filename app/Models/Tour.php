@@ -34,6 +34,7 @@ class Tour extends Model
         'staying_nights',
         'transportation_type',
         'status',
+        'hotels',
     ];
 
     /**
@@ -46,6 +47,7 @@ class Tour extends Model
         return [
             'status' => TourStatus::class,
             'tour_styles' => AsCollection::class,
+            'hotels' => AsCollection::class,
             'evening_support' => 'boolean',
             'midnight_support' => 'boolean',
         ];

@@ -26,10 +26,11 @@ return new class extends Migration {
             $table->string('destination');
             $table->integer('staying_nights');
             $table->string('transportation_id')->nullable();
-            $table->enum('transportation_type', ['none', 'system', 'self']);
+            $table->enum('transportation_type', ['none', 'system', 'self'])->default('none');
             $table->enum('status', TourStatus::values())->default(TourStatus::Draft);
             $table->date('start')->nullable();
             $table->date('end')->nullable();
+            $table->json('hotels')->nullable();
             $table->timestamps();
         });
     }
