@@ -22,16 +22,21 @@ class Tour extends Model
         'agency_id',
         'title',
         'trip_type',
+        'capacity',
         'expiration',
         'selling_type',
         'tour_styles',
         'evening_support',
         'midnight_support',
+        'transportation_id',
         'origin',
         'destination',
         'staying_nights',
         'transportation_type',
+        'start',
+        'end',
         'status',
+        'hotels',
     ];
 
     /**
@@ -44,6 +49,7 @@ class Tour extends Model
         return [
             'status' => TourStatus::class,
             'tour_styles' => AsCollection::class,
+            'hotels' => AsCollection::class,
             'evening_support' => 'boolean',
             'midnight_support' => 'boolean',
         ];

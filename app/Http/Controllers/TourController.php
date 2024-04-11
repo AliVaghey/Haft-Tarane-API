@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Enums\TourStatus;
 use App\Http\Resources\TourResource;
+use App\Models\certificate;
 use App\Models\Tour;
+use Carbon\Carbon;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
@@ -20,6 +22,7 @@ class TourController extends Controller
             'title' => ['required', 'string', 'max:255'],
             'trip_type' => ['required', 'string'],
             'expiration' => ['required', 'numeric'],
+            'capacity' => ['required', 'numeric'],
             'selling_type' => ['required', 'string'],
             'tour-styles' => ['nullable', 'json'],
             'evening_support' => ['required', 'boolean'],
@@ -35,11 +38,12 @@ class TourController extends Controller
             }
         }
 
-        Tour::create([
+        $tour = Tour::create([
             'agency_id' => $request->user()->agencyInfo->id,
             'title' => $request->title,
             'trip_type' => $request->trip_type,
             'expiration' => $request->expiration,
+            'capacity' => $request->capacity,
             'selling_type' => $request->selling_type,
             'tour-styles' => collect(json_decode($request->tour_styles, true)),
             'evening_support' => $request->evening_support,
@@ -49,9 +53,10 @@ class TourController extends Controller
             'staying_nights' => $request->staying_nights,
             'transportation_type' => $request->transportation_type,
             'status' => TourStatus::Draft,
+            'hotels' => collect(),
         ]);
 
-        return response()->noContent();
+        return new TourResource($tour);
     }
 
     /**
@@ -143,8 +148,119 @@ class TourController extends Controller
     /**
      * Update or make Certificates for tour.
      */
-    public function updateCertificate()
+    public function updateCertificate(Request $request)
     {
-        //TODO
+        $request->validate([
+            'tour_id' => ['required', 'exists:tours,id'],
+            'free_services' => ['nullable', 'json'],
+            'certificates' => ['nullable', 'json'],
+            'descriptions' => ['nullable', 'string'],
+            'cancel_rules' => ['nullable', 'string'],
+        ]);
+
+        if (!$tour = Tour::find($request->tour_id)) {
+            return response(['message' => __('exceptions.tour-not-found')], 404);
+        }
+        if ($tour->certificate) {
+            $tour->certificate->fill([
+                'free_services' => collect(json_decode($request->free_services, true)),
+                'certificates' => collect(json_decode($request->certificates, true)),
+                'descriptions' => $request->descriptions,
+                'cancel_rules' => $request->cancel_rules,
+            ]);
+        } else {
+            certificate::create([
+                'tour_id' => $tour->id,
+                'free_services' => collect(json_decode($request->free_services, true)),
+                'certificates' => collect(json_decode($request->certificates, true)),
+                'descriptions' => $request->descriptions,
+                'cancel_rules' => $request->cancel_rules,
+            ]);
+        }
+
+        return response()->noContent();
+    }
+
+    /**
+     * Link a hotel to the tour.
+     */
+    public function linkHotel(Request $request, $id)
+    {
+        $request->validate([
+            'hotel_id' => ['required', 'exists:hotels,id'],
+        ]);
+        if (!$tour = Tour::find($id)) {
+            return response(['message' => __('exceptions.tour-not-found')], 404);
+        }
+        if ($tour->hotels->search($request->hotel_id) === false) {
+            $tour->hotels->push($request->hotel_id);
+            $tour->save();
+        } else {
+            return response(['message' => __('exceptions.hotel-exists')], 403);
+        }
+
+        return response()->noContent();
+    }
+
+    /**
+     * Unlink a hotel from the tour.
+     */
+    public function unlinkHotel(Request $request, $id)
+    {
+        $request->validate([
+            'hotel_id' => ['required', 'exists:hotels,id'],
+        ]);
+        if (!$tour = Tour::find($id)) {
+            return response(['message' => __('exceptions.tour-not-found')], 404);
+        }
+        $index = $tour->hotels->search($request->hotel_id);
+        if ($index !== false) {
+            $tour->hotels->forget($index);
+            $tour->save();
+        } else {
+            return response(['message' => __('exceptions.hotel-not-selected')], 403);
+        }
+
+        return response()->noContent();
+    }
+
+    /**
+     * It adds date to a tour and puts it in pending status.
+     */
+    public function addDateAndPending(Request $request, $id)
+    {
+        $request->validate([
+            'start' => ['required', 'date'],
+            'end' => ['required', 'date'],
+        ]);
+        if (!$tour = Tour::find($id)) {
+            return response(['message' => __('exceptions.tour-not-found')], 404);
+        }
+
+        $start = new Carbon($request->start);
+        $end = new Carbon($request->end);
+        if ($end <= $start) {
+            return response(['message' => __('exceptions.date-invalid')], 403);
+        }
+
+        $tour->fill([
+            'start' => $start->format('Y-m-d'),
+            'end' => $end->format('Y-m-d'),
+            'status' => TourStatus::Pending,
+        ])->save();
+
+        return response()->noContent();
+    }
+
+    /**
+     * It sets the status of tour to draft.
+     */
+    public function setToDraft(Request $request, $id)
+    {
+        if (!$tour = Tour::find($id)) {
+            return response(['message' => __('exceptions.tour-not-found')], 404);
+        }
+        $tour->fill(['status' => TourStatus::Draft])->save();
+        return response()->noContent();
     }
 }

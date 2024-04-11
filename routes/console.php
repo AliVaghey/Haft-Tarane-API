@@ -10,7 +10,7 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote')->hourly();
 
 Artisan::command('new_admin', function () {
-    $name = $this->ask('Enter your user name');
+    $name = $this->ask('Enter your username');
     $phone = $this->ask('Enter your phone');
     $password = $this->secret('Enter your password');
     $confirmation = $this->secret('Please repeat your password');
@@ -20,7 +20,7 @@ Artisan::command('new_admin', function () {
         $confirmation = $this->secret('Please repeat your password');
     }
     User::create([
-        'name' => $name,
+        'username' => $name,
         'phone' => $phone,
         'access_type' => \App\Enums\UserAccessType::Admin,
         'password' => Hash::make($password),

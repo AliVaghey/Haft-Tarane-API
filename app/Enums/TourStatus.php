@@ -6,6 +6,8 @@ enum TourStatus: string
 {
     case Active = 'active';
     case Draft = 'draft';
+    case Pending = 'pending';
+    case Rejected = 'rejected';
     case Canceled = 'canceled';
     case Expired = 'expired';
 

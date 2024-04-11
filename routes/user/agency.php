@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AgencyInfoController;
 use App\Http\Controllers\TourController;
 use App\Http\Controllers\SupportController;
+use App\Http\Controllers\HotelController;
 
 Route::middleware(['auth:sanctum', 'isAgency'])->prefix('agency/')->group(function () {
 
@@ -16,12 +17,19 @@ Route::middleware(['auth:sanctum', 'isAgency'])->prefix('agency/')->group(functi
     Route::get('tour/{id}', [TourController::class, 'read']);
     Route::put('tour/{id}', [TourController::class, 'update']);
     Route::delete('tour/{id}', [TourController::class, 'delete']);
-    Route::put('tour/{id}/certificates', [TourController::class, 'updateCertificate']);
+    Route::post('tour/certificates', [TourController::class, 'updateCertificate']);
+    Route::post('tour/{id}/hotel', [TourController::class, 'linkHotel']);
+    Route::delete('tour/{id}/hotel', [TourController::class, 'unlinkHotel']);
+    Route::post('tour/{id}/date', [TourController::class, 'addDateAndPending']);
+    Route::put('tour/{id}/draft', [TourController::class, 'setToDraft']);
 
     //------------------------- Support Team -------------------------
     Route::post('support', [SupportController::class, 'new']);
     Route::get('supports', [SupportController::class, 'getAll']);
     Route::put('support/{id}', [SupportController::class, 'edit']);
     Route::delete('support/{id}', [SupportController::class, 'delete']);
+
+    //---------------------------- Hotels ----------------------------
+    Route::get('hotels', [HotelController::class, 'GetAll']);
 
 });

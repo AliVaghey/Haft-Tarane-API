@@ -10,13 +10,10 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('certificates', function (Blueprint $table) {
+        Schema::create('rejections', function (Blueprint $table) {
             $table->id();
             $table->foreignId('tour_id');
-            $table->json('free_services')->nullable();
-            $table->json('certificates')->nullable();
-            $table->text('descriptions')->nullable();
-            $table->text('cancel_rules')->nullable();
+            $table->text('message');
             $table->timestamps();
         });
     }
@@ -26,6 +23,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('certificates');
+        Schema::dropIfExists('rejections');
     }
 };

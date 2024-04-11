@@ -14,4 +14,7 @@ return [
     'support-not-found' => "Support teammate not found.",
     'not-own-support' => "This supporter is not in your team.",
     'repeated-support' => "You already defined this supporter.",
+    'hotel-exists' => "This hotel is already selected.",
+    'hotel-not-selected' => 'This hotel is not selected.',
+    'date-invalid' => "Starting time can not be after the end time.",
 ];
