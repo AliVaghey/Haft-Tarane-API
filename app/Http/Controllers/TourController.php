@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\TourStatus;
 use App\Http\Resources\TourResource;
 use App\Models\certificate;
+use App\Models\Rejection;
 use App\Models\Tour;
 use Carbon\Carbon;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -308,5 +309,52 @@ class TourController extends Controller
                     ->where('agency_infos.admin_id', '=', $request->user()->id);
             })
             ->paginate(10);
+    }
+
+    /**
+     * It approves a tour and activates it.
+     */
+    public function approve(Request $request, $id)
+    {
+        if (!$tour = Tour::find($id)) {
+            return response(['message' => __('exceptions.tour-not-found')], 404);
+        }
+        try {
+            Gate::authorize('isTourAdmin', $tour);
+        } catch (AuthorizationException $exception) {
+            return response(['message' => $exception->getMessage()], 403);
+        }
+
+        $tour->status = TourStatus::Active;
+        $tour->save();
+
+        return response()->noContent();
+    }
+
+    /**
+     * It creates a new rejection model with the given message and rejects the tour.
+     */
+    public function reject(Request $request, $id)
+    {
+        if (!$tour = Tour::find($id)) {
+            return response(['message' => __('exceptions.tour-not-found')], 404);
+        }
+        try {
+            Gate::authorize('isTourAdmin', $tour);
+        } catch (AuthorizationException $exception) {
+            return response(['message' => $exception->getMessage()], 403);
+        }
+        $request->validate(['message' => ['nullable', 'string']]);
+
+        if ($request->message !== null) {
+            Rejection::create([
+                'tour_id' => $tour->id,
+                'message' => $request->message,
+            ]);
+        }
+        $tour->status = TourStatus::Rejected;
+        $tour->save();
+
+        return response()->noContent();
     }
 }

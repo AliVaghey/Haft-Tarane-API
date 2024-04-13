@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\AsCollection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Tour extends Model
@@ -69,5 +70,13 @@ class Tour extends Model
     public function certificate(): HasOne
     {
         return $this->hasOne(certificate::class, 'tour_id');
+    }
+
+    /**
+     * Get the rejection models.
+     */
+    public function rejections(): HasMany
+    {
+        return $this->hasMany(Rejection::class, 'tour_id');
     }
 }
