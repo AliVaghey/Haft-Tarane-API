@@ -17,4 +17,14 @@ class TourPolicy
             Response::allow() :
             Response::deny(__('exceptions.not-own-the-tour'));
     }
+
+    /**
+     * Checks to see if the user is the admin of the tour.
+     */
+    public function isTourAdmin(User $user, Tour $tour)
+    {
+        return $user->id == $tour->agency->admin->id ?
+            Response::allow() :
+            Response::deny(__('exceptions.not-own-the-tour'));
+    }
 }

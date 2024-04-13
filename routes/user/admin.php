@@ -7,6 +7,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\HotelController;
 use App\Http\Controllers\AgencyInfoController;
+use App\Http\Controllers\TourController;
 
 Route::middleware(['auth:sanctum', 'isAdmin'])->prefix('admin/')->group(function () {
 
@@ -38,5 +39,11 @@ Route::middleware(['auth:sanctum', 'isAdmin'])->prefix('admin/')->group(function
     Route::get('agencies', [AgencyInfoController::class, 'getAll']);
     Route::get('my-agencies', [AgencyInfoController::class, 'getMyAgencies']);
 
+    //----------------------- Tour Management ------------------------
+    Route::get('active-tours', [TourController::class, 'activeTours']);
+    Route::get('my-tours', [TourController::class, 'adminMyTours']);
+    Route::get('my-pending-tours', [TourController::class, 'adminPendingTours']);
+    Route::post('tour/{id}/approve', [TourController::class, 'approve']);
+    Route::post('tour/{id}/reject', [TourController::class, 'reject']);
 
 });

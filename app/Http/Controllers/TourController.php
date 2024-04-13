@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use App\Enums\TourStatus;
 use App\Http\Resources\TourResource;
 use App\Models\certificate;
+use App\Models\Rejection;
 use App\Models\Tour;
 use Carbon\Carbon;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Database\Query\JoinClause;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
 
@@ -261,6 +264,97 @@ class TourController extends Controller
             return response(['message' => __('exceptions.tour-not-found')], 404);
         }
         $tour->fill(['status' => TourStatus::Draft])->save();
+        return response()->noContent();
+    }
+
+    /**
+     * Get all the active tours of the site.
+     */
+    public function activeTours(Request $request)
+    {
+        $results = Tour::where('status', 'active');
+        $results = $request->query('origin') ? $results->where('origin', $request->query('origin')) : $results;
+        $results = $request->query('destination') ? $results->where('destination', $request->query('destination')) : $results;
+        $results = $request->query('title') ? $results->where('title', $request->query('title')) : $results;
+        $results = $request->query('trip_type') ? $results->where('trip_type', $request->query('trip_type')) : $results;
+        $results = $request->query('selling_type') ? $results->where('selling_type', $request->query('selling_type')) : $results;
+        $results = $request->query('staying_nights') ? $results->where('staying_nights', $request->query('staying_nights')) : $results;
+        $results = $request->query('transportation_type') ? $results->where('transportation_type', $request->query('transportation_type')) : $results;
+        $results = $request->query('start') ? $results->where('start', $request->query('start')) : $results;
+        $results = $request->query('end') ? $results->where('end', $request->query('end')) : $results;
+        return TourResource::collection($results->paginate(10));
+    }
+
+    /**
+     * Get all the tours that belong to the agencies of admin.
+     */
+    public function adminMyTours(Request $request)
+    {
+        return Tour::where('status', 'active')
+            ->join('agency_infos', function (JoinClause $join) use ($request) {
+                $join->on('tours.agency_id', '=', 'agency_infos.id')
+                    ->where('agency_infos.admin_id', '=', $request->user()->id);
+            })
+            ->paginate(10);
+    }
+
+    /**
+     * It returns all the pending tours of agencies of the admin.
+     */
+    public function adminPendingTours(Request $request)
+    {
+        return Tour::where('status', 'pending')
+            ->join('agency_infos', function (JoinClause $join) use ($request) {
+                $join->on('tours.agency_id', '=', 'agency_infos.id')
+                    ->where('agency_infos.admin_id', '=', $request->user()->id);
+            })
+            ->paginate(10);
+    }
+
+    /**
+     * It approves a tour and activates it.
+     */
+    public function approve(Request $request, $id)
+    {
+        if (!$tour = Tour::find($id)) {
+            return response(['message' => __('exceptions.tour-not-found')], 404);
+        }
+        try {
+            Gate::authorize('isTourAdmin', $tour);
+        } catch (AuthorizationException $exception) {
+            return response(['message' => $exception->getMessage()], 403);
+        }
+
+        $tour->status = TourStatus::Active;
+        $tour->save();
+
+        return response()->noContent();
+    }
+
+    /**
+     * It creates a new rejection model with the given message and rejects the tour.
+     */
+    public function reject(Request $request, $id)
+    {
+        if (!$tour = Tour::find($id)) {
+            return response(['message' => __('exceptions.tour-not-found')], 404);
+        }
+        try {
+            Gate::authorize('isTourAdmin', $tour);
+        } catch (AuthorizationException $exception) {
+            return response(['message' => $exception->getMessage()], 403);
+        }
+        $request->validate(['message' => ['nullable', 'string']]);
+
+        if ($request->message !== null) {
+            Rejection::create([
+                'tour_id' => $tour->id,
+                'message' => $request->message,
+            ]);
+        }
+        $tour->status = TourStatus::Rejected;
+        $tour->save();
+
         return response()->noContent();
     }
 }
