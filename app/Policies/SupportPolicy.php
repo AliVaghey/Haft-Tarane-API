@@ -25,6 +25,9 @@ class SupportPolicy
     {
         return $user->supports->filter(function ($sup) use ($support) {
             return $sup->name == $support->name;
+        })->isEmpty()
+        || $user->supports->filter(function ($sup) use ($support) {
+            return $sup->phone == $support->phone;
         })->isEmpty() ?
             Response::allow() :
             Response::deny(__('exceptions.repeated-support'));
