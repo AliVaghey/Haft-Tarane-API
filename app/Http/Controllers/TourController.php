@@ -304,12 +304,12 @@ class TourController extends Controller
      */
     public function adminPendingTours(Request $request)
     {
-        return Tour::where('status', 'pending')
+        return TourResource::collection(Tour::where('status', 'pending')
             ->join('agency_infos', function (JoinClause $join) use ($request) {
                 $join->on('tours.agency_id', '=', 'agency_infos.id')
                     ->where('agency_infos.admin_id', '=', $request->user()->id);
-            })
-            ->paginate(10);
+            })->select('tours.*')
+            ->paginate(10));
     }
 
     /**
