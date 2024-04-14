@@ -290,12 +290,13 @@ class TourController extends Controller
      */
     public function adminMyTours(Request $request)
     {
-        return Tour::where('status', 'active')
+        return TourResource::collection(Tour::where('status', 'active')
             ->join('agency_infos', function (JoinClause $join) use ($request) {
                 $join->on('tours.agency_id', '=', 'agency_infos.id')
                     ->where('agency_infos.admin_id', '=', $request->user()->id);
             })
-            ->paginate(10);
+            ->select('tours.*')
+            ->paginate(10));
     }
 
     /**
