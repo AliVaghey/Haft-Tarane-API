@@ -3,10 +3,9 @@
 namespace Database\Seeders;
 
 use App\Enums\UserAccessType;
-use App\Http\Controllers\AgencyInfoController;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\AgencyInfo;
 
 class UserSeeder extends Seeder
 {
@@ -27,7 +26,10 @@ class UserSeeder extends Seeder
         $i = 0;
         foreach ($admins as $admin) {
             for ($j = 0; $j < 3; $j++, $i++) {
-                AgencyInfoController::makeModel($agencies[$i], $admin);
+                AgencyInfo::factory()->create([
+                    'user_id' => $agencies[$i]->id,
+                    'admin_id' => $admin->id,
+                ]);
             }
         }
 
