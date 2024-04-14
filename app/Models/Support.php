@@ -16,8 +16,9 @@ class Support extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'agency_id',
         'name',
+        'phone',
+        'agency_id',
     ];
 
     /**

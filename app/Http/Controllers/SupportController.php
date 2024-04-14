@@ -16,12 +16,14 @@ class SupportController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
+            'phone' => ['required', 'string', 'max:255'],
         ]);
         $agency = $request->user();
 
         $support = Support::make([
             'agency_id' => $agency->id,
             'name' => $request->name,
+            'phone' => $request->phone,
         ]);
 
         try {
@@ -39,10 +41,9 @@ class SupportController extends Controller
      */
     public function getAll(Request $request)
     {
-        $agency = $request->user();
         return $request->query('name') ?
-            $agency->supports()->where('name', $request->query('name'))->get() :
-            $agency->supports;
+            $request->user()->supports()->where('name', $request->query('name'))->get() :
+            $request->user()->supports;
     }
 
     /**
@@ -52,12 +53,16 @@ class SupportController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
+            'phone' => ['required', 'string', 'max:255'],
         ]);
         if (!$support = Support::find($id)) {
             return response(['message' => __('exceptions.support-not-found')], 404);
         }
 
-        $support->fill(['name' => $request->name]);
+        $support->fill([
+            'name' => $request->name,
+            'phone' => $request->phone,
+        ]);
 
         try {
             Gate::authorize('isRepeated', $support);

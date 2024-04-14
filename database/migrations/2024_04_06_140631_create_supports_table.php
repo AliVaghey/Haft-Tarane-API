@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('agency_id');
             $table->string('name');
+            $table->string('phone')->nullable();
             $table->timestamps();
         });
     }
