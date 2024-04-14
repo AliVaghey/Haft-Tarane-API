@@ -358,4 +358,36 @@ class TourController extends Controller
 
         return response()->noContent();
     }
+
+    /**
+     * It returns all the rejection messages.
+     */
+    public function getMessages(Request $request, $id)
+    {
+        if (!$tour = Tour::find($id)) {
+            return response(['message' => __('exceptions.tour-not-found')], 404);
+        }
+        try {
+            Gate::authorize('isTourOwner', $tour);
+        } catch (AuthorizationException $exception) {
+            return response(['message' => $exception->getMessage()], 403);
+        }
+
+        return $tour->rejections ?
+            $tour->rejections->map(function ($reject) {
+                return ['id' => $reject->id, 'message' => $reject->message];
+            }) : [];
+    }
+
+    /**
+     * Get all the tours associated with the agency.
+     */
+    public function getTours(Request $request)
+    {
+        $results = $request->user()->agencyInfo->tours();
+        $request->query('type') ? $results->where('status', $request->query('type')) : true;
+        return TourResource::collection($results->paginate(10));
+    }
+
+
 }

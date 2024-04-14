@@ -22,6 +22,8 @@ Route::middleware(['auth:sanctum', 'isAgency'])->prefix('agency/')->group(functi
     Route::delete('tour/{id}/hotel', [TourController::class, 'unlinkHotel']);
     Route::post('tour/{id}/date', [TourController::class, 'addDateAndPending']);
     Route::put('tour/{id}/draft', [TourController::class, 'setToDraft']);
+    Route::get('tour/{id}/messages', [TourController::class, 'getMessages']);
+    Route::get('tours', [TourController::class, 'getTours']);
 
     //------------------------- Support Team -------------------------
     Route::post('support', [SupportController::class, 'new']);
