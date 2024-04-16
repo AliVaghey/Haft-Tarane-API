@@ -5,6 +5,7 @@ use App\Http\Controllers\AgencyInfoController;
 use App\Http\Controllers\TourController;
 use App\Http\Controllers\SupportController;
 use App\Http\Controllers\HotelController;
+use App\Http\Controllers\CostsController;
 
 Route::middleware(['auth:sanctum', 'isAgency'])->prefix('agency/')->group(function () {
 
@@ -24,6 +25,8 @@ Route::middleware(['auth:sanctum', 'isAgency'])->prefix('agency/')->group(functi
     Route::put('tour/{id}/draft', [TourController::class, 'setToDraft']);
     Route::get('tour/{id}/messages', [TourController::class, 'getMessages']);
     Route::get('tours', [TourController::class, 'getTours']);
+    Route::post('tour/{tour_id}/cost/{hotel_id}', [CostsController::class, 'addCost']);
+    Route::delete('tour/cost/{id}', [CostsController::class, 'deleteCost']);
 
     //------------------------- Support Team -------------------------
     Route::post('support', [SupportController::class, 'new']);

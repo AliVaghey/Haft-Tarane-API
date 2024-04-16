@@ -17,4 +17,5 @@ return [
     'hotel-exists' => "This hotel is already selected.",
     'hotel-not-selected' => 'This hotel is not selected.',
     'date-invalid' => "Starting time can not be after the end time.",
+    'cost-not-found' => "The cost is not found.",
 ];
