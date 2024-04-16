@@ -79,4 +79,12 @@ class Tour extends Model
     {
         return $this->hasMany(Rejection::class, 'tour_id');
     }
+
+    /**
+     * Get all the date models.
+     */
+    public function dates(): HasMany
+    {
+        return $this->hasMany(Date::class, 'tour_id');
+    }
 }

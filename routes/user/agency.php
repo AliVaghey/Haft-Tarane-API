@@ -28,6 +28,7 @@ Route::middleware(['auth:sanctum', 'isAgency'])->prefix('agency/')->group(functi
     Route::post('tour/{tour_id}/cost/{hotel_id}', [CostsController::class, 'addCost']);
     Route::delete('tour/cost/{id}', [CostsController::class, 'deleteCost']);
 
+
     //------------------------- Support Team -------------------------
     Route::post('support', [SupportController::class, 'new']);
     Route::get('supports', [SupportController::class, 'getAll']);
