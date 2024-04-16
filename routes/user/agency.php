@@ -6,6 +6,7 @@ use App\Http\Controllers\TourController;
 use App\Http\Controllers\SupportController;
 use App\Http\Controllers\HotelController;
 use App\Http\Controllers\CostsController;
+use App\Http\Controllers\DateController;
 
 Route::middleware(['auth:sanctum', 'isAgency'])->prefix('agency/')->group(function () {
 
@@ -21,13 +22,14 @@ Route::middleware(['auth:sanctum', 'isAgency'])->prefix('agency/')->group(functi
     Route::post('tour/certificates', [TourController::class, 'updateCertificate']);
     Route::post('tour/{id}/hotel', [TourController::class, 'linkHotel']);
     Route::delete('tour/{id}/hotel', [TourController::class, 'unlinkHotel']);
-    Route::post('tour/{id}/date', [TourController::class, 'addDateAndPending']);
+    Route::put('tour/{id}/pending', [TourController::class, 'setPending']);
     Route::put('tour/{id}/draft', [TourController::class, 'setToDraft']);
     Route::get('tour/{id}/messages', [TourController::class, 'getMessages']);
     Route::get('tours', [TourController::class, 'getTours']);
     Route::post('tour/{tour_id}/cost/{hotel_id}', [CostsController::class, 'addCost']);
     Route::delete('tour/cost/{id}', [CostsController::class, 'deleteCost']);
-
+    Route::post('tour/{id}/date', [DateController::class, 'addDate']);
+    Route::delete('tour/date/{id}', [DateController::class, 'deleteDate']);
 
     //------------------------- Support Team -------------------------
     Route::post('support', [SupportController::class, 'new']);
