@@ -2,8 +2,10 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Hotel;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Collection;
 
 class TourResource extends JsonResource
 {
@@ -32,15 +34,74 @@ class TourResource extends JsonResource
             'staying_nights' => $this->staying_nights,
             'transportation_type' => $this->transportation_type,
             'status' => $this->status,
-            'hotels' => $this->hotels,
+            'hotels' => $this->filterHotels(),
+            'costs' => $this->filterCosts(),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'certificate' => $this->when($certificate, [
+            'certificate' => [
                 'free_services' => $certificate ? $certificate->free_services : null,
                 'certificates' => $certificate ? $certificate->certificates : null,
                 'descriptions' => $certificate ? $certificate->descriptions : null,
                 'cancel_rules' => $certificate ? $certificate->cancel_rules : null,
-            ]),
+            ],
+            'dates' => $this->dates->map(function ($date) {
+                return [
+                    'id' => $date->id,
+                    'start' => $date->start,
+                    'end' => $date->end,
+                ];
+            })
         ];
+    }
+
+    /**
+     * It returns a filtered collection of hotels.
+     *
+     * @return Collection
+     */
+    private function filterHotels()
+    {
+        $hotels = collect();
+        foreach ($this->hotels as $hotel) {
+            if ($h = Hotel::find($hotel)) {
+                $hotels->push([
+                    'id' => $h->id,
+                    'name' => $h->name,
+                ]);
+            }
+        }
+        return $hotels;
+    }
+
+    /**
+     * It returns a collection of filtered costs.
+     *
+     * @return Collection
+     */
+    private function filterCosts()
+    {
+        $costs = collect();
+        foreach ($this->costs as $cost) {
+            $c = [
+                'id' => $cost->id,
+                'room_type' => $cost->room_type,
+                'one_bed' => $cost->one_bed,
+                'two_bed' => $cost->two_bed,
+                'plus_one' => $cost->plus_one,
+                'cld_6' => $cost->cld_6,
+                'cld_2' => $cost->cld_2,
+                'baby' => $cost->baby,
+            ];
+            if ($hotel = Hotel::find($cost->hotel_id)) {
+                $c['hotel'] = [
+                    'id' => $hotel->id,
+                    'name' => $hotel->name,
+                ];
+            } else {
+                $c['hotel'] = null;
+            }
+            $costs->push($c);
+        }
+        return $costs;
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\TourStatus;
+use App\Http\Resources\TourListResource;
 use App\Http\Resources\TourResource;
 use App\Models\certificate;
 use App\Models\Rejection;
@@ -69,11 +70,6 @@ class TourController extends Controller
     {
         if (!$tour = Tour::find($id)) {
             return response(['message' => __('exceptions.tour-not-found')], 404);
-        }
-        try {
-            Gate::authorize('isTourOwner', $tour);
-        } catch (AuthorizationException $exception) {
-            return response(['message' => $exception->getMessage()], 403);
         }
         return new TourResource($tour);
     }
@@ -230,27 +226,13 @@ class TourController extends Controller
     /**
      * It adds date to a tour and puts it in pending status.
      */
-    public function addDateAndPending(Request $request, $id)
+    public function setPending(Request $request, $id)
     {
-        $request->validate([
-            'start' => ['required', 'date'],
-            'end' => ['required', 'date'],
-        ]);
         if (!$tour = Tour::find($id)) {
             return response(['message' => __('exceptions.tour-not-found')], 404);
         }
 
-        $start = new Carbon($request->start);
-        $end = new Carbon($request->end);
-        if ($end <= $start) {
-            return response(['message' => __('exceptions.date-invalid')], 403);
-        }
-
-        $tour->fill([
-            'start' => $start->format('Y-m-d'),
-            'end' => $end->format('Y-m-d'),
-            'status' => TourStatus::Pending,
-        ])->save();
+        $tour->fill(['status' => TourStatus::Pending,])->save();
 
         return response()->noContent();
     }
@@ -282,7 +264,7 @@ class TourController extends Controller
         $results = $request->query('transportation_type') ? $results->where('transportation_type', $request->query('transportation_type')) : $results;
         $results = $request->query('start') ? $results->where('start', $request->query('start')) : $results;
         $results = $request->query('end') ? $results->where('end', $request->query('end')) : $results;
-        return TourResource::collection($results->paginate(10));
+        return TourListResource::collection($results->paginate(10));
     }
 
     /**
@@ -290,7 +272,7 @@ class TourController extends Controller
      */
     public function adminMyTours(Request $request)
     {
-        return TourResource::collection(Tour::where('status', 'active')
+        return TourListResource::collection(Tour::where('status', 'active')
             ->join('agency_infos', function (JoinClause $join) use ($request) {
                 $join->on('tours.agency_id', '=', 'agency_infos.id')
                     ->where('agency_infos.admin_id', '=', $request->user()->id);
@@ -304,7 +286,7 @@ class TourController extends Controller
      */
     public function adminPendingTours(Request $request)
     {
-        return TourResource::collection(Tour::where('status', 'pending')
+        return TourListResource::collection(Tour::where('status', 'pending')
             ->join('agency_infos', function (JoinClause $join) use ($request) {
                 $join->on('tours.agency_id', '=', 'agency_infos.id')
                     ->where('agency_infos.admin_id', '=', $request->user()->id);
@@ -385,9 +367,7 @@ class TourController extends Controller
     public function getTours(Request $request)
     {
         $results = $request->user()->agencyInfo->tours();
-        $request->query('type') ? $results->where('status', $request->query('type')) : true;
-        return TourResource::collection($results->paginate(10));
+        $request->query('type') ? $results->where('status', $request->query('type')) : null;
+        return TourListResource::collection($results->paginate(10));
     }
-
-
 }
