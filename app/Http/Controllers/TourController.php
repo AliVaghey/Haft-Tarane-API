@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\TourStatus;
+use App\Http\Resources\TourListResource;
 use App\Http\Resources\TourResource;
 use App\Models\certificate;
 use App\Models\Rejection;
@@ -268,7 +269,7 @@ class TourController extends Controller
         $results = $request->query('transportation_type') ? $results->where('transportation_type', $request->query('transportation_type')) : $results;
         $results = $request->query('start') ? $results->where('start', $request->query('start')) : $results;
         $results = $request->query('end') ? $results->where('end', $request->query('end')) : $results;
-        return TourResource::collection($results->paginate(10));
+        return TourListResource::collection($results->paginate(10));
     }
 
     /**
@@ -276,7 +277,7 @@ class TourController extends Controller
      */
     public function adminMyTours(Request $request)
     {
-        return TourResource::collection(Tour::where('status', 'active')
+        return TourListResource::collection(Tour::where('status', 'active')
             ->join('agency_infos', function (JoinClause $join) use ($request) {
                 $join->on('tours.agency_id', '=', 'agency_infos.id')
                     ->where('agency_infos.admin_id', '=', $request->user()->id);
@@ -290,7 +291,7 @@ class TourController extends Controller
      */
     public function adminPendingTours(Request $request)
     {
-        return TourResource::collection(Tour::where('status', 'pending')
+        return TourListResource::collection(Tour::where('status', 'pending')
             ->join('agency_infos', function (JoinClause $join) use ($request) {
                 $join->on('tours.agency_id', '=', 'agency_infos.id')
                     ->where('agency_infos.admin_id', '=', $request->user()->id);
@@ -371,8 +372,8 @@ class TourController extends Controller
     public function getTours(Request $request)
     {
         $results = $request->user()->agencyInfo->tours();
-        $request->query('type') ? $results->where('status', $request->query('type')) : true;
-        return TourResource::collection($results->paginate(10));
+        $request->query('type') ? $results->where('status', $request->query('type')) : null;
+        return TourListResource::collection($results->paginate(10));
     }
 
 
