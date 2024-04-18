@@ -34,6 +34,11 @@ class DateController extends Controller
         if ($end <= $start) {
             return response(['message' => __('exceptions.date-invalid')], 403);
         }
+        foreach ($tour->dates as $date) {
+            if ($date->start == $request['start'] && $date->end == $request['end']) {
+                return response(['message' => __('exceptions.date-exists')], 403);
+            }
+        }
 
         $date = Date::create([
             'tour_id' => $tour->id,
@@ -41,7 +46,7 @@ class DateController extends Controller
             'end' => $end->format('Y-m-d'),
         ]);
 
-        return response($date->toJson(), 201);
+        return response($date->toArray(), 201);
     }
 
     /**
