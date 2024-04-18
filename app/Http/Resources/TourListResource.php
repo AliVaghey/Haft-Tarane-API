@@ -24,6 +24,7 @@ class TourListResource extends JsonResource
             'origin' => $this->origin,
             'destination' => $this->destination,
             'min_cost' => $min_cost,
+            'status' => $this->status,
         ];
     }
 }

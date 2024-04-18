@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Hotel;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -15,6 +16,15 @@ class TourResource extends JsonResource
     public function toArray(Request $request): array
     {
         $certificate = $this->certificate;
+        $hotels = collect();
+        foreach ($this->hotels as $hotel) {
+            if ($h = Hotel::find($hotel)) {
+                $hotels->push([
+                    'id' => $h->id,
+                    'name' => $h->name,
+                ]);
+            }
+        }
         return [
             'id' => $this->id,
             'agency_name' => $this->agency->name,
@@ -32,7 +42,8 @@ class TourResource extends JsonResource
             'staying_nights' => $this->staying_nights,
             'transportation_type' => $this->transportation_type,
             'status' => $this->status,
-            'hotels' => $this->hotels,
+            'hotels' => $hotels,
+            'costs' => $this->costs,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'certificate' => $this->when($certificate, [
