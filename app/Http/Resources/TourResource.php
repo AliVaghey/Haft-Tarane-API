@@ -46,12 +46,12 @@ class TourResource extends JsonResource
             'costs' => $this->costs,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'certificate' => $this->when($certificate, [
+            'certificate' => [
                 'free_services' => $certificate ? $certificate->free_services : null,
                 'certificates' => $certificate ? $certificate->certificates : null,
                 'descriptions' => $certificate ? $certificate->descriptions : null,
                 'cancel_rules' => $certificate ? $certificate->cancel_rules : null,
-            ]),
+            ],
         ];
     }
 }
