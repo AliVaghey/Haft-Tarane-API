@@ -71,11 +71,6 @@ class TourController extends Controller
         if (!$tour = Tour::find($id)) {
             return response(['message' => __('exceptions.tour-not-found')], 404);
         }
-        try {
-            Gate::authorize('isTourOwner', $tour);
-        } catch (AuthorizationException $exception) {
-            return response(['message' => $exception->getMessage()], 403);
-        }
         return new TourResource($tour);
     }
 
@@ -375,6 +370,4 @@ class TourController extends Controller
         $request->query('type') ? $results->where('status', $request->query('type')) : null;
         return TourListResource::collection($results->paginate(10));
     }
-
-
 }

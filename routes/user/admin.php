@@ -40,6 +40,7 @@ Route::middleware(['auth:sanctum', 'isAdmin'])->prefix('admin/')->group(function
     Route::get('my-agencies', [AgencyInfoController::class, 'getMyAgencies']);
 
     //----------------------- Tour Management ------------------------
+    Route::get('tour/{id}', [TourController::class, 'read']);
     Route::get('active-tours', [TourController::class, 'activeTours']);
     Route::get('my-tours', [TourController::class, 'adminMyTours']);
     Route::get('my-pending-tours', [TourController::class, 'adminPendingTours']);
