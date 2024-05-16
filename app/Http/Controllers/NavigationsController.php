@@ -13,9 +13,9 @@ class NavigationsController extends Controller
     public function redirectPanel(Request $request)
     {
         $path = match ($request->user()->access_type) {
-            UserAccessType::Admin => '/admin-panel',
-            UserAccessType::Agency => '/agency-panel',
-            UserAccessType::User => '/user-panel',
+            UserAccessType::Admin => env('FRONTEND_URL', 'http://localhost:3000') . '/admin-panel',
+            UserAccessType::Agency => env('FRONTEND_URL', 'http://localhost:3000') . '/agency-panel',
+            UserAccessType::User => env('FRONTEND_URL', 'http://localhost:3000') . '/user-panel',
         };
         return redirect($path);
     }
