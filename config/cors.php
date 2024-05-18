@@ -17,7 +17,7 @@ return [
 
     'paths' => ['*'],
 
-    'allowed_methods' => ["delete", "get", "put", "patch", "post"],
+    'allowed_methods' => ['*'],
 
     'allowed_origins' => ['http://localhost:3000'],
 
