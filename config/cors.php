@@ -19,11 +19,11 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => [env('FRONTEND_URL', 'http://localhost:3000'), 'http://localhost'],
+    'allowed_origins' => [env('FRONTEND_URL', 'http://localhost:3000')],
 
     'allowed_origins_patterns' => [],
 
-    'allowed_headers' => ['*', 'X-XSRF-TOKEN', 'x-xsrf-token' , 'x-requested-with'],
+    'allowed_headers' => ['*'],
 
     'exposed_headers' => [],
 
