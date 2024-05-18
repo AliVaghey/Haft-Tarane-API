@@ -23,7 +23,7 @@ return [
 
     'allowed_origins_patterns' => [],
 
-    'allowed_headers' => ['*', 'X-XSRF-TOKEN', 'x-requested-with'],
+    'allowed_headers' => ['*', 'X-XSRF-TOKEN', 'x-xsrf-token' , 'x-requested-with'],
 
     'exposed_headers' => [],
 
