@@ -16,6 +16,7 @@ Route::middleware(['auth:sanctum', 'isAdmin'])->prefix('admin/')->group(function
 
     //----------------------- Place Management -----------------------
     Route::post('city', [PlaceController::class, 'create']);
+    Route::get('city/{city}', [PlaceController::class, 'read']);
     Route::delete('city/{id}', [PlaceController::class, 'deleteCity']);
     Route::get('cities', [PlaceController::class, 'getAllPlaces']);
     Route::put('city/{id}', [PlaceController::class, 'edit']);

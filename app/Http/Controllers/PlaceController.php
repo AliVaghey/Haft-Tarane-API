@@ -34,6 +34,11 @@ class PlaceController extends Controller
         return response()->noContent();
     }
 
+    public function read(Place $city)
+    {
+        return $city;
+    }
+
     /**
      * Get all the places. This function should be public.
      */
