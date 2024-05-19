@@ -14,6 +14,14 @@ use Illuminate\Support\Facades\Storage;
 class HotelController extends Controller
 {
     /**
+     * get one hotel.
+     */
+    public function read(Hotel $hotel)
+    {
+        return new HotelResource($hotel);
+    }
+
+    /**
      * Get all the Hotels.
      */
     public function getAll(Request $request)

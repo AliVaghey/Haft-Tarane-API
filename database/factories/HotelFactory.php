@@ -18,7 +18,7 @@ class HotelFactory extends Factory
     {
         $f = fake();
         return [
-            'name' => $f->building(),
+            'name' => $f->name() . " هتل ",
             'address' => $f->address(),
             'country' => $f->country(),
             'state' => $f->randomElement(['کرمان', 'شیراز', 'اهواز', 'تهران', 'مشهد']),

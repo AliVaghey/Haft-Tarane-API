@@ -31,6 +31,7 @@ Route::middleware(['auth:sanctum', 'isAdmin'])->prefix('admin/')->group(function
     Route::get('hotels', [HotelController::class, 'getAll']);
     Route::get('my-hotels', [HotelController::class, 'myHotels']);
     Route::post('hotel', [HotelController::class, 'create']);
+    Route::get('hotel/{hotel}', [HotelController::class, 'read']);
     Route::put('hotel/{id}', [HotelController::class, 'edit']);
     Route::delete('hotel/{id}', [HotelController::class, 'delete']);
     Route::post('hotel/{id}/photos', [HotelController::class, 'uploadGallery']);
