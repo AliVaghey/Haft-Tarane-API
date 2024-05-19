@@ -38,6 +38,7 @@ Route::middleware(['auth:sanctum', 'isAdmin'])->prefix('admin/')->group(function
     Route::delete('hotel/{hotel_id}/photo/{photo_id}', [HotelController::class, 'deleteFromGallery']);
 
     //---------------------- Agency Management -----------------------
+    Route::get('agency/{user}', [AgencyInfoController::class, 'read']);
     Route::get('agencies', [AgencyInfoController::class, 'getAll']);
     Route::get('my-agencies', [AgencyInfoController::class, 'getMyAgencies']);
 

@@ -87,4 +87,9 @@ class AgencyInfoController extends Controller
             AgencyResource::collection($admin->agencies()->where('name', $request->query('name'))->get()) :
             AgencyResource::collection($admin->agencies()->paginate(10));
     }
+
+    public function read(User $user)
+    {
+        return new AgencyInfoResource($user);
+    }
 }
