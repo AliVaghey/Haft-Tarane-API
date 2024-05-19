@@ -26,6 +26,8 @@ class UserController extends Controller
         }
 
         $users = DB::table('users');
+        $users = $request->query('admin') ? $user->where('access_type', 'admin') : $users;
+        $users = $request->query('agency') ? $user->where('access_type', 'agency') : $users;
         $users = $request->query('username') ? $users->where('username', $request->query('username')) : $users;
         $users = $request->query('phone') ? $users->where('phone', $request->query('phone')) : $users;
 
