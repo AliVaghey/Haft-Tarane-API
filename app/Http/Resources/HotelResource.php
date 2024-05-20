@@ -17,7 +17,7 @@ class HotelResource extends JsonResource
     {
         if ($this->gallery) {
             $gallery = $this->gallery->map(function ($path) {
-                return Storage::url($path);
+                return Storage::disk('public')->url($path);
             });
         }
         return [
