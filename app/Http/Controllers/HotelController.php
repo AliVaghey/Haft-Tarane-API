@@ -132,7 +132,7 @@ class HotelController extends Controller
             'photo_9' => ['nullable', 'mimes:jpg,jpeg,png', 'max:1024'],
         ]);
 
-        $gallery = collect();
+        $gallery = $hotel->gallery ?? collect();
         for ($i = 0; $i < 5; $i++) {
             $name = 'photo_' . $i;
             if ($request->hasFile($name)) {
