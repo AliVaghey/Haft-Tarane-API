@@ -52,7 +52,7 @@ class HotelController extends Controller
             'city' => ['nullable', 'string'],
         ]);
 
-        Hotel::create([
+        $hotel = Hotel::create([
             'admin_id' => $request->user()->id,
             'name' => $request->name,
             'address' => $request->address,
@@ -62,7 +62,7 @@ class HotelController extends Controller
             'gallery' => collect(),
         ]);
 
-        return response()->noContent();
+        return response(new HotelResource($hotel), 201);
     }
 
     /**
