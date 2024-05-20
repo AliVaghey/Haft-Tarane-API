@@ -31,12 +31,14 @@ Route::middleware(['auth:sanctum', 'isAdmin'])->prefix('admin/')->group(function
     Route::get('hotels', [HotelController::class, 'getAll']);
     Route::get('my-hotels', [HotelController::class, 'myHotels']);
     Route::post('hotel', [HotelController::class, 'create']);
+    Route::get('hotel/{hotel}', [HotelController::class, 'read']);
     Route::put('hotel/{id}', [HotelController::class, 'edit']);
     Route::delete('hotel/{id}', [HotelController::class, 'delete']);
     Route::post('hotel/{id}/photos', [HotelController::class, 'uploadGallery']);
     Route::delete('hotel/{hotel_id}/photo/{photo_id}', [HotelController::class, 'deleteFromGallery']);
 
     //---------------------- Agency Management -----------------------
+    Route::get('agency/{user}', [AgencyInfoController::class, 'read']);
     Route::get('agencies', [AgencyInfoController::class, 'getAll']);
     Route::get('my-agencies', [AgencyInfoController::class, 'getMyAgencies']);
 

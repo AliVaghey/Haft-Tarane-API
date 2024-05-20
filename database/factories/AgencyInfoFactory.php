@@ -17,7 +17,7 @@ class AgencyInfoFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->building(),
+            'name' => $this->faker->name() . " آژانس ",
             'address' => $this->faker->address(),
             'c_phone' => $this->faker->phoneNumber(),
             'email' => $this->faker->safeEmail(),

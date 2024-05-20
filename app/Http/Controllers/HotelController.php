@@ -14,16 +14,24 @@ use Illuminate\Support\Facades\Storage;
 class HotelController extends Controller
 {
     /**
+     * get one hotel.
+     */
+    public function read(Hotel $hotel)
+    {
+        return new HotelResource($hotel);
+    }
+
+    /**
      * Get all the Hotels.
      */
     public function getAll(Request $request)
     {
-        $results = Hotel::all();
+        $results = Hotel::where("name", '!=', null);
         $results = $request->query('name') ? $results->where('name', $request->query('name')) : $results;
         $results = $request->query('country') ? $results->where('country', $request->query('country')) : $results;
         $results = $request->query('state') ? $results->where('state', $request->query('state')) : $results;
         $results = $request->query('city') ? $results->where('city', $request->query('city')) : $results;
-        return HotelResource::collection($results);
+        return HotelResource::collection($results->paginate(10));
     }
 
     /**
@@ -31,12 +39,12 @@ class HotelController extends Controller
      */
     public function myHotels(Request $request)
     {
-        $results = $request->user()->hotels;
+        $results = Hotel::where('admin_id', $request->user()->id);
         $results = $request->query('name') ? $results->where('name', $request->query('name')) : $results;
         $results = $request->query('country') ? $results->where('country', $request->query('country')) : $results;
         $results = $request->query('state') ? $results->where('state', $request->query('state')) : $results;
         $results = $request->query('city') ? $results->where('city', $request->query('city')) : $results;
-        return HotelResource::collection($results);
+        return HotelResource::collection($results->paginate(10));
     }
 
     /**
