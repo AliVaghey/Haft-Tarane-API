@@ -70,7 +70,7 @@ class HotelController extends Controller
             'gallery' => collect(),
         ]);
 
-        return response(new HotelResource($hotel), 201);
+        return response($hotel, 201);
     }
 
     /**
