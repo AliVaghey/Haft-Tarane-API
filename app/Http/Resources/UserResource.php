@@ -25,7 +25,7 @@ class UserResource extends JsonResource
             'first_name_en' => $this->first_name_en,
             'last_name_en' => $this->last_name_en,
             'email' => $this->email,
-            'access_type' => $this->when($request->user()->isAdmin(), $this->access_type),
+            'access_type' => $this->access_type,
         ];
     }
 }
