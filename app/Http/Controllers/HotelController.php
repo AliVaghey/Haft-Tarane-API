@@ -180,7 +180,7 @@ class HotelController extends Controller
 
         if ($hotel->gallery) {
             if ($hotel->gallery->has($photo_id)) {
-                Storage::delete($hotel->gallery->get($photo_id));
+                Storage::disk('public')->delete($hotel->gallery->get($photo_id));
                 $hotel->gallery->forget($photo_id);
                 $hotel->save();
             }
