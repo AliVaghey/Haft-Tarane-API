@@ -21,7 +21,6 @@ class HotelResource extends JsonResource
             });
         }
         return [
-            'id' => $this->id,
             'author' => $this->when($request->user()->isAdmin(), $this->admin->username),
             'name' => $this->name,
             'address' => $this->address,

@@ -125,18 +125,19 @@ class HotelController extends Controller
             'photo_1' => ['nullable', 'mimes:jpg,jpeg,png', 'max:1024'],
             'photo_2' => ['nullable', 'mimes:jpg,jpeg,png', 'max:1024'],
             'photo_3' => ['nullable', 'mimes:jpg,jpeg,png', 'max:1024'],
-            'photo_4' => ['nullable', 'mimes:jpg,jpeg,png', 'max:1024'],
+            'photo_5' => ['nullable', 'mimes:jpg,jpeg,png', 'max:1024'],
+            'photo_6' => ['nullable', 'mimes:jpg,jpeg,png', 'max:1024'],
+            'photo_7' => ['nullable', 'mimes:jpg,jpeg,png', 'max:1024'],
+            'photo_8' => ['nullable', 'mimes:jpg,jpeg,png', 'max:1024'],
+            'photo_9' => ['nullable', 'mimes:jpg,jpeg,png', 'max:1024'],
         ]);
 
         $gallery = collect();
         for ($i = 0; $i < 5; $i++) {
             $name = 'photo_' . $i;
             if ($request->hasFile($name)) {
-                $path = $request->$name->store('hotel-images');
-                if ($hotel->gallery && $hotel->gallery->has($i)) {
-                    Storage::delete($hotel->gallery->get($i));
-                }
-                $gallery->put($i, $path);
+                $path = $request->file($name)->store('hotel-images', ['disk' => 'public']);
+                $gallery->push($path);
             }
         }
         $hotel->fill(['gallery' => $gallery])->save();
