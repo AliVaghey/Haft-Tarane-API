@@ -34,7 +34,7 @@ Route::middleware(['auth:sanctum', 'isAgency'])->prefix('agency/')->group(functi
     //------------------------- Support Team -------------------------
     Route::post('support', [SupportController::class, 'new']);
     Route::get('supports', [SupportController::class, 'getAll']);
-    Route::get('supports', [SupportController::class, 'read']);
+    Route::get('supports/{support}', [SupportController::class, 'read']);
     Route::put('support/{id}', [SupportController::class, 'edit']);
     Route::delete('support/{id}', [SupportController::class, 'delete']);
 
