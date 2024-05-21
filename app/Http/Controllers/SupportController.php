@@ -36,6 +36,17 @@ class SupportController extends Controller
         return response()->noContent();
     }
 
+    public function read(Request $request, Support $support)
+    {
+        try {
+            Gate::authorize('isOwner', $support);
+        } catch (AuthorizationException $exception) {
+            return response(['message' => $exception->getMessage()], 403);
+        }
+
+        return $support;
+    }
+
     /**
      * Get all the supports.
      */
