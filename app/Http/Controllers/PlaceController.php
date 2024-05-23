@@ -42,9 +42,12 @@ class PlaceController extends Controller
     /**
      * Get all the places. This function should be public.
      */
-    public function getAllPlaces()
+    public function getAllPlaces(Request $request)
     {
-        return PlaceResource::collection(Place::all());
+        $result = $request->query('name') ?
+            Place::where('name', 'like', '%' . $request->query('name') . '%')->get() :
+            Place::all();
+        return PlaceResource::collection($result);
     }
 
     /**

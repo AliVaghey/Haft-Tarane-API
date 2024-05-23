@@ -127,7 +127,7 @@ class TourController extends Controller
     }
 
     /**
-     * Delete a tour.
+     * Delete a tour. //TODO: remove all dependencies
      */
     public function delete(Request $request, $id)
     {
@@ -202,7 +202,7 @@ class TourController extends Controller
     }
 
     /**
-     * Unlink a hotel from the tour.
+     * Unlink a hotel from the tour. //TODO: delete all costs
      */
     public function unlinkHotel(Request $request, $id)
     {
