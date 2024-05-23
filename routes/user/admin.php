@@ -1,6 +1,7 @@
 <?php
 
 
+use App\Http\Controllers\SpecialTourController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PlaceController;
 use App\Http\Controllers\UserController;
@@ -49,5 +50,12 @@ Route::middleware(['auth:sanctum', 'isAdmin'])->prefix('admin/')->group(function
     Route::get('my-pending-tours', [TourController::class, 'adminPendingTours']);
     Route::post('tour/{id}/approve', [TourController::class, 'approve']);
     Route::post('tour/{id}/reject', [TourController::class, 'reject']);
+
+    //------------------------ Special Tours -------------------------
+    Route::post('tour/{tour}/special', [SpecialTourController::class, 'create']);
+    Route::post('special-tour/{tour}', [SpecialTourController::class, 'edit']);
+    Route::delete('special-tour/{tour}', [SpecialTourController::class, 'delete']);
+    Route::get('special-tours', [SpecialTourController::class, 'getAll']);
+    Route::get('special-tour/{tour}', [SpecialTourController::class, 'read']);
 
 });
