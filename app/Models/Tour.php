@@ -92,4 +92,9 @@ class Tour extends Model
     {
         return $this->hasMany(Costs::class, 'tour_id');
     }
+
+    public function transportations(): HasMany
+    {
+        return $this->hasMany(Transportation::class, 'tour_id');
+    }
 }
