@@ -161,7 +161,7 @@ class TourController extends Controller
             return response(['message' => __('exceptions.tour-not-found')], 404);
         }
         if ($tour->certificate) {
-            $tour->certificate->fill([
+            $tour->certificate->update([
                 'free_services' => collect(json_decode($request->free_services, true)),
                 'certificates' => collect(json_decode($request->certificates, true)),
                 'descriptions' => $request->descriptions,
