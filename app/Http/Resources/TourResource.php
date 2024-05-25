@@ -38,6 +38,7 @@ class TourResource extends JsonResource
             'costs' => $this->filterCosts(),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+            'transportations' => $this->transportations->sortBy("sort"),
             'certificate' => [
                 'free_services' => $certificate ? $certificate->free_services : null,
                 'certificates' => $certificate ? $certificate->certificates : null,

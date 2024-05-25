@@ -12,6 +12,7 @@ class Transportation extends Model
 
     protected $fillable = [
         'tour_id',
+        'sort',
         'type',
         'origin',
         'destination',
