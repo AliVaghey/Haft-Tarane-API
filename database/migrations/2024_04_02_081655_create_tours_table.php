@@ -28,7 +28,6 @@ return new class extends Migration {
             $table->string('transportation_id')->nullable();
             $table->enum('transportation_type', ['none', 'system', 'self'])->default('none');
             $table->enum('status', TourStatus::values())->default(TourStatus::Draft);
-            $table->json('hotels')->nullable();
             $table->timestamps();
         });
     }
