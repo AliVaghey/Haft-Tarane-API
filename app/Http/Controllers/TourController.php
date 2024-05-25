@@ -181,47 +181,47 @@ class TourController extends Controller
     }
 
     /**
-     * Link a hotel to the tour.
+     * Link a hotel to the tour. (Deprecated)
      */
-    public function linkHotel(Request $request, $id)
-    {
-        $request->validate([
-            'hotel_id' => ['required', 'exists:hotels,id'],
-        ]);
-        if (!$tour = Tour::find($id)) {
-            return response(['message' => __('exceptions.tour-not-found')], 404);
-        }
-        if ($tour->hotels->search($request->hotel_id) === false) {
-            $tour->hotels->push($request->hotel_id);
-            $tour->save();
-        } else {
-            return response(['message' => __('exceptions.hotel-exists')], 403);
-        }
-
-        return response()->noContent();
-    }
+//    public function linkHotel(Request $request, $id)
+//    {
+//        $request->validate([
+//            'hotel_id' => ['required', 'exists:hotels,id'],
+//        ]);
+//        if (!$tour = Tour::find($id)) {
+//            return response(['message' => __('exceptions.tour-not-found')], 404);
+//        }
+//        if ($tour->hotels->search($request->hotel_id) === false) {
+//            $tour->hotels->push($request->hotel_id);
+//            $tour->save();
+//        } else {
+//            return response(['message' => __('exceptions.hotel-exists')], 403);
+//        }
+//
+//        return response()->noContent();
+//    }
 
     /**
-     * Unlink a hotel from the tour. //TODO: delete all costs
+     * Unlink a hotel from the tour. (Deprecated)
      */
-    public function unlinkHotel(Request $request, $id)
-    {
-        $request->validate([
-            'hotel_id' => ['required', 'exists:hotels,id'],
-        ]);
-        if (!$tour = Tour::find($id)) {
-            return response(['message' => __('exceptions.tour-not-found')], 404);
-        }
-        $index = $tour->hotels->search($request->hotel_id);
-        if ($index !== false) {
-            $tour->hotels->forget($index);
-            $tour->save();
-        } else {
-            return response(['message' => __('exceptions.hotel-not-selected')], 403);
-        }
-
-        return response()->noContent();
-    }
+//    public function unlinkHotel(Request $request, $id)
+//    {
+//        $request->validate([
+//            'hotel_id' => ['required', 'exists:hotels,id'],
+//        ]);
+//        if (!$tour = Tour::find($id)) {
+//            return response(['message' => __('exceptions.tour-not-found')], 404);
+//        }
+//        $index = $tour->hotels->search($request->hotel_id);
+//        if ($index !== false) {
+//            $tour->hotels->forget($index);
+//            $tour->save();
+//        } else {
+//            return response(['message' => __('exceptions.hotel-not-selected')], 403);
+//        }
+//
+//        return response()->noContent();
+//    }
 
     /**
      * It adds date to a tour and puts it in pending status.

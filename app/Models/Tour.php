@@ -34,10 +34,7 @@ class Tour extends Model
         'destination',
         'staying_nights',
         'transportation_type',
-        'start',
-        'end',
         'status',
-        'hotels',
     ];
 
     /**

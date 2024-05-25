@@ -34,7 +34,7 @@ class TourResource extends JsonResource
             'staying_nights' => $this->staying_nights,
             'transportation_type' => $this->transportation_type,
             'status' => $this->status,
-            'hotels' => $this->filterHotels(),
+//            'hotels' => $this->filterHotels(),
             'costs' => $this->filterCosts(),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
@@ -55,23 +55,23 @@ class TourResource extends JsonResource
     }
 
     /**
-     * It returns a filtered collection of hotels.
+     * It returns a filtered collection of hotels. (DEPRECATED)
      *
      * @return Collection
      */
-    private function filterHotels()
-    {
-        $hotels = collect();
-        foreach ($this->hotels as $hotel) {
-            if ($h = Hotel::find($hotel)) {
-                $hotels->push([
-                    'id' => $h->id,
-                    'name' => $h->name,
-                ]);
-            }
-        }
-        return $hotels;
-    }
+//    private function filterHotels()
+//    {
+//        $hotels = collect();
+//        foreach ($this->hotels as $hotel) {
+//            if ($h = Hotel::find($hotel)) {
+//                $hotels->push([
+//                    'id' => $h->id,
+//                    'name' => $h->name,
+//                ]);
+//            }
+//        }
+//        return $hotels;
+//    }
 
     /**
      * It returns a collection of filtered costs.

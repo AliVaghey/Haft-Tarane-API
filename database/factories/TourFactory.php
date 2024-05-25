@@ -30,9 +30,6 @@ class TourFactory extends Factory
             'destination' => $f->city(),
             'staying_nights' => $f->randomElement([1, 2, 3, 4, 5]),
             'transportation_type' => 'self',
-            'start' => $f->dateTime(),
-            'end' => $f->dateTime(),
-            'hotels' => collect($f->randomElements([1, 2, 3, 4, 5, 6, 7, 8, 9])),
         ];
     }
 }
