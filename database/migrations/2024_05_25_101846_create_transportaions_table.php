@@ -10,8 +10,18 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('transportaions', function (Blueprint $table) {
+        Schema::create('transportations', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('tour_id')->constrained('tours');
+            $table->tinyInteger('sort', false, true)->default(1);
+            $table->string('type');
+            $table->string('origin');
+            $table->string('destination');
+            $table->dateTime('start');
+            $table->dateTime('end');
+            $table->string('duration')->nullable();
+            $table->string('company_name')->nullable();
+            $table->string('transportation_type')->nullable();
             $table->timestamps();
         });
     }
