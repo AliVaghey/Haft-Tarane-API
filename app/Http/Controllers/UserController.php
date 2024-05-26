@@ -91,7 +91,7 @@ class UserController extends Controller
     }
 
     /**
-     * It modifies the access_type of a user by user.
+     * It allows admins to convert a user to agency or reverse.
      */
     public function changeAccess(Request $request, $id)
     {
@@ -104,8 +104,17 @@ class UserController extends Controller
         if (!$user = User::find($id)) {
             return response(['message' => __('exceptions.user-not-found')], 404);
         }
+        if ($user->access_type == UserAccessType::Agency && $user->agencyInfo->admin_id != $admin->id) {
+            return response(['message' => __('exceptions.not-your-agency')], 403);
+        }
 
         $request->validate(['access_type' => ['required', Rule::enum(UserAccessType::class)]]);
+        if ($request->get('access_type') == UserAccessType::Admin->value || $request->get('access_type') == UserAccessType::SuperAdmin->value) {
+            if ($admin->access_type != UserAccessType::SuperAdmin) {
+                return response(['message' => __('exceptions.not-allowed')], 403);
+            }
+        }
+
         $user->fill(['access_type' => $request->access_type])->save();
 
         if ($request->access_type == UserAccessType::Agency->value) {

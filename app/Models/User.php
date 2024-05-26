@@ -66,7 +66,7 @@ class User extends Authenticatable
      */
     public function isAdmin(): bool
     {
-        return $this->access_type == UserAccessType::Admin;
+        return $this->access_type == UserAccessType::Admin || $this->access_type === UserAccessType::SuperAdmin;
     }
 
     /**
@@ -75,7 +75,7 @@ class User extends Authenticatable
      */
     public function isAgency(): bool
     {
-        return $this->access_type === UserAccessType::Agency;
+        return $this->access_type === UserAccessType::Agency || $this->access_type === UserAccessType::SuperAdmin;
     }
 
     /**
