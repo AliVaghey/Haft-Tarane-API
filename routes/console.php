@@ -9,7 +9,7 @@ Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote')->hourly();
 
-Artisan::command('new_admin', function () {
+Artisan::command('make:superadmin', function () {
     $name = $this->ask('Enter your username');
     $phone = $this->ask('Enter your phone');
     $password = $this->secret('Enter your password');
@@ -22,9 +22,9 @@ Artisan::command('new_admin', function () {
     User::create([
         'username' => $name,
         'phone' => $phone,
-        'access_type' => \App\Enums\UserAccessType::Admin,
+        'access_type' => \App\Enums\UserAccessType::SuperAdmin,
         'password' => Hash::make($password),
     ]);
 
-    $this->info("Admin User has been created successfully.");
+    $this->info("Super-Admin has been created successfully.");
 })->purpose('Make new user user.');

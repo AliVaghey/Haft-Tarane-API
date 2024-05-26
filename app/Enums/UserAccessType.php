@@ -9,6 +9,7 @@ enum UserAccessType: string
     case User = 'user';
     case Agency = 'agency';
     case Admin = 'admin';
+    case SuperAdmin = 'superadmin';
 
     public static function values(): array
     {

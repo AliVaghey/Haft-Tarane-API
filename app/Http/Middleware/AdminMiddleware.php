@@ -16,7 +16,7 @@ class AdminMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         if (!$request->user()->isAdmin()) {
-            return redirect('/not-allowed');
+            return response(['message' => __('exceptions.not-admin')], Response::HTTP_FORBIDDEN);
         }
         return $next($request);
     }

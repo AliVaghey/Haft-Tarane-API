@@ -20,4 +20,6 @@ return [
     'cost-not-found' => "The cost is not found.",
     'date-not-found' => "Date is not found.",
     'date-exists' => "This date already exists.",
+    'not-your-agency' => "This agency doesn't belong to you.",
+    'not-allowed' => "You're not allowed to do that.",
 ];
