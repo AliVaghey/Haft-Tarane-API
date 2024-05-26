@@ -14,6 +14,11 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
+        //Super Admin :
+        User::factory(1)->create([
+            'access_type' => UserAccessType::SuperAdmin,
+        ]);
+
         //Admin user :
         $admins = User::factory(3)->create([
             'access_type' => UserAccessType::Admin,
