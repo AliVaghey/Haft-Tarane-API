@@ -27,7 +27,8 @@ class AdsController extends Controller
             'text_color' => ['nullable', 'string'],
         ]);
 
-        $sort = Ads::SortBy('sort')->last()->sort;
+        $sort = Ads::all()->SortBy('sort')->last();
+        $sort = $sort ? $sort->sort : 0;
 
         $ad = Ads::create([
             'sort' => ++$sort,
