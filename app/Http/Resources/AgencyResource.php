@@ -29,6 +29,10 @@ class AgencyResource extends JsonResource
             'agency_email' => $this->email,
             'agency_zip_code' => $this->zip_code,
             'agency_web_site' => $this->web_site,
+            'agency_description' => $this->description,
+            'agency_instagram' => $this->instagram,
+            'agency_telegram' => $this->telegram,
+            'agency_whatsapp' => $this->whatsapp,
         ];
     }
 }

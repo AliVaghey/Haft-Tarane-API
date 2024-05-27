@@ -25,6 +25,10 @@ class AgencyInfo extends Model
         'email',
         'zip_code',
         'web_site',
+        'description',
+        'instagram',
+        'telegram',
+        'whatsapp'
     ];
 
     /**
