@@ -1,6 +1,7 @@
 <?php
 
 
+use App\Http\Controllers\AdsController;
 use App\Http\Controllers\SpecialTourController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PlaceController;
@@ -11,6 +12,14 @@ use App\Http\Controllers\AgencyInfoController;
 use App\Http\Controllers\TourController;
 
 Route::middleware(['auth:sanctum', 'isAdmin'])->prefix('admin/')->group(function () {
+
+    //************************* Super Admin *************************
+    //----------------------------- ads -----------------------------
+    Route::get('ads', [AdsController::class, 'all']);
+    Route::get('ad/{ad}', [AdsController::class, 'read']);
+    Route::post('ad', [AdsController::class, 'create']);
+    Route::put('ad/{ad}', [AdsController::class, 'update']);
+    Route::delete('ad/{ad}', [AdsController::class, 'delete']);
 
     //------------------------- Profile Info -------------------------
     Route::get('info', [RegisteredUserController::class, 'getInfo']);
