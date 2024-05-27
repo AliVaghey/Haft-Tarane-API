@@ -30,6 +30,10 @@ class AgencyInfoController extends Controller
             'address' => ['required', 'string', 'max:255'],
             'c_phone' => ['required', 'numeric'],
             'email' => ['nullable', 'email'],
+            'description' => ['nullable', 'string'],
+            'instagram' => ['nullable', 'string'],
+            'telegram' => ['nullable', 'string'],
+            'whatsapp' => ['nullable', 'string'],
             'zip_code' => ['nullable', 'numeric'],
             'web_site' => ['nullable', 'string', 'max:255'],
         ]);
@@ -38,9 +42,17 @@ class AgencyInfoController extends Controller
             'address' => $request->address,
             'c_phone' => $request->c_phone,
             'email' => $request->email,
+            'description' => $request->description,
+            'instagram' => $request->instagram,
+            'telegram' => $request->telegram,
+            'whatsapp' => $request->whatsapp,
             'zip_code' => $request->zip_code,
             'web_site' => $request->web_site,
         ];
+
+        if ($user->isSuperAdmin() && !$user->agencyInfo) {
+            $input['admin_id'] = $user->id;
+        }
 
         if ($info = $user->agencyInfo) {
             $info->fill($input)->save();

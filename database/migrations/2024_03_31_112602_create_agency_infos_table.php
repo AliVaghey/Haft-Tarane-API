@@ -19,6 +19,10 @@ return new class extends Migration
             $table->string('address')->nullable();
             $table->string('c_phone')->nullable();
             $table->string('email')->nullable();
+            $table->string('instagram')->nullable();
+            $table->string('telegram')->nullable();
+            $table->string('whatsapp')->nullable();
+            $table->text('description')->nullable();
             $table->string('zip_code')->nullable();
             $table->string('web_site')->nullable();
             $table->timestamps();
