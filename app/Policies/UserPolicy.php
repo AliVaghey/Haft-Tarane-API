@@ -12,7 +12,7 @@ class UserPolicy
      */
     public function isAdmin(User $user)
     {
-        return $user->isAdmin() ?
+        return $user->isAdmin() || $user->isSuperAdmin() ?
             Response::allow() :
             Response::deny(__('exceptions.not-admin'));
     }
@@ -22,7 +22,7 @@ class UserPolicy
      */
     public function isAgency(User $user)
     {
-        return $user->isAgency() ?
+        return $user->isAgency() || $user->isSuperAdmin() ?
             Response::allow() :
             Response::deny(__('exceptions.not-agency'));
     }

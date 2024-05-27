@@ -13,7 +13,7 @@ class TourPolicy
      */
     public function isTourOwner(User $user, Tour $tour)
     {
-        return $user->agencyInfo->id == $tour->agency_id ?
+        return $user->agencyInfo->id == $tour->agency_id || $user->isSuperAdmin() ?
             Response::allow() :
             Response::deny(__('exceptions.not-own-the-tour'));
     }
@@ -23,7 +23,7 @@ class TourPolicy
      */
     public function isTourAdmin(User $user, Tour $tour)
     {
-        return $user->id == $tour->agency->admin->id ?
+        return $user->id == $tour->agency->admin->id || $user->isSuperAdmin() ?
             Response::allow() :
             Response::deny(__('exceptions.not-own-the-tour'));
     }

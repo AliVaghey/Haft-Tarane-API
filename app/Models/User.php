@@ -60,6 +60,11 @@ class User extends Authenticatable
         ];
     }
 
+    public function isSuperAdmin(): bool
+    {
+        return $this->access_type == UserAccessType::SuperAdmin;
+    }
+
     /**
      * Determines whether the user is user or not.
      * @return bool
