@@ -23,6 +23,9 @@ class SpecialTourController extends Controller
      */
     public function create(Request $request, Tour $tour)
     {
+        if (!$request->user()->isSuperAdmin()) {
+            return response(['message' => __('not-allowed')], 403);
+        }
         $request->validate([
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'importance' => 'nullable|min:0|max:255',
@@ -56,6 +59,9 @@ class SpecialTourController extends Controller
      */
     public function edit(Request $request, SpecialTour $tour)
     {
+        if (!$request->user()->isSuperAdmin()) {
+            return response(['message' => __('not-allowed')], 403);
+        }
         $request->validate([
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'importance' => 'nullable|min:0|max:255',
@@ -80,8 +86,11 @@ class SpecialTourController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function delete(SpecialTour $tour)
+    public function delete(Request $request, SpecialTour $tour)
     {
+        if (!$request->user()->isSuperAdmin()) {
+            return response(['message' => __('not-allowed')], 403);
+        }
         $tour->removePhoto();
         $tour->delete();
         return response()->noContent();
