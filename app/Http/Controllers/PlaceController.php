@@ -45,8 +45,8 @@ class PlaceController extends Controller
     public function getAllPlaces(Request $request)
     {
         $result = $request->query('name') ?
-            Place::where('name', 'like', '%' . $request->query('name') . '%')->get() :
-            Place::all();
+            Place::where('name', 'like', '%' . $request->query('name') . '%')->paginate($request->query('per_page') ?? 10) :
+            Place::paginate($request->query('per_page') ?? 10);
         return PlaceResource::collection($result);
     }
 

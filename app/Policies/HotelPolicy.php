@@ -13,7 +13,7 @@ class HotelPolicy
      */
     public function isOwner(User $user, Hotel $hotel)
     {
-        return $user->id == $hotel->admin_id ?
+        return $user->id == $hotel->admin_id || $user->isSuperAdmin() ?
             Response::allow() :
             Response::deny(__('exceptions.not-own-hotel'));
     }

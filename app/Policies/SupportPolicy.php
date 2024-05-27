@@ -13,7 +13,7 @@ class SupportPolicy
      */
     public function isOwner(User $user, Support $support)
     {
-        return $user->id == $support->agency_id ?
+        return $user->id == $support->agency_id || $user->isSuperAdmin() ?
             Response::allow() :
             Response::deny(__('exceptions.not-own-support'));
     }
