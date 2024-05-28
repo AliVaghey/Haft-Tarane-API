@@ -15,11 +15,11 @@ Route::middleware(['auth:sanctum', 'isAdmin'])->prefix('admin/')->group(function
 
     //************************* Super Admin *************************
     //----------------------------- ads -----------------------------
-    Route::get('ads', [AdsController::class, 'all']);
-    Route::get('ad/{ad}', [AdsController::class, 'read']);
-    Route::post('ad', [AdsController::class, 'create']);
-    Route::put('ad/{ad}', [AdsController::class, 'update']);
-    Route::delete('ad/{ad}', [AdsController::class, 'delete']);
+    Route::get('banners', [AdsController::class, 'all']);
+    Route::get('banner/{ad}', [AdsController::class, 'read']);
+    Route::post('banner', [AdsController::class, 'create']);
+    Route::put('banner/{ad}', [AdsController::class, 'update']);
+    Route::delete('banner/{ad}', [AdsController::class, 'delete']);
 
     //------------------------- Profile Info -------------------------
     Route::get('info', [RegisteredUserController::class, 'getInfo']);
