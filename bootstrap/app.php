@@ -22,7 +22,11 @@ return Application::configure(basePath: dirname(__DIR__))
             \Illuminate\Foundation\Http\Middleware\TrimStrings::class,
             \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         ]);
-        
+
+        $middleware->validateCsrfTokens(except: [
+            env('APP_URL') . '/*'
+        ]);
+
         $middleware->api(prepend: [
             \App\Http\Middleware\CORSMiddleware::class,
             \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
