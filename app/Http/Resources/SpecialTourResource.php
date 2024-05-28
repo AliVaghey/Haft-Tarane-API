@@ -17,7 +17,14 @@ class SpecialTourResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'tour_id' => $this->tour_id,
+            'tour' => [
+                'id' => $this->tour->id,
+                'title' => $this->tour->title,
+                'agency_name' => $this->tour->agency->name,
+                'origin' => $this->tour->origin,
+                'destination' => $this->tour->destination,
+                'trip_type' => $this->tour->trip_type,
+            ],
             'importance' => $this->importance,
             'advertisement' => $this->advertisement,
             'photo' => Storage::disk('public')->url($this->photo),
