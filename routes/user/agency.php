@@ -35,7 +35,6 @@ Route::middleware(['auth:sanctum', 'isAgency'])->prefix('agency/')->group(functi
     Route::post('tour/{tour}/transportation', [TransportationController::class, 'addTransport']);
     Route::delete('tour/transportation/{transportation}', [TransportationController::class, 'deleteTransport']);
 
-
     //------------------------- Support Team -------------------------
     Route::post('support', [SupportController::class, 'new']);
     Route::get('supports', [SupportController::class, 'getAll']);

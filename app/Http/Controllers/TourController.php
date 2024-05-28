@@ -140,7 +140,38 @@ class TourController extends Controller
             return response(['message' => $exception->getMessage()], 403);
         }
 
+        //removing dependencies :
+        if ($tour->certificate) {
+            $tour->certificate->delete();
+        }
+
+        if ($tour->rejections->isNotEmpty()) {
+            $tour->rejections->each(function ($rejection) {
+                $rejection->delete();
+            });
+        }
+
+        if ($tour->dates->isNotEmpty()) {
+            $tour->dates->each(function ($date) {
+                $date->delete();
+            });
+        }
+
+        if ($tour->costs->isNotEmpty()) {
+            $tour->costs->each(function ($cost) {
+                $cost->delete();
+            });
+        }
+
+        if ($tour->transportations->isNotEmpty()) {
+            $tour->transportation->each(function ($t) {
+                $t->delete();
+            });
+        }
+
+        //removing the primary model :
         $tour->delete();
+
         return response()->noContent();
     }
 
@@ -255,6 +286,10 @@ class TourController extends Controller
     public function activeTours(Request $request)
     {
         $results = Tour::where('status', 'active');
+        if ($request->get('id') !== null) {
+            return TourListResource::collection($results->where('id', $request->get('id'))->get());
+        }
+
         $results = $request->query('origin') ? $results->where('origin', $request->query('origin')) : $results;
         $results = $request->query('destination') ? $results->where('destination', $request->query('destination')) : $results;
         $results = $request->query('title') ? $results->where('title', $request->query('title')) : $results;
@@ -272,13 +307,17 @@ class TourController extends Controller
      */
     public function adminMyTours(Request $request)
     {
-        return TourListResource::collection(Tour::where('status', 'active')
+        $results = Tour::where('status', 'active')
             ->join('agency_infos', function (JoinClause $join) use ($request) {
                 $join->on('tours.agency_id', '=', 'agency_infos.id')
                     ->where('agency_infos.admin_id', '=', $request->user()->id);
             })
-            ->select('tours.*')
-            ->paginate(10));
+            ->select('tours.*');
+        if ($request->query('id') !== null) {
+            $results->where('tours.id', $request->query('id'));
+        }
+
+        return TourListResource::collection($results->paginate(10));
     }
 
     /**
@@ -286,12 +325,17 @@ class TourController extends Controller
      */
     public function adminPendingTours(Request $request)
     {
-        return TourListResource::collection(Tour::where('status', 'pending')
+        $results = Tour::where('status', 'pending')
             ->join('agency_infos', function (JoinClause $join) use ($request) {
                 $join->on('tours.agency_id', '=', 'agency_infos.id')
                     ->where('agency_infos.admin_id', '=', $request->user()->id);
-            })->select('tours.*')
-            ->paginate(10));
+            })->select('tours.*');
+
+        if ($request->query('id') !== null) {
+            $results = $results->where('tours.id', $request->query('id'));
+        }
+
+        return TourListResource::collection($results->paginate(10));
     }
 
     /**
