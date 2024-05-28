@@ -53,6 +53,11 @@ class Tour extends Model
         ];
     }
 
+    public function isActive(): bool
+    {
+        return $this->status == TourStatus::Active;
+    }
+
     /**
      * Get the agencyInfo model.
      */

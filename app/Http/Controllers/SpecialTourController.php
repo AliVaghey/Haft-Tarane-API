@@ -26,6 +26,9 @@ class SpecialTourController extends Controller
         if (!$request->user()->isSuperAdmin()) {
             return response(['message' => __('not-allowed')], 403);
         }
+        if (!$tour->isActive()) {
+            return response(['message' => __('exceptions.not-active')], 403);
+        }
         $request->validate([
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'importance' => 'nullable|min:0|max:255',
@@ -69,7 +72,7 @@ class SpecialTourController extends Controller
 
         if ($request->hasFile('photo')) {
             $photo_path = $request->file('photo')->store('special-tours', ['disk' => 'public']);
-            Storage::disk('public')->delete($tour->photo);
+            Storage::disk('public')->delete($tour->photo ?? '');
         } else {
             $photo_path = $tour->photo;
         }
