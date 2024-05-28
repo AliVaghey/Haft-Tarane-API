@@ -28,3 +28,18 @@ Artisan::command('make:superadmin', function () {
 
     $this->info("Super-Admin has been created successfully.");
 })->purpose('Make new user user.');
+
+Artisan::command('lorem:send', function () {
+
+    ini_set("soap.wsdl_cache_enabled", "0");
+    $sms_client = new SoapClient('http://api.payamak-panel.com/post/send.asmx?wsdl', array('encoding' => 'UTF-8'));
+
+    $parameters['username'] = "avaparvaz";
+    $parameters['password'] = "ec52ddd5-56f7-4026-8c26-edf4afa99d2e";
+    $parameters['to'] = "9399412613";
+    $parameters['from'] = "500010006601918";
+    $parameters['text'] = "تست";
+    $parameters['isflash'] = false;
+
+    echo $sms_client->SendSimpleSMS2($parameters)->SendSimpleSMS2Result;
+});
