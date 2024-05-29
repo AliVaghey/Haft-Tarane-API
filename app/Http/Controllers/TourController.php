@@ -416,22 +416,27 @@ class TourController extends Controller
         return TourListResource::collection($results->paginate(10));
     }
 
-//    public function PublicGetTours(Request $request)
-//    {
-//        $results = Tour::where('status', 'active');
-//        if ($request->query('origin')) { $results->where('origin', $request->query('origin')); }
-//        if ($request->query('destination')) { $results->where('destination', $request->query('destination')); }
-//        $results = $results->get();
-//        foreach ($results as $tour) {
-//            $f = false;
-//            foreach ($tour->dates as $date) {
-//                $start = new Carbon($tour->start);
-//                if ($start->subDays($tour->expiration) > ) {
-//
-//                }
-//            }
-//        }
-//
-//        return TourListResource::collection();
-//    }
+    public function PublicGetTours(Request $request)
+    {
+        $results = Tour::where('status', 'active');
+        if ($request->query('origin')) {
+            $results->where('origin', $request->query('origin'));
+        }
+        if ($request->query('destination')) {
+            $results->where('destination', $request->query('destination'));
+        }
+        $results = $results->get();
+        foreach ($results as $tour) {
+            $f = false;
+            foreach ($tour->dates as $date) {
+                $start = new Carbon($tour->start);
+                if ($start->subDays($tour->expiration) > now()) {
+                    $f = true;
+                    break;
+                }
+            }
+        }
+
+        return TourListResource::collection();
+    }
 }

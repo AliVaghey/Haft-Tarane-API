@@ -26,7 +26,7 @@ return new class extends Migration {
             $table->string('destination');
             $table->integer('staying_nights');
             $table->string('transportation_id')->nullable();
-            $table->enum('transportation_type', ['none', 'system', 'self'])->default('none');
+            $table->string('transportation_type')->default('none');
             $table->enum('status', TourStatus::values())->default(TourStatus::Draft);
             $table->timestamps();
         });
