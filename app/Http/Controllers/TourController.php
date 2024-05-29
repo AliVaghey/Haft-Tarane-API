@@ -421,6 +421,7 @@ class TourController extends Controller
         if ($request->query('all')) {
             return TourListResource::collection(Tour::paginate(10));
         }
+
         $results = Tour::where('status', 'active');
         if ($request->query('origin')) {
             $results->where('origin', $request->query('origin'));
@@ -442,6 +443,29 @@ class TourController extends Controller
                 $results->forget($key);
             }
         }
+        if ($results->query('start')) {
+            foreach ($results as $key => $tour) {
+                $f = false;
+                foreach ($tour->dates as $date) {
+                    $start = new Carbon($date->start);
+                    if ($start == new Carbon ($request->query('start'))) {
+                        $f = true;
+                    }
+                }
+                if (!$f) {
+                    $results->forget($key);
+                }
+            }
+        }
+
         return $results->isNotEmpty() ? TourListResource::collection($results) : [];
+    }
+
+    public function getActiveTour(Tour $tour)
+    {
+        if (!$tour->isActive()) {
+            return response(['message' => __('exceptions.tour-not-active')], 403);
+        }
+        return new TourResource($tour);
     }
 }

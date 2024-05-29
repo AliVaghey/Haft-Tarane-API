@@ -15,3 +15,4 @@ Route::get('cities', [PlaceController::class, 'getAllPlaces']);
 Route::get('panel', [NavigationsController::class, 'redirectPanel'])->middleware(['auth:sanctum'])->name('panel');
 
 Route::get('tours', [TourController::class, 'PublicGetTours']);
+Route::get('tour/{tour}', [TourController::class, 'getActiveTour']);

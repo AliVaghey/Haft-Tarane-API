@@ -23,5 +23,5 @@ return [
     'not-your-agency' => "This agency doesn't belong to you.",
     'not-allowed' => "You're not allowed to do that.",
     'not-active' => "You can only select active tours as special.",
-
+    'tour-not-active' => "This tour is not active.",
 ];
