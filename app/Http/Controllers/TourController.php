@@ -419,7 +419,7 @@ class TourController extends Controller
     public function PublicGetTours(Request $request)
     {
         if ($request->query('all')) {
-            return TourListResource::collection(Tour::paginate(10));
+            return TourListResource::collection(Tour::where('status', 'active')->paginate(10));
         }
 
         $results = Tour::where('status', 'active');
@@ -443,12 +443,13 @@ class TourController extends Controller
                 $results->forget($key);
             }
         }
-        if ($results->query('start')) {
+        if ($request->query('start')) {
+            $input = new Carbon ($request->query('start'));
             foreach ($results as $key => $tour) {
                 $f = false;
                 foreach ($tour->dates as $date) {
                     $start = new Carbon($date->start);
-                    if ($start == new Carbon ($request->query('start'))) {
+                    if ($start == $input && $start->subDays($tour->expiration) > now()) {
                         $f = true;
                     }
                 }
