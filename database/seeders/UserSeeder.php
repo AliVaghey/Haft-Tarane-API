@@ -17,6 +17,13 @@ class UserSeeder extends Seeder
         //Super Admin :
         User::factory(1)->create([
             'access_type' => UserAccessType::SuperAdmin,
+            'username' => "farahani",
+            'first_name_fa' => "حمیدرضا",
+            'first_name_en' => "HamidReza",
+            'last_name_fa' => "فراهانی",
+            'last_name_en' => "Farahani",
+            'phone' => "09100940950",
+            'gender' => "male",
         ]);
 
         //Admin user :
