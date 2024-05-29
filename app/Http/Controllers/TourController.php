@@ -418,6 +418,9 @@ class TourController extends Controller
 
     public function PublicGetTours(Request $request)
     {
+        if ($request->query('all')) {
+            return TourListResource::collection(Tour::paginate(10));
+        }
         $results = Tour::where('status', 'active');
         if ($request->query('origin')) {
             $results->where('origin', $request->query('origin'));
@@ -426,7 +429,7 @@ class TourController extends Controller
             $results->where('destination', $request->query('destination'));
         }
         $results = $results->get();
-        foreach ($results as $tour) {
+        foreach ($results as $key => $tour) {
             $f = false;
             foreach ($tour->dates as $date) {
                 $start = new Carbon($tour->start);
@@ -435,8 +438,10 @@ class TourController extends Controller
                     break;
                 }
             }
+            if (!$f) {
+                $results->forget($key);
+            }
         }
-
-        return TourListResource::collection();
+        return TourListResource::collection($results);
     }
 }
