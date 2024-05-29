@@ -6,6 +6,7 @@ use App\Models\Hotel;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Storage;
 
 class TourResource extends JsonResource
 {
@@ -34,7 +35,6 @@ class TourResource extends JsonResource
             'staying_nights' => $this->staying_nights,
             'transportation_type' => $this->transportation_type,
             'status' => $this->status,
-//            'hotels' => $this->filterHotels(),
             'costs' => $this->filterCosts(),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
@@ -55,11 +55,11 @@ class TourResource extends JsonResource
         ];
     }
 
-    /**
-     * It returns a filtered collection of hotels. (DEPRECATED)
-     *
-     * @return Collection
-     */
+//    /**
+//     * It returns a filtered collection of hotels. (DEPRECATED)
+//     *
+//     * @return Collection
+//     */
 //    private function filterHotels()
 //    {
 //        $hotels = collect();
@@ -97,6 +97,7 @@ class TourResource extends JsonResource
                 $c['hotel'] = [
                     'id' => $hotel->id,
                     'name' => $hotel->name,
+                    'photo' => $hotel->firstPhotoUrl()
                 ];
             } else {
                 $c['hotel'] = null;
