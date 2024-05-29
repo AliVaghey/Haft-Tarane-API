@@ -432,7 +432,7 @@ class TourController extends Controller
         foreach ($results as $key => $tour) {
             $f = false;
             foreach ($tour->dates as $date) {
-                $start = new Carbon($tour->start);
+                $start = new Carbon($date->start);
                 if ($start->subDays($tour->expiration) > now()) {
                     $f = true;
                     break;
