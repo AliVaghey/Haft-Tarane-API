@@ -2,7 +2,7 @@
 
 use App\Helpers\SMS\SMS;
 
-function sms()
+function sms(bool $isflash = false)
 {
-    return new SMS();
+    return new SMS($isflash);
 }
