@@ -31,7 +31,7 @@
             "Database\\Seeders\\": "database/seeders/"
         },
         "files": [
-            "app/Helpers/SMS.php"
+            "app/Helpers/SMS/sms_helper.php"
         ]
     },
     "autoload-dev": {

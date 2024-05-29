@@ -43,3 +43,7 @@ Artisan::command('lorem:send', function () {
 
     echo $sms_client->SendSimpleSMS2($parameters)->SendSimpleSMS2Result;
 });
+
+Artisan::command('lorem:send2', function () {
+    echo sms()->send('9399412613', "hello world\nhello world");
+});
