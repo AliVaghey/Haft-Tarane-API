@@ -23,6 +23,7 @@ Route::middleware(['auth:sanctum', 'isAdmin'])->prefix('admin/')->group(function
 
     //------------------------- Profile Info -------------------------
     Route::get('info', [RegisteredUserController::class, 'getInfo']);
+    Route::put('info', [RegisteredUserController::class, 'updateInfo']);
 
     //----------------------- Place Management -----------------------
     Route::post('city', [PlaceController::class, 'create']);
