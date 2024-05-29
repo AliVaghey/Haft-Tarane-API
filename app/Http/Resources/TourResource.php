@@ -97,6 +97,7 @@ class TourResource extends JsonResource
                 $c['hotel'] = [
                     'id' => $hotel->id,
                     'name' => $hotel->name,
+                    'address' => $hotel->address,
                     'photo' => $hotel->firstPhotoUrl()
                 ];
             } else {
