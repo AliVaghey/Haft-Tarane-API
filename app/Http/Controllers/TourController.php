@@ -412,6 +412,26 @@ class TourController extends Controller
     {
         $results = $request->user()->agencyInfo->tours();
         $request->query('type') ? $results->where('status', $request->query('type')) : null;
+        $request->query('id') ? $results->where('id', $request->query('id')) : null;
         return TourListResource::collection($results->paginate(10));
     }
+
+//    public function PublicGetTours(Request $request)
+//    {
+//        $results = Tour::where('status', 'active');
+//        if ($request->query('origin')) { $results->where('origin', $request->query('origin')); }
+//        if ($request->query('destination')) { $results->where('destination', $request->query('destination')); }
+//        $results = $results->get();
+//        foreach ($results as $tour) {
+//            $f = false;
+//            foreach ($tour->dates as $date) {
+//                $start = new Carbon($tour->start);
+//                if ($start->subDays($tour->expiration) > ) {
+//
+//                }
+//            }
+//        }
+//
+//        return TourListResource::collection();
+//    }
 }
