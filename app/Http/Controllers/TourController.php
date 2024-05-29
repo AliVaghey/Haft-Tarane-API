@@ -442,6 +442,6 @@ class TourController extends Controller
                 $results->forget($key);
             }
         }
-        return TourListResource::collection($results);
+        return $results->isNotEmpty() ? TourListResource::collection($results) : [];
     }
 }
