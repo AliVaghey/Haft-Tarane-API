@@ -25,6 +25,11 @@ class TourListResource extends JsonResource
             'destination' => $this->destination,
             'min_cost' => $min_cost,
             'status' => $this->status,
+            'dates' => $this->dates->map(fn ($date) => [
+                'id' => $date->id,
+                'start' => $date->start,
+                'end' => $date->end,
+            ])
         ];
     }
 }
