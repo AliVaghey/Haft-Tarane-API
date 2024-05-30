@@ -14,6 +14,7 @@ return new class extends Migration {
         Schema::create('tours', function (Blueprint $table) {
             $table->id()->startingValue(1000);
             $table->foreignId('agency_id');
+            $table->foreignId('support_id')->nullable();
             $table->string('title');
             $table->string('trip_type');
             $table->integer('expiration', false, true);

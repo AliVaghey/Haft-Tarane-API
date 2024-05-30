@@ -7,6 +7,7 @@ use App\Http\Resources\TourListResource;
 use App\Http\Resources\TourResource;
 use App\Models\certificate;
 use App\Models\Rejection;
+use App\Models\Support;
 use App\Models\Tour;
 use Carbon\Carbon;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -35,15 +36,21 @@ class TourController extends Controller
             'destination' => ['required', 'exists:places,name'],
             'staying_nights' => ['required', 'numeric'],
             'transportation_type' => ['required', 'string'],
+            'support' => ['required', 'numeric', 'exists:support,id'],
         ]);
         if ($request->midnight_support) {
             if (!$request->evening_support) {
                 return response(['message' => __('exceptions.midnight-support-rule')], 403);
             }
         }
+        $agency_id = $request->user()->agencyInfo->id;
+        $sup = Support::find($request->support);
+        if ($sup->agency_id != $agency_id) {
+            return response(['message' => __('exceptions.not-own-support')], 403);
+        }
 
         $tour = Tour::create([
-            'agency_id' => $request->user()->agencyInfo->id,
+            'agency_id' => $agency_id,
             'title' => $request->title,
             'trip_type' => $request->trip_type,
             'expiration' => $request->expiration,
@@ -58,6 +65,7 @@ class TourController extends Controller
             'transportation_type' => $request->transportation_type,
             'status' => TourStatus::Draft,
             'hotels' => collect(),
+            'support' => $sup->id,
         ]);
 
         return new TourResource($tour);
@@ -91,6 +99,7 @@ class TourController extends Controller
             'destination' => ['required', 'exists:places,name'],
             'staying_nights' => ['required', 'numeric'],
             'transportation_type' => ['required', 'string'],
+            'support' => ['required', 'numeric', 'exists:support,id'],
         ]);
         if ($request->midnight_support) {
             if (!$request->evening_support) {
@@ -108,6 +117,11 @@ class TourController extends Controller
             return response(['message' => $exception->getMessage()], 403);
         }
 
+        $sup = Support::find($request->support);
+        if ($sup->agency_id != $request->user()->agencyInfo->id) {
+            return response(['message' => __('exceptions.not-own-support')], 403);
+        }
+
         $tour->fill([
             'title' => $request->title,
             'trip_type' => $request->trip_type,
@@ -121,6 +135,7 @@ class TourController extends Controller
             'staying_nights' => $request->staying_nights,
             'transportation_type' => $request->transportation_type,
             'status' => TourStatus::Draft,
+            'support' => $sup->id,
         ])->save();
 
         return response()->noContent();
