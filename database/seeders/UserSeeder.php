@@ -24,7 +24,7 @@ class UserSeeder extends Seeder
             'last_name_en' => "Farahani",
             'phone' => "09100940950",
             'gender' => "male",
-        ]);
+        ])->first();
         AgencyInfo::factory(1)->create([
             'user_id' => $superAdmin->id,
             'admin_id' => $superAdmin->id,
