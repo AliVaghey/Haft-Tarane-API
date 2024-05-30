@@ -51,7 +51,8 @@ class TourResource extends JsonResource
                     'start' => $date->start,
                     'end' => $date->end,
                 ];
-            })
+            }),
+            'transportation' => $this->transportation,
         ];
     }
 
