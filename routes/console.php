@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AgencyInfoController;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Hash;
@@ -19,12 +20,13 @@ Artisan::command('make:superadmin', function () {
         $password = $this->secret('Enter your password');
         $confirmation = $this->secret('Please repeat your password');
     }
-    User::create([
+    $superAdmin = User::create([
         'username' => $name,
         'phone' => $phone,
         'access_type' => \App\Enums\UserAccessType::SuperAdmin,
         'password' => Hash::make($password),
     ]);
+    AgencyInfoController::makeModel($superAdmin, $superAdmin);
 
     $this->info("Super-Admin has been created successfully.");
 })->purpose('Make new user user.');

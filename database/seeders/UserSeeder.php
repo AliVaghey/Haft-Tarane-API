@@ -15,7 +15,7 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         //Super Admin :
-        User::factory(1)->create([
+        $superAdmin = User::factory(1)->create([
             'access_type' => UserAccessType::SuperAdmin,
             'username' => "farahani",
             'first_name_fa' => "حمیدرضا",
@@ -24,6 +24,10 @@ class UserSeeder extends Seeder
             'last_name_en' => "Farahani",
             'phone' => "09100940950",
             'gender' => "male",
+        ]);
+        AgencyInfo::factory(1)->create([
+            'user_id' => $superAdmin->id,
+            'admin_id' => $superAdmin->id,
         ]);
 
         //Admin user :
