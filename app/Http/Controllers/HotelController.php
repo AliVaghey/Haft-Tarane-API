@@ -10,6 +10,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 
 class HotelController extends Controller
 {
@@ -88,7 +89,7 @@ class HotelController extends Controller
         }
 
         $request->validate([
-            'name' => ['required', 'string', 'max:255', 'unique:hotels,name'],
+            'name' => ['required', 'string', 'max:255', Rule::unique('hotels', 'name')->ignore($hotel->id)],
             'address' => ['required', 'string'],
             'country' => ['nullable', 'string'],
             'state' => ['nullable', 'string'],
