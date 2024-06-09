@@ -52,6 +52,19 @@ class RegisteredUserController extends Controller
         return new UserResource($request->user());
     }
 
+    public function updatePassword(Request $request)
+    {
+        $request->validate([
+            'current_password' => ['required', 'current_password:web'],
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        ]);
+        $user = Auth::user();
+
+        $user->update([
+            'password' => Hash::make($request->get('password')),
+        ]);
+    }
+
     /**
      * Update the authenticated user info.
      */

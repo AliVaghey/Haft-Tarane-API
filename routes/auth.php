@@ -16,6 +16,9 @@ Route::post('/login', [AuthenticatedSessionController::class, 'store'])
     ->middleware('guest')
     ->name('login');
 
+Route::post('/update-password', [RegisteredUserController::class, 'updatePassword'])
+    ->middleware('auth:sanctum');
+
 // ------------- OTP login -------------
 Route::post('/otp-login/send-otp', [AuthenticatedSessionController::class, 'sendLogin']);
 Route::post('/otp-login/verify-otp', [AuthenticatedSessionController::class, 'verifyLogin']);
