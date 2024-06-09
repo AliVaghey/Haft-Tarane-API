@@ -16,6 +16,10 @@ Route::post('/login', [AuthenticatedSessionController::class, 'store'])
     ->middleware('guest')
     ->name('login');
 
+// ------------- OTP login -------------
+Route::post('/otp-login/send-otp', [AuthenticatedSessionController::class, 'sendLogin']);
+Route::post('/otp-login/verify-otp', [AuthenticatedSessionController::class, 'verifyLogin']);
+
 Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])
     ->middleware('guest')
     ->name('password.email');

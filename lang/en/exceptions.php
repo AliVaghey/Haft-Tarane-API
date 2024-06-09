@@ -24,4 +24,6 @@ return [
     'not-allowed' => "You're not allowed to do that.",
     'not-active' => "You can only select active tours as special.",
     'tour-not-active' => "This tour is not active.",
+    'otp-expired' => "This code has expired.",
+    'sms-went-wrong' => "something went wrong with the sms panel.",
 ];

@@ -34,18 +34,6 @@ class SMS
             'isflash' => $this->isflash
         ])->SendSimpleSMS2Result;
     }
-
-    public function sendByBaseNum($number, $message)
-    {
-        return $this->client->SendByBaseNumber2([
-            'username' => $this->username,
-            'password' => $this->api_key,
-            'to' => $number,
-            'from' => $this->number,
-            'text' => $message,
-            'bodyId' => 123
-        ])->SendByBaseNumber2Result;
-    }
 }
 
 
