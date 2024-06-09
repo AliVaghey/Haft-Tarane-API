@@ -18,6 +18,7 @@ class Transportation extends Model
         'destination',
         'start',
         'end',
+        'price',
         'duration',
         'company_name',
         'transportation_type',

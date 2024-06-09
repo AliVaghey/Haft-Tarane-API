@@ -19,6 +19,7 @@ class TransportationController extends Controller
             'duration' => ['nullable', 'numeric', 'min:0', 'max:255'],
             'company_name' => ['nullable', 'string'],
             'transportation_type' => ['nullable', 'string'],
+            'price' => ['nullable', 'numeric'],
         ]);
 
         $last_t = $tour->transportations->isNotEmpty() ? $tour->transportations->sortBy("sort")->last()->sort : 0;
@@ -30,6 +31,7 @@ class TransportationController extends Controller
             'destination' => $request->get('destination'),
             'start' => $request->get('start'),
             'end' => $request->get('end'),
+            'price' => $request->get('price'),
             'duration' => $request->get('duration'),
             'company_name' => $request->get('company_name'),
             'transportation_type' => $request->get('transportation_type'),

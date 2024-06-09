@@ -47,5 +47,5 @@ Artisan::command('lorem:send', function () {
 });
 
 Artisan::command('lorem:send2', function () {
-    echo sms()->send('9399412613', "hello world\nhello world");
+    echo sms()->send('9046808112', "تست\nلغو 11");
 });

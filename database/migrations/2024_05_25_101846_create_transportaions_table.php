@@ -19,6 +19,7 @@ return new class extends Migration {
             $table->string('destination');
             $table->dateTime('start');
             $table->dateTime('end');
+            $table->string('price');
             $table->string('duration')->nullable();
             $table->string('company_name')->nullable();
             $table->string('transportation_type')->nullable();
