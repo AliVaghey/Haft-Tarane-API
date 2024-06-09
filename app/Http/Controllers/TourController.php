@@ -314,7 +314,7 @@ class TourController extends Controller
         $results = $request->query('transportation_type') ? $results->where('transportation_type', $request->query('transportation_type')) : $results;
         $results = $request->query('start') ? $results->where('start', $request->query('start')) : $results;
         $results = $request->query('end') ? $results->where('end', $request->query('end')) : $results;
-        return TourListResource::collection($results->paginate(10));
+        return TourListResource::collection($results->orderBy('updated_at', 'desc')->paginate(10));
     }
 
     /**
@@ -332,7 +332,7 @@ class TourController extends Controller
             $results->where('tours.id', $request->query('id'));
         }
 
-        return TourListResource::collection($results->paginate(10));
+        return TourListResource::collection($results->orderBy('updated_at', 'desc')->paginate(10));
     }
 
     /**
@@ -350,7 +350,7 @@ class TourController extends Controller
             $results = $results->where('tours.id', $request->query('id'));
         }
 
-        return TourListResource::collection($results->paginate(10));
+        return TourListResource::collection($results->orderBy('updated_at', 'desc')->paginate(10));
     }
 
     /**
@@ -428,7 +428,7 @@ class TourController extends Controller
         $results = $request->user()->agencyInfo->tours();
         $request->query('type') ? $results->where('status', $request->query('type')) : null;
         $request->query('id') ? $results->where('id', $request->query('id')) : null;
-        return TourListResource::collection($results->paginate(10));
+        return TourListResource::collection($results->orderBy('updated_at', 'desc')->paginate(10));
     }
 
     public function PublicGetTours(Request $request)
