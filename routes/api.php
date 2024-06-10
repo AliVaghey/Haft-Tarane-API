@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdsController;
+use App\Http\Controllers\AirportController;
 use App\Http\Controllers\PlaceController;
 use App\Http\Controllers\SpecialTourController;
 use App\Http\Controllers\TourController;
@@ -15,6 +16,7 @@ require __DIR__ . '/user/user.php';
 Route::get('cities', [PlaceController::class, 'getAllPlaces']);
 
 Route::get('panel', [NavigationsController::class, 'redirectPanel'])->middleware(['auth:sanctum'])->name('panel');
+Route::get('airports', [AirportController::class, 'AllAirports']);
 
 Route::get('tours', [TourController::class, 'PublicGetTours']);
 Route::get('tour/{tour}', [TourController::class, 'getActiveTour']);

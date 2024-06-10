@@ -2,6 +2,7 @@
 
 
 use App\Http\Controllers\AdsController;
+use App\Http\Controllers\AirportController;
 use App\Http\Controllers\SpecialTourController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PlaceController;
@@ -15,11 +16,14 @@ Route::middleware(['auth:sanctum', 'isAdmin'])->prefix('admin/')->group(function
 
     //************************* Super Admin *************************
     //----------------------------- ads -----------------------------
-    Route::get('banners', [AdsController::class, 'all']);
-    Route::get('banner/{ad}', [AdsController::class, 'read']);
-    Route::post('banner', [AdsController::class, 'create']);
-    Route::put('banner/{ad}', [AdsController::class, 'update']);
-    Route::delete('banner/{ad}', [AdsController::class, 'delete']);
+    Route::get('banners', [AdsController::class, 'all'])->middleware('superAdmin');
+    Route::get('banner/{ad}', [AdsController::class, 'read'])->middleware('superAdmin');
+    Route::post('banner', [AdsController::class, 'create'])->middleware('superAdmin');
+    Route::put('banner/{ad}', [AdsController::class, 'update'])->middleware('superAdmin');
+    Route::delete('banner/{ad}', [AdsController::class, 'delete'])->middleware('superAdmin');
+
+    //----------------------- Airports service ----------------------
+    Route::get('save-airports', [AirportController::class, 'getAirports'])->middleware('superAdmin');
 
     //------------------------- Profile Info -------------------------
     Route::get('info', [RegisteredUserController::class, 'getInfo']);
