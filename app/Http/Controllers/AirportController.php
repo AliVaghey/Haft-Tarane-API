@@ -12,7 +12,12 @@ class AirportController extends Controller
     public function getAirports()
     {
         DB::table('airports')->delete();
-        air_service()->getAirports();
+        try {
+            air_service()->getAirports();
+        } catch (\Exception $exception) {
+            return response(['message' => $exception->getMessage()], 400);
+        }
+        return response(['message' => "اطلاعات با موفقیت ذخیره شد."]);
     }
 
     public function allAirports()
