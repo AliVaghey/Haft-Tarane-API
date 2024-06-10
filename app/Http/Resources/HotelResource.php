@@ -30,6 +30,7 @@ class HotelResource extends JsonResource
             'city' => $this->city,
             'gallery' => $gallery ?? [],
             'created_at' => $this->created_at,
+            'stars' => $this->stars,
         ];
     }
 }

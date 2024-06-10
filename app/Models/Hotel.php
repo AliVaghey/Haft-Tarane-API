@@ -25,6 +25,7 @@ class Hotel extends Model
         'state',
         'city',
         'gallery',
+        'stars',
     ];
 
     /**

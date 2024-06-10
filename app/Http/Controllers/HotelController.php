@@ -59,6 +59,7 @@ class HotelController extends Controller
             'country' => ['nullable', 'string'],
             'state' => ['nullable', 'string'],
             'city' => ['nullable', 'string'],
+            'stars' => ['nullable', 'numeric', 'max:5', 'min:1'],
         ]);
 
         $hotel = Hotel::create([
@@ -69,6 +70,7 @@ class HotelController extends Controller
             'state' => $request->state,
             'city' => $request->city,
             'gallery' => collect(),
+            'stars' => $request->get('stars', 0)
         ]);
 
         return response($hotel, 201);
@@ -94,6 +96,7 @@ class HotelController extends Controller
             'country' => ['nullable', 'string'],
             'state' => ['nullable', 'string'],
             'city' => ['nullable', 'string'],
+            'stars' => ['nullable', 'numeric', 'max:5', 'min:1'],
         ]);
 
         $hotel->fill([
@@ -102,6 +105,7 @@ class HotelController extends Controller
             'country' => $request->country,
             'state' => $request->state,
             'city' => $request->city,
+            'stars' => $request->get('stars', 0)
         ])->save();
 
         return response()->noContent();
