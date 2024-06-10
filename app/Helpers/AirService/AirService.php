@@ -2,6 +2,7 @@
 
 namespace App\Helpers\AirService;
 
+use App\Models\Airport;
 use App\Models\Config;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
@@ -9,7 +10,7 @@ use Illuminate\Support\Facades\Http;
 class AirService
 {
     private $sessionId;
-    private $loginURL = "https://safartik.ir/api/login";
+    private $URL = "https://safartik.ir/api/";
     private $username;
     private $password;
 
@@ -20,7 +21,7 @@ class AirService
 
         $config =
             Config::where('key', 'air_service_credentials')->first() ??
-            Config::create(['key' => 'air_service_credentials', 'value' => collect(['expiration' => '', 'sessionId' => ''])]);
+            Config::create(['key' => 'air_service_credentials', 'value' => collect(['expiration' => null, 'sessionId' => null])]);
         $exp = new Carbon($config->value->get('expiration'));
         if (now() < $exp) {
             $this->sessionId = $config->value->get('sessionId');
@@ -31,12 +32,44 @@ class AirService
 
     private function login(Config $config)
     {
-        $response = Http::post($this->loginURL, [
+        $response = Http::post($this->URL . 'login', [
             'username' => $this->username,
             'password' => $this->password,
         ]);
         if ($response->successful()) {
+            if ($response->json('Status')) {
+                $this->sessionId = $response->json('Result')['sessionID'];
+                $config->value->put('sessionId', $this->sessionId);
+                $config->value->put('expiration', now()->addhours(5));
+                $config->save();
+            } else {
+                throw new \Exception($response->json('Error')['code'] . ': ' . $response->json('Error')['message']);
+            }
+        } else {
+            throw new \Exception("Something went wrong!");
+        }
+    }
 
+    public function getAirports()
+    {
+        $response = Http::post($this->URL . 'flight/airports', [
+            'sessionID' => $this->sessionId,
+        ]);
+        if ($response->successful()) {
+            if ($response->json('Status')) {
+                $airports = $response->json('Result');
+                foreach ($airports as $airport) {
+                    Airport::create([
+                        'IATA_code' => $airport['IATA_code'],
+                        'name_en' => $airport['name_en'],
+                        'name_fa' => $airport['name_fa'],
+                    ]);
+                }
+            } else {
+                throw new \Exception($response->json('Error')['code'] . ': ' . $response->json('Error')['message']);
+            }
+        } else {
+            throw new \Exception("Something went wrong!");
         }
     }
 }

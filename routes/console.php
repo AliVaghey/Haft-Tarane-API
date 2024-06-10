@@ -33,7 +33,7 @@ Artisan::command('make:superadmin', function () {
 })->purpose('Make new user user.');
 
 Artisan::command('get:airports', function () {
-    AirportController::getAirports();
+    air_service()->getAirports();
 });
 
 Artisan::command('lorem:send2', function () {
