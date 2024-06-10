@@ -35,6 +35,7 @@ class Tour extends Model
         'staying_nights',
         'transportation_type',
         'status',
+        'profit_rate',
     ];
 
     /**

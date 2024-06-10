@@ -278,7 +278,12 @@ class TourController extends Controller
             return response(['message' => __('exceptions.tour-not-found')], 404);
         }
 
-        $tour->fill(['status' => TourStatus::Pending,])->save();
+        $request->validate(['profit_rate' => ['nullable', 'numeric', 'min:0', 'max:100']]);
+
+        $tour->update([
+            'status' => TourStatus::Pending,
+            'profit_rate' => $request->get('profit_rate', 0)
+        ]);
 
         return response()->noContent();
     }
