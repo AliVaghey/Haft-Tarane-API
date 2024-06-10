@@ -3,6 +3,7 @@
 
 use App\Http\Controllers\AdsController;
 use App\Http\Controllers\AirportController;
+use App\Http\Controllers\ProfitRateController;
 use App\Http\Controllers\SpecialTourController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PlaceController;
@@ -24,6 +25,15 @@ Route::middleware(['auth:sanctum', 'isAdmin'])->prefix('admin/')->group(function
 
     //----------------------- Airports service ----------------------
     Route::get('save-airports', [AirportController::class, 'getAirports'])->middleware('superAdmin');
+
+    //-------------------------- Profit Rate ------------------------
+    Route::post('profit-rate', [ProfitRateController::class, 'create'])->middleware('superAdmin');
+    Route::put('profit-rate/{rate}', [ProfitRateController::class, 'edit'])->middleware('superAdmin');
+    Route::delete('profit-rate/{rate}', [ProfitRateController::class, 'delete'])->middleware('superAdmin');
+    Route::get('profit-rates', [ProfitRateController::class, 'all'])->middleware('superAdmin');
+    Route::get('profit-rate/{rate}', [ProfitRateController::class, 'read'])->middleware('superAdmin');
+
+
 
     //------------------------- Profile Info -------------------------
     Route::get('info', [RegisteredUserController::class, 'getInfo']);
