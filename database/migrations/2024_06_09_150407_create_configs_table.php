@@ -13,7 +13,7 @@ return new class extends Migration {
         Schema::create('configs', function (Blueprint $table) {
             $table->id();
             $table->string('key');
-            $table->json('value')->default(collect());
+            $table->json('value')->default(collect([]));
             $table->timestamps();
         });
     }
