@@ -12,6 +12,12 @@ return new class extends Migration {
     {
         Schema::create('tour_reservations', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id');
+            $table->foreignId('tour_id');
+            $table->foreignId('date_id');
+            $table->foreignId('hotel_id');
+            $table->decimal('total_price', 10, 2);
+            $table->json('passengers')->nullable();
             $table->timestamps();
         });
     }
