@@ -23,7 +23,7 @@ class TourListResource extends JsonResource
             'capacity' => $this->capacity,
             'origin' => $this->origin,
             'destination' => $this->destination,
-            'min_cost' => $this->costs->isNotEmpty() ? $this->costs->min('one_bed') : "No Cost",
+            'min_cost' => $this->costs->isNotEmpty() ? $this->minCost() : "No Cost",
             'status' => $this->status,
             'dates' => $this->dates->map(fn ($date) => [
                 'id' => $date->id,
@@ -33,6 +33,13 @@ class TourListResource extends JsonResource
             'costs' => $this->filterCosts(),
             'transportation' => $this->transportation,
         ];
+    }
+
+    public function minCost()
+    {
+        $min = $this->costs->min('one_bed');
+        foreach ($this->trans)
+            return $min;
     }
 
     /**

@@ -29,7 +29,6 @@ Route::middleware(['auth:sanctum', 'isAgency'])->prefix('agency/')->group(functi
     Route::delete('tour/cost/{id}', [CostsController::class, 'deleteCost']);
     Route::post('tour/{id}/date', [DateController::class, 'addDate']);
     Route::delete('tour/date/{id}', [DateController::class, 'deleteDate']);
-
     Route::post('tour/{tour}/transportation', [TransportationController::class, 'addTransport']);
     Route::delete('tour/transportation/{transportation}', [TransportationController::class, 'deleteTransport']);
 
