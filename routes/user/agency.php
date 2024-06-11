@@ -45,6 +45,6 @@ Route::middleware(['auth:sanctum', 'isAgency'])->prefix('agency/')->group(functi
 
 
     //-------------------------- Profit Rates ------------------------
-    Route::get('profit-rates', [ProfitRateController::class, 'all'])->middleware('superAdmin');
-    Route::get('profit-rate/{rate}', [ProfitRateController::class, 'read'])->middleware('superAdmin');
+    Route::get('profit-rates', [ProfitRateController::class, 'all']);
+    Route::get('profit-rate/{rate}', [ProfitRateController::class, 'read']);
 });
