@@ -53,6 +53,7 @@ class TourResource extends JsonResource
                 ];
             }),
             'transportation' => $this->transportation,
+            'profit_rate' => $this->profit_rate
         ];
     }
 
