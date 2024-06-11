@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ProfitRateController;
 use App\Http\Controllers\TransportationController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AgencyInfoController;
@@ -42,4 +43,8 @@ Route::middleware(['auth:sanctum', 'isAgency'])->prefix('agency/')->group(functi
     //---------------------------- Hotels ----------------------------
     Route::get('hotels', [HotelController::class, 'GetAll']);
 
+
+    //-------------------------- Profit Rates ------------------------
+    Route::get('profit-rates', [ProfitRateController::class, 'all'])->middleware('superAdmin');
+    Route::get('profit-rate/{rate}', [ProfitRateController::class, 'read'])->middleware('superAdmin');
 });
