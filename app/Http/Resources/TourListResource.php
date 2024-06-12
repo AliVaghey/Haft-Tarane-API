@@ -48,12 +48,11 @@ class TourListResource extends JsonResource
     /**
      * It returns a collection of filtered costs.
      *
-     * @return Collection
      */
     private function filterCosts()
     {
         $costs = collect();
-        if ($this->costs) {
+        if ($this->costs != null) {
             foreach ($this->costs as $cost) {
                 $c = [
                     'id' => $cost->id,
