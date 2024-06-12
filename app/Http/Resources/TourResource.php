@@ -101,7 +101,7 @@ class TourResource extends JsonResource
                     'name' => $hotel->name,
                     'address' => $hotel->address,
                     'photo' => $hotel->gallery->each(function ($item) {
-                        return Storage::disk('public')->url($item);
+                        return Storage::url($item);
                     })
                 ];
             } else {
