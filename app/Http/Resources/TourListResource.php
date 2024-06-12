@@ -52,30 +52,28 @@ class TourListResource extends JsonResource
     private function filterCosts()
     {
         $costs = collect();
-        if ($this->costs != null) {
-            foreach ($this->costs as $cost) {
-                $c = [
-                    'id' => $cost->id,
-                    'room_type' => $cost->room_type,
-                    'one_bed' => $cost->one_bed,
-                    'two_bed' => $cost->two_bed,
-                    'plus_one' => $cost->plus_one,
-                    'cld_6' => $cost->cld_6,
-                    'cld_2' => $cost->cld_2,
-                    'baby' => $cost->baby,
+        foreach ($this->costs as $cost) {
+            $c = [
+                'id' => $cost->id,
+                'room_type' => $cost->room_type,
+                'one_bed' => $cost->one_bed,
+                'two_bed' => $cost->two_bed,
+                'plus_one' => $cost->plus_one,
+                'cld_6' => $cost->cld_6,
+                'cld_2' => $cost->cld_2,
+                'baby' => $cost->baby,
+            ];
+            if ($hotel = Hotel::find($cost->hotel_id)) {
+                $c['hotel'] = [
+                    'id' => $hotel->id,
+                    'name' => $hotel->name,
+                    'address' => $hotel->address,
+                    'photo' => $hotel->firstPhotoUrl()
                 ];
-                if ($hotel = Hotel::find($cost->hotel_id)) {
-                    $c['hotel'] = [
-                        'id' => $hotel->id,
-                        'name' => $hotel->name,
-                        'address' => $hotel->address,
-                        'photo' => $hotel->firstPhotoUrl()
-                    ];
-                } else {
-                    $c['hotel'] = null;
-                }
-                $costs->push($c);
+            } else {
+                $c['hotel'] = null;
             }
+            $costs->push($c);
         }
         return $costs;
     }
