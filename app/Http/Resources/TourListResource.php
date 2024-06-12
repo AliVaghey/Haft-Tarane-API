@@ -38,7 +38,7 @@ class TourListResource extends JsonResource
     public function minCost()
     {
         $min = $this->costs->min('one_bed');
-        foreach ($this->transportation as $trans) {
+        foreach ($this->transportations as $trans) {
             $min += $trans->price;
         }
 
