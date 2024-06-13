@@ -55,9 +55,10 @@ class SysTransportController extends Controller
 
         if ((bool)$request->get('returning')) {
             $date_model = Date::where('tour_id', $tour->id)->where('start', $request->get('start_date'))->get()->first();
-            $date_model->update([
-                'end' => $request->get('date_flight')
-            ]);
+            if (!$date_model) {
+                return response(['message' => "تاریخ رفت وجود ندارد."], 403);
+            }
+            $date_model->update(['end' => $request->get('date_flight')]);
         } else {
             $date_model = Date::create([
                 'tour_id' => $tour->id,
@@ -78,6 +79,9 @@ class SysTransportController extends Controller
     public function deleteTransport(SysTransport $transportation)
     {
         $date = $transportation->getDate();
+        if (!$transportation->returning && $date->end != null) {
+            return response(['message' => "لطفا ابتدا حمل و نقل برگشت را حذف کنید."], 403);
+        }
         if ($transportation->returning) {
             $date->update([
                 'end' => null
