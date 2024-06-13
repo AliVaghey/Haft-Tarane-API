@@ -38,7 +38,7 @@ class TourResource extends JsonResource
             'costs' => $this->filterCosts(),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'transportations' => $this->transportations->sortBy("sort"),
+            'transportations' => $this->isSysTrans() ? $this->getSysTrans() : $this->transportations->sortBy("sort"),
             'certificate' => [
                 'free_services' => $certificate ? $certificate->free_services : null,
                 'certificates' => $certificate ? $certificate->certificates : null,
@@ -52,7 +52,7 @@ class TourResource extends JsonResource
                     'end' => $date->end,
                 ];
             }),
-            'transportation' => $this->transportation,
+            'profit_rate' => $this->profit_rate
         ];
     }
 
@@ -74,6 +74,13 @@ class TourResource extends JsonResource
 //        }
 //        return $hotels;
 //    }
+
+    public function getSysTrans()
+    {
+        return $this->sysTransport->map(function ($transport) {
+            return ['transportation_id' => $transport->id, 'flight' => $transport->flight];
+        });
+    }
 
     /**
      * It returns a collection of filtered costs.
@@ -99,7 +106,9 @@ class TourResource extends JsonResource
                     'id' => $hotel->id,
                     'name' => $hotel->name,
                     'address' => $hotel->address,
-                    'photo' => $hotel->firstPhotoUrl()
+                    'photo' => $hotel->gallery->map(function ($item) {
+                        return Storage::disk('public')->url($item);
+                    })
                 ];
             } else {
                 $c['hotel'] = null;

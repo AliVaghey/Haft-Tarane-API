@@ -10,10 +10,12 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('configs', function (Blueprint $table) {
+        Schema::create('sys_transports', function (Blueprint $table) {
             $table->id();
-            $table->string('key');
-            $table->json('value')->nullable();
+            $table->foreignId('flight_id')->nullable();
+            $table->foreignId('tour_id');
+            $table->foreignId('date_id')->nullable();
+            $table->boolean('returning')->default(false);
             $table->timestamps();
         });
     }
@@ -23,6 +25,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('configs');
+        Schema::dropIfExists('sys_transports');
     }
 };

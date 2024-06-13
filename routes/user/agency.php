@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ProfitRateController;
+use App\Http\Controllers\SysTransportController;
 use App\Http\Controllers\TransportationController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AgencyInfoController;
@@ -29,9 +31,10 @@ Route::middleware(['auth:sanctum', 'isAgency'])->prefix('agency/')->group(functi
     Route::delete('tour/cost/{id}', [CostsController::class, 'deleteCost']);
     Route::post('tour/{id}/date', [DateController::class, 'addDate']);
     Route::delete('tour/date/{id}', [DateController::class, 'deleteDate']);
-
     Route::post('tour/{tour}/transportation', [TransportationController::class, 'addTransport']);
     Route::delete('tour/transportation/{transportation}', [TransportationController::class, 'deleteTransport']);
+    Route::post('tour/{tour}/sys-transportation', [SysTransportController::class, 'addTransport']);
+    Route::delete('tour/sys-transportation/{transportation}', [SysTransportController::class, 'deleteTransport']);
 
     //------------------------- Support Team -------------------------
     Route::post('support', [SupportController::class, 'new']);
@@ -43,4 +46,8 @@ Route::middleware(['auth:sanctum', 'isAgency'])->prefix('agency/')->group(functi
     //---------------------------- Hotels ----------------------------
     Route::get('hotels', [HotelController::class, 'GetAll']);
 
+
+    //-------------------------- Profit Rates ------------------------
+    Route::get('profit-rates', [ProfitRateController::class, 'all']);
+    Route::get('profit-rate/{rate}', [ProfitRateController::class, 'read']);
 });

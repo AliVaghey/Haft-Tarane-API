@@ -21,6 +21,9 @@ class TransportationController extends Controller
             'transportation_type' => ['nullable', 'string'],
             'price' => ['nullable', 'numeric'],
         ]);
+        if ($tour->transportation_type == "system") {
+            return response(['message' => __('exceptions.sys-transport')], 403);
+        }
 
         $last_t = $tour->transportations->isNotEmpty() ? $tour->transportations->sortBy("sort")->last()->sort : 0;
         $transport = Transportation::create([

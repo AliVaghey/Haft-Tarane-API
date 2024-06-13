@@ -10,11 +10,9 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('configs', function (Blueprint $table) {
-            $table->id();
-            $table->string('key');
-            $table->json('value')->nullable();
-            $table->timestamps();
+        Schema::table('dates', function (Blueprint $table) {
+            $table->date('start')->nullable()->change();
+            $table->date('end')->nullable()->change();
         });
     }
 
@@ -23,6 +21,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('configs');
+        //
     }
 };

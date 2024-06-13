@@ -103,4 +103,14 @@ class Tour extends Model
     {
         return $this->hasMany(Transportation::class, 'tour_id');
     }
+
+    public function sysTransport(): HasMany
+    {
+        return $this->hasMany(SysTransport::class, 'tour_id');
+    }
+
+    public function isSysTrans(): bool
+    {
+        return $this->transportation_type == "system";
+    }
 }
