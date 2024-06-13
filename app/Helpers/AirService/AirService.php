@@ -72,4 +72,24 @@ class AirService
             throw new \Exception("Something went wrong!");
         }
     }
+
+    public function getAvailabeFlights($from, $to, $date)
+    {
+        $response = Http::post($this->URL . 'flight/available', [
+            'sessionID' => $this->sessionId,
+            'from' => $from,
+            'to' => $to,
+            'date' => $date,
+        ]);
+
+        if ($response->successful()) {
+            if ($response->json('Status')) {
+                return $response->json('Result');
+            } else {
+                throw new \Exception($response->json('Error')['code'] . ': ' . $response->json('Error')['message']);
+            }
+        } else {
+            throw new \Exception("Something went wrong!");
+        }
+    }
 }
