@@ -184,6 +184,12 @@ class TourController extends Controller
             });
         }
 
+        if ($tour->sysTransport->isNotEmpty()) {
+            $tour->sysTransport->each(function ($t) {
+                $t->delete();
+            });
+        }
+
         //removing the primary model :
         $tour->delete();
 

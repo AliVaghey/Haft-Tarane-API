@@ -17,6 +17,15 @@ class SysTransport extends Model
         'date_id',
     ];
 
+    public function delete()
+    {
+        if ($flight = FlightInfo::find($this->flight_id)) {
+            $flight->delete();
+        }
+
+        return parent::delete();
+    }
+
     public function flight(): BelongsTo
     {
         return $this->belongsTo(FlightInfo::class, 'flight_id');
