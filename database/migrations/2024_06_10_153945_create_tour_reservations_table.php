@@ -15,9 +15,12 @@ return new class extends Migration {
             $table->foreignId('user_id');
             $table->foreignId('tour_id');
             $table->foreignId('date_id');
+            $table->foreignId('cost_id');
             $table->foreignId('hotel_id');
+            $table->foreignId('agency_id');
             $table->decimal('total_price', 10, 2);
-            $table->json('passengers')->nullable();
+            $table->json('passengers');
+            $table->enum('status', ['pending', 'paid', 'cancelled'])->default('pending');
             $table->timestamps();
         });
     }
