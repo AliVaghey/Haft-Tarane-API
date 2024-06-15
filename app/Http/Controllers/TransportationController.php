@@ -16,7 +16,7 @@ class TransportationController extends Controller
             'destination' => ['required', 'string'],
             'start' => ['required', 'date'],
             'end' => ['required', 'date'],
-            'duration' => ['nullable', 'numeric', 'min:0', 'max:255'],
+            'duration' => ['nullable', 'string'],
             'company_name' => ['nullable', 'string'],
             'transportation_type' => ['nullable', 'string'],
             'price' => ['nullable', 'numeric'],
