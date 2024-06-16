@@ -7,6 +7,7 @@ use App\Http\Resources\TourListResource;
 use App\Http\Resources\TourResource;
 use App\Http\Resources\TourSearchResource;
 use App\Models\certificate;
+use App\Models\Costs;
 use App\Models\Rejection;
 use App\Models\Support;
 use App\Models\Tour;
@@ -446,7 +447,7 @@ class TourController extends Controller
     public function PublicGetTours(Request $request)
     {
         if ($request->query('all')) {
-            return TourListResource::collection(Tour::where('status', 'active')->orderBy("updated_at", 'desc')->paginate(10));
+            return TourSearchResource::collection(Costs::orderBy("updated_at", 'desc')->paginate(10));
         }
 
         $results = Tour::where('status', 'active');
