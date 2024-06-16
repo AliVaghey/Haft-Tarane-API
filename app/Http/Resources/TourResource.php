@@ -27,6 +27,7 @@ class TourResource extends JsonResource
             'expiration' => $this->expiration,
             'selling_type' => $this->selling_type,
             'tour_styles' => $this->tour_styles,
+            'support' => $this->support->name,
             'evening_support' => $this->evening_support,
             'midnight_support' => $this->midnight_support,
             'transportation_id' => $this->transportation_id,

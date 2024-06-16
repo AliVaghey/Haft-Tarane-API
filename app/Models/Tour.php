@@ -22,6 +22,7 @@ class Tour extends Model
     protected $fillable = [
         'agency_id',
         'title',
+        'support_id',
         'trip_type',
         'capacity',
         'expiration',
@@ -112,5 +113,10 @@ class Tour extends Model
     public function isSysTrans(): bool
     {
         return $this->transportation_type == "system";
+    }
+
+    public function support(): BelongsTo
+    {
+        return $this->belongsTo(Support::class, 'support_id');
     }
 }
