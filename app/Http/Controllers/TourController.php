@@ -447,7 +447,7 @@ class TourController extends Controller
     public function PublicGetTours(Request $request)
     {
         if ($request->query('all')) {
-            return TourSearchResource::collection(Costs::orderBy("updated_at", 'desc')->paginate(10));
+            return TourSearchResource::collection(Costs::orderBy("two_bed")->paginate(10));
         }
 
         $results = Tour::where('status', 'active');
@@ -491,7 +491,7 @@ class TourController extends Controller
         })->flatten(1);
 
 
-        return $results->isNotEmpty() ? TourSearchResource::collection($results) : [];
+        return $results->isNotEmpty() ? TourSearchResource::collection($results->orderBy('two_bed')) : [];
     }
 
     public function getActiveTour(Tour $tour)
