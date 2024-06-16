@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\TourStatus;
 use App\Http\Resources\TourListResource;
 use App\Http\Resources\TourResource;
+use App\Http\Resources\TourSearchResource;
 use App\Models\certificate;
 use App\Models\Rejection;
 use App\Models\Support;
@@ -484,8 +485,12 @@ class TourController extends Controller
                 }
             }
         }
+        $results = $results->sortByDesc("updated_at")->map(function ($tour) {
+            return $tour->costs;
+        })->flatten(1);
 
-        return $results->isNotEmpty() ? TourListResource::collection($results->sortByDesc("updated_at")) : [];
+
+        return $results->isNotEmpty() ? TourSearchResource::collection($results) : [];
     }
 
     public function getActiveTour(Tour $tour)
