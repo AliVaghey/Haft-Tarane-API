@@ -439,8 +439,12 @@ class TourController extends Controller
     public function getTours(Request $request)
     {
         $results = $request->user()->agencyInfo->tours();
-        $request->query('type') ? $results->where('status', $request->query('type')) : null;
-        $request->query('id') ? $results->where('id', $request->query('id')) : null;
+        if ($request->query('type')) {
+            $results->where('status', $request->query('type'));
+        }
+        if ($request->query('id')) {
+            $results->where('id', $request->query('id'));
+        }
         return TourListResource::collection($results->orderBy('updated_at', 'desc')->paginate(10));
     }
 
