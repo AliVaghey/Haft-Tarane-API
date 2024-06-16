@@ -67,7 +67,7 @@ class TourController extends Controller
             'transportation_type' => $request->transportation_type,
             'status' => TourStatus::Draft,
             'hotels' => collect(),
-            'support' => $sup->id,
+            'support_id' => $sup->id,
         ]);
 
         return new TourResource($tour);
@@ -137,7 +137,7 @@ class TourController extends Controller
             'staying_nights' => $request->staying_nights,
             'transportation_type' => $request->transportation_type,
             'status' => TourStatus::Draft,
-            'support' => $sup->id,
+            'support_id' => $sup->id,
         ])->save();
 
         return response()->noContent();
