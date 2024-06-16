@@ -120,7 +120,7 @@ class TourController extends Controller
         }
 
         $sup = Support::find($request->support);
-        if ($sup->agency_id != $request->user()->agencyInfo->id) {
+        if ($sup->agency_id != $request->user()->id) {
             return response(['message' => __('exceptions.not-own-support')], 403);
         }
 
