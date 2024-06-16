@@ -45,7 +45,7 @@ class TourController extends Controller
                 return response(['message' => __('exceptions.midnight-support-rule')], 403);
             }
         }
-        $agency_id = $request->user()->agencyInfo->id;
+        $agency_id = $request->user()->id;
         $sup = Support::find($request->support);
         if ($sup->agency_id != $agency_id) {
             return response(['message' => __('exceptions.not-own-support')], 403);
