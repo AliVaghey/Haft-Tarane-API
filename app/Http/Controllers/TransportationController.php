@@ -14,12 +14,9 @@ class TransportationController extends Controller
             'type' => ['required', 'string'],
             'origin' => ['required', 'string'],
             'destination' => ['required', 'string'],
-            'start' => ['required', 'date'],
-            'end' => ['required', 'date'],
             'duration' => ['nullable', 'string'],
             'company_name' => ['nullable', 'string'],
             'transportation_type' => ['nullable', 'string'],
-            'price' => ['nullable', 'numeric'],
         ]);
         if ($tour->transportation_type == "system") {
             return response(['message' => __('exceptions.sys-transport')], 403);
@@ -32,9 +29,6 @@ class TransportationController extends Controller
             'type' => $request->get('type'),
             'origin' => $request->get('origin'),
             'destination' => $request->get('destination'),
-            'start' => $request->get('start'),
-            'end' => $request->get('end'),
-            'price' => $request->get('price'),
             'duration' => $request->get('duration'),
             'company_name' => $request->get('company_name'),
             'transportation_type' => $request->get('transportation_type'),
