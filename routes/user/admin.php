@@ -3,6 +3,7 @@
 
 use App\Http\Controllers\AdsController;
 use App\Http\Controllers\AirportController;
+use App\Http\Controllers\OptionsController;
 use App\Http\Controllers\ProfitRateController;
 use App\Http\Controllers\SpecialTourController;
 use Illuminate\Support\Facades\Route;
@@ -33,8 +34,13 @@ Route::middleware(['auth:sanctum', 'isAdmin'])->prefix('admin/')->group(function
     Route::get('profit-rates', [ProfitRateController::class, 'all'])->middleware('superAdmin');
     Route::get('profit-rate/{rate}', [ProfitRateController::class, 'read'])->middleware('superAdmin');
 
+    //---------------------------- Options --------------------------
+    Route::post('option', [OptionsController::class, 'add'])->middleware('superAdmin');
+    Route::delete('option/{option}', [OptionsController::class, 'remove'])->middleware('superAdmin');
 
 
+
+    //============================ Admin =============================
     //------------------------- Profile Info -------------------------
     Route::get('info', [RegisteredUserController::class, 'getInfo']);
     Route::put('info', [RegisteredUserController::class, 'updateInfo']);
