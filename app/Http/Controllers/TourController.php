@@ -451,7 +451,14 @@ class TourController extends Controller
     public function PublicGetTours(Request $request)
     {
         if ($request->query('all')) {
-            return TourSearchResource::collection(Costs::orderBy("two_bed")->paginate(10));
+            return TourSearchResource::collection(
+                Costs::join('tours', function (JoinClause $join) {
+                    $join->on('costs.tour_id', '=', 'tours.id')
+                        ->where('tours.status', '=', 'active');
+                    })
+                ->select('costs.*')
+                ->orderBy("two_bed")
+                ->paginate(10));
         }
 
         $results = Tour::where('status', 'active');
@@ -504,7 +511,8 @@ class TourController extends Controller
             return TourSearchResource::collection(
                 Costs::join('tours', function (JoinClause $join) {
                         $join->on('costs.tour_id', '=', 'tours.id')
-                            ->where('tours.trip_type', '=', "طبیعت گردی");
+                            ->where('tours.trip_type', '=', "طبیعت گردی")
+                            ->where('tours.status', '=', 'active');
                     })
                     ->select('costs.*')
                     ->orderBy("two_bed")
