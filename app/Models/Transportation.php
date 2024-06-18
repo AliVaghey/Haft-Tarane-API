@@ -16,6 +16,8 @@ class Transportation extends Model
         'type',
         'origin',
         'destination',
+        'start',
+        'end',
         'duration',
         'company_name',
         'transportation_type',
