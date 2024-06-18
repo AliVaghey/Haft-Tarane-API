@@ -498,6 +498,64 @@ class TourController extends Controller
         return $results->isNotEmpty() ? TourSearchResource::collection($results->orderBy('two_bed')) : [];
     }
 
+    public function publicNatureTours(Request $request)
+    {
+        if ($request->query('all')) {
+            return TourSearchResource::collection(
+                Costs::join('tours', function (JoinClause $join) {
+                        $join->on('costs.tour_id', '=', 'tours.id')
+                            ->where('tours.trip_type', '=', "طبیعت گردی");
+                    })
+                    ->select('costs.*')
+                    ->orderBy("two_bed")
+                    ->paginate(10)
+            );
+        }
+
+        $results = Tour::where('status', 'active')->where('trip_type', "طبیعت گردی");
+        if ($request->query('origin')) {
+            $results->where('origin', $request->query('origin'));
+        }
+        if ($request->query('destination')) {
+            $results->where('destination', $request->query('destination'));
+        }
+        $results = $results->get();
+        foreach ($results as $key => $tour) {
+            $f = false;
+            foreach ($tour->dates as $date) {
+                $start = new Carbon($date->start);
+                if ($start->subDays($tour->expiration) > now()) {
+                    $f = true;
+                    break;
+                }
+            }
+            if (!$f) {
+                $results->forget($key);
+            }
+        }
+        if ($request->query('start')) {
+            $input = new Carbon ($request->query('start'));
+            foreach ($results as $key => $tour) {
+                $f = false;
+                foreach ($tour->dates as $date) {
+                    $start = new Carbon($date->start);
+                    if ($start == $input && $start->subDays($tour->expiration) > now()) {
+                        $f = true;
+                    }
+                }
+                if (!$f) {
+                    $results->forget($key);
+                }
+            }
+        }
+        $results = $results->sortByDesc("updated_at")->map(function ($tour) {
+            return $tour->costs;
+        })->flatten(1);
+
+
+        return $results->isNotEmpty() ? TourSearchResource::collection($results->orderBy('two_bed')) : [];
+    }
+
     public function getActiveTour(Tour $tour)
     {
         if (!$tour->isActive()) {
