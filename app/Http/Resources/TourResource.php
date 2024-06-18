@@ -47,6 +47,7 @@ class TourResource extends JsonResource
                 'free_services' => $certificate ? $certificate->free_services : null,
                 'certificates' => $certificate ? $certificate->certificates : null,
                 'descriptions' => $certificate ? $certificate->descriptions : null,
+                'tab_descriptions' => $certificate ? $certificate->tab_descriptions : null,
                 'cancel_rules' => $certificate ? $certificate->cancel_rules : null,
             ],
             'dates' => $this->dates->map(function ($date) {
