@@ -27,4 +27,5 @@ return [
     'otp-expired' => "This code has expired.",
     'sms-went-wrong' => "something went wrong with the sms panel.",
     'sys-transport' => "This tour has system transportation type.",
+    'not-own-res' => "This reservation is not yours.",
 ];

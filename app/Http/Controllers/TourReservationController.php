@@ -35,14 +35,14 @@ class TourReservationController extends Controller
 
     public function getReservations(Request $request)
     {
-        $reservations = TourReservation::where('user_id', $request->user()->id)->get();
-        return TourReservationResource::collection($reservations->orderByDesc('created_at'))->paginate($request->query('per_page', 10));
+        $reservations = TourReservation::where('user_id', $request->user()->id);
+        return TourReservationResource::collection($reservations->orderBy('created_at', 'desc')->paginate($request->query('per_page', 10)));
     }
 
     public function getReservation(Request $request, TourReservation $reservation)
     {
         if ($request->user()->id != $reservation->user_id) {
-            return response(['message' => ''], 403);
+            return response(['message' => __('exceptions.not-own-res')], 403);
         }
         return new TourReservationResource($reservation);
     }
@@ -102,15 +102,15 @@ class TourReservationController extends Controller
             $ticket = $trans->getTicket();
             switch ($passenger_type) {
                 case 'adl':
-                    $total_price += $ticket->price_final;
+                    $total_price += ($ticket->price_final / 10);
                     break;
 
                 case 'cld':
-                    $total_price += $ticket->price_final_chd;
+                    $total_price += ($ticket->price_final_chd / 10);
                     break;
 
                 case 'baby':
-                    $total_price += $ticket->price_final_inf;
+                    $total_price += ($ticket->price_final_inf / 10);
                     break;
             }
         }

@@ -13,6 +13,6 @@ Route::middleware(['auth:sanctum'])->prefix('user/')->group(function () {
     //--------------------- Tour Reservation --------------------
     Route::post('tour/{tour}/date/{date}/cost/{cost}/reserve', [TourReservationController::class, 'reserve']);
     Route::get('reservations', [TourReservationController::class, 'getReservations']);
-    Route::get('reservation/{id}', [TourReservationController::class, 'getReservation']);
+    Route::get('reservation/{reservation}', [TourReservationController::class, 'getReservation']);
 
 });
