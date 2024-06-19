@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfitRateController;
 use App\Http\Controllers\SysTransportController;
+use App\Http\Controllers\TourReservationController;
 use App\Http\Controllers\TransportationController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AgencyInfoController;
@@ -46,8 +47,13 @@ Route::middleware(['auth:sanctum', 'isAgency'])->prefix('agency/')->group(functi
     //---------------------------- Hotels ----------------------------
     Route::get('hotels', [HotelController::class, 'GetAll']);
 
-
     //-------------------------- Profit Rates ------------------------
     Route::get('profit-rates', [ProfitRateController::class, 'all']);
     Route::get('profit-rate/{rate}', [ProfitRateController::class, 'read']);
+
+    //-------------------------- Reservations ------------------------
+    Route::get('reservations', [TourReservationController::class, 'getAgencyReservations']);
+    Route::get('reservation/{reservation}', [TourReservationController::class, 'getAgencyReservation']);
+    Route::post('reservation/{reservation}/change-status', [TourReservationController::class, 'changeReservationStatus']);
+
 });

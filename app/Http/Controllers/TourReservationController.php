@@ -127,4 +127,38 @@ class TourReservationController extends Controller
         }
         return $count;
     }
+
+    public function getAgencyReservations(Request $request)
+    {
+        return TourReservationResource::collection(
+            TourReservation::where('agency_id', $request->user()->agencyInfo->id)
+                ->orderBy('created_at', 'desc')
+                ->paginate($request->query('per_page', 10))
+        );
+    }
+
+    public function getAgencyReservation(Request $request, TourReservation $reservation)
+    {
+        if ($request->user()->agencyInfo->id != $reservation->agency_id) {
+            return response(['message' => __('exceptions.not-own-res')], 403);
+        }
+        return new TourReservationResource($reservation);
+    }
+
+    public function changeReservationStatus(Request $request, TourReservation $reservation)
+    {
+        $request->validate([
+            'status' => ['required', 'string']
+        ]);
+
+        if ($request->status == 'paid') {
+            $reservation->update(['status' => 'paid']);
+        } elseif ($request->status == 'pending') {
+            $reservation->update(['status' => 'pending']);
+        } else {
+            return response(['message' => __('exceptions.not-allowed')], 422);
+        }
+
+        return response($reservation, 200);
+    }
 }
