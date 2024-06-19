@@ -15,12 +15,12 @@ return new class extends Migration {
             $table->foreignId('tour_id');
             $table->foreignId('hotel_id');
             $table->string('room_type');
-            $table->float('one_bed');
-            $table->float('two_bed');
-            $table->float('plus_one');
-            $table->float('cld_6');
-            $table->float('cld_2');
-            $table->float('baby');
+            $table->decimal('one_bed', 10, 2);
+            $table->decimal('two_bed', 10, 2);
+            $table->decimal('plus_one', 10, 2);
+            $table->decimal('cld_6', 10, 2);
+            $table->decimal('cld_2', 10, 2);
+            $table->decimal('baby', 10, 2);
             $table->timestamps();
         });
     }

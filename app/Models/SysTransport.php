@@ -40,4 +40,12 @@ class SysTransport extends Model
     {
         return Date::find($this->date_id);
     }
+
+    /*
+     * It returns the ticket model. (flight, train, bus)
+     */
+    public function getTicket()
+    {
+        return FlightInfo::find($this->flight_id);
+    }
 }

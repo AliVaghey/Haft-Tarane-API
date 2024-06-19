@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Date extends Model
 {
@@ -27,5 +28,10 @@ class Date extends Model
     public function tour(): BelongsTo
     {
         return $this->belongsTo(Tour::class);
+    }
+
+    public function sysTransportations(): HasMany
+    {
+        return $this->hasMany(SysTransport::class, 'date_id');
     }
 }
