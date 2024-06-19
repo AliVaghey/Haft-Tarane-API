@@ -32,7 +32,7 @@ class HotelController extends Controller
         $results = $request->query('country') ? $results->where('country', $request->query('country')) : $results;
         $results = $request->query('state') ? $results->where('state', $request->query('state')) : $results;
         $results = $request->query('city') ? $results->where('city', $request->query('city')) : $results;
-        return HotelResource::collection($results->get());
+        return HotelResource::collection($results->paginate(10));
     }
 
     /**
