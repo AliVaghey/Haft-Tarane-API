@@ -19,6 +19,7 @@ class TourReservation extends Model
         'hotel_id',
         'total_price',
         'passengers',
+        'passengers_count',
         'status',
     ];
 

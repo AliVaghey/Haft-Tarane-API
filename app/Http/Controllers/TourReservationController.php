@@ -26,7 +26,11 @@ class TourReservationController extends Controller
             'hotel_id' => $cost->hotel_id,
             'agency_id' => $tour->agency_id,
             'total_price' => $this->totalPrice($tour, $date, $cost, $request->get('passengers')),
+            'passengers' => collect(json_decode($request->get('passengers'), true)),
+            'passengers_count' => $this->countPassengers(json_decode($request->get('passengers'), true)),
         ]);
+
+        return response($reservation, 201);
     }
 
     public function getReservations(Request $request)
@@ -35,8 +39,11 @@ class TourReservationController extends Controller
         return TourReservationResource::collection($reservations->orderByDesc('created_at'))->paginate($request->query('per_page', 10));
     }
 
-    public function getReservation(TourReservation $reservation)
+    public function getReservation(Request $request, TourReservation $reservation)
     {
+        if ($request->user()->id != $reservation->user_id) {
+            return response(['message' => ''], 403);
+        }
         return new TourReservationResource($reservation);
     }
 
@@ -109,14 +116,15 @@ class TourReservationController extends Controller
         }
         return $total_price;
     }
-}
-/*
-{
+
+    private function countPassengers(mixed $passengers)
     {
-        beds =
+        $count = 0;
+        foreach ($passengers as $room) {
+            foreach ($room as $passenger) {
+                $count++;
+            }
+        }
+        return $count;
     }
 }
-
-
-
- */
