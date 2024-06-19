@@ -70,6 +70,7 @@ class TourReservationController extends Controller
             foreach($passengers as $room) {
                 foreach ($room as $passenger) {
                     switch (strtolower($passenger['type'])) {
+                        case 'baby':
                         case 'adl':
                             $total_price += $this->getTransPrice($tour, $date, $passenger['type']);
                             break;
@@ -79,9 +80,6 @@ class TourReservationController extends Controller
                             $total_price += $this->getTransPrice($tour, $date, 'cld');
                             break;
 
-                        case 'baby':
-                            $total_price += $this->getTransPrice($tour, $date, $passenger['type']);
-                            break;
                     }
                 }
             }
