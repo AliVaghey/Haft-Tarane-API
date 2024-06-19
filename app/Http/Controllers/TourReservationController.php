@@ -52,7 +52,7 @@ class TourReservationController extends Controller
         $passengers = json_decode($passengers, true);
         $total_price = 0;
         foreach ($passengers as $room) {
-            foreach ($room as $passenger) {
+            foreach ($room['passengers'] as $passenger) {
                 switch (strtolower($passenger['type'])) {
                     case 'adl':
                         $total_price += $room['room_type'] == 'one_bed' ? $cost->one_bed : $cost->two_bed;
@@ -75,7 +75,7 @@ class TourReservationController extends Controller
         }
         if ($tour->isSysTrans()) {
             foreach($passengers as $room) {
-                foreach ($room as $passenger) {
+                foreach ($room['passengers'] as $passenger) {
                     switch (strtolower($passenger['type'])) {
                         case 'baby':
                         case 'adl':
@@ -121,7 +121,7 @@ class TourReservationController extends Controller
     {
         $count = 0;
         foreach ($passengers as $room) {
-            foreach ($room as $passenger) {
+            foreach ($room['passengers'] as $passenger) {
                 $count++;
             }
         }
