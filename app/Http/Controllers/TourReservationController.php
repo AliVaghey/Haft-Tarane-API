@@ -15,7 +15,7 @@ class TourReservationController extends Controller
     public function reserve(Request $request, Tour $tour, Date $date, Costs $cost)
     {
         $request->validate([
-            'passengers' => ['required', 'json'],
+            'rooms' => ['required', 'json'],
         ]);
 
         $reservation = TourReservation::create([
@@ -25,9 +25,9 @@ class TourReservationController extends Controller
             'cost_id' => $cost->id,
             'hotel_id' => $cost->hotel_id,
             'agency_id' => $tour->agency_id,
-            'total_price' => $this->totalPrice($tour, $date, $cost, $request->get('passengers')),
-            'passengers' => collect(json_decode($request->get('passengers'), true)),
-            'passengers_count' => $this->countPassengers(json_decode($request->get('passengers'), true)),
+            'total_price' => $this->totalPrice($tour, $date, $cost, $request->get('rooms')),
+            'passengers' => collect(json_decode($request->get('rooms'), true)),
+            'passengers_count' => $this->countPassengers(json_decode($request->get('rooms'), true)),
         ]);
 
         return response($reservation, 201);
