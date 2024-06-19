@@ -88,4 +88,7 @@ Route::middleware(['auth:sanctum', 'isAdmin'])->prefix('admin/')->group(function
     Route::get('special-tours', [SpecialTourController::class, 'getAll']);
     Route::get('special-tour/{tour}', [SpecialTourController::class, 'read']);
 
+    //------------------------- Reservations -------------------------
+//    Route::get('reservations', )
+
 });

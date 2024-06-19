@@ -21,7 +21,7 @@ return new class extends Migration {
             $table->decimal('total_price', 10, 2);
             $table->json('passengers');
             $table->tinyInteger('passengers_count', false, true);
-            $table->enum('status', ['pending', 'paid', 'cancelled'])->default('pending');
+            $table->enum('status', ['pending', 'paid', 'cancelled', 'checkedout'])->default('pending');
             $table->timestamps();
         });
     }

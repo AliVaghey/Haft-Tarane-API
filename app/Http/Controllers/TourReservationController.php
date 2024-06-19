@@ -130,8 +130,15 @@ class TourReservationController extends Controller
 
     public function getAgencyReservations(Request $request)
     {
+        $results = TourReservation::where('agency_id', $request->user()->agencyInfo->id);
+        if ($request->query('pending')) {
+            $results = $results->where('status', 'pending');
+        }
+        if ($request->query('checkedout')) {
+            $results = $results->where('status', 'checkedout');
+        }
         return TourReservationResource::collection(
-            TourReservation::where('agency_id', $request->user()->agencyInfo->id)
+            $results
                 ->orderBy('created_at', 'desc')
                 ->paginate($request->query('per_page', 10))
         );
