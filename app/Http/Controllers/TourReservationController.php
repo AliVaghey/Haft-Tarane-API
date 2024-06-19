@@ -29,13 +29,13 @@ class TourReservationController extends Controller
         ]);
     }
 
-    public function reservations(Request $request)
+    public function getReservations(Request $request)
     {
         $reservations = TourReservation::where('user_id', $request->user()->id)->get();
         return TourReservationResource::collection($reservations->orderByDesc('created_at'))->paginate($request->query('per_page', 10));
     }
 
-    public function reservation(TourReservation $reservation)
+    public function getReservation(TourReservation $reservation)
     {
         return new TourReservationResource($reservation);
     }
@@ -44,40 +44,81 @@ class TourReservationController extends Controller
     {
         $passengers = json_decode($passengers, true);
         $total_price = 0;
-        foreach ($passengers as $passenger) {
-            switch (strtolower($passenger['type'])) {
-                case 'adl':
-                    $total_price += $this->getAdultPrice($tour, $date, $cost, $passenger);
-                    break;
-                case 'chl':
-                    $total_price += $this->getChildPrice($tour, $date, $cost, $passenger);
-                    break;
-                case 'inf':
-                    $total_price += $this->getInfentPrice($tour, $date, $cost, $passenger);
+        foreach ($passengers as $room) {
+            foreach ($room as $passenger) {
+                switch (strtolower($passenger['type'])) {
+                    case 'adl':
+                        $total_price += $room['room_type'] == 'one_bed' ? $cost->one_bed : $cost->two_bed;
+                        break;
+
+                    case 'cld_2':
+                        $total_price += $cost->cld_2;
+                        break;
+
+                    case 'cld_6':
+                        $total_price += $cost->cld_6;
+                        break;
+
+                    case 'baby':
+                        $total_price += $cost->baby;
+                        break;
+                }
+            }
+            $total_price += $cost->plus_one * $room['plus_one'];
+        }
+        if ($tour->isSysTrans()) {
+            foreach($passengers as $room) {
+                foreach ($room as $passenger) {
+                    switch (strtolower($passenger['type'])) {
+                        case 'adl':
+                            $total_price += $this->getTransPrice($tour, $date, $passenger['type']);
+                            break;
+
+                        case 'cld_2':
+                        case 'cld_6':
+                            $total_price += $this->getTransPrice($tour, $date, 'cld');
+                            break;
+
+                        case 'baby':
+                            $total_price += $this->getTransPrice($tour, $date, $passenger['type']);
+                            break;
+                    }
+                }
             }
         }
-
-
-        return 0;
+        return $total_price;
     }
 
-    private function getAdultPrice(Tour $tour, Date $date, Costs $cost, mixed $passenger)
+    private function getTransPrice(Tour $tour, Date $date, string $passenger_type)
     {
-        $price = 0;
-        if ($tour->isSysTrans()) {
-            // calculate going ticket
-            $trans = SysTransport::where('date_id', $date->id)->where('returning', 0)->get()->first();
-            $price = $trans->flight->price_final;
-        } else {
+        $total_price = 0;
+        $transportations = SysTransport::where('tour_id', $tour->id)->where('date_id', $date->id)->get();
+        foreach ($transportations as $trans) {
+            $ticket = $trans->getTicket();
+            switch ($passenger_type) {
+                case 'adl':
+                    $total_price += $ticket->price_final;
+                    break;
 
+                case 'cld':
+                    $total_price += $ticket->price_final_chd;
+                    break;
+
+                case 'baby':
+                    $total_price += $ticket->price_final_inf;
+                    break;
+            }
         }
-    }
-
-    private function getChildPrice(Tour $tour, Date $date, Costs $cost, mixed $passenger)
-    {
-    }
-
-    private function getInfentPrice(Tour $tour, Date $date, Costs $cost, mixed $passenger)
-    {
+        return $total_price;
     }
 }
+/*
+{
+    {
+        beds =
+    }
+}
+
+
+
+ */
