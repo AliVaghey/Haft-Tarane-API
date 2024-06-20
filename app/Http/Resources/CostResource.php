@@ -2,10 +2,12 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Hotel;
 use App\Models\Tour;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Storage;
 
 class CostResource extends JsonResource
 {
@@ -28,9 +30,19 @@ class CostResource extends JsonResource
             'origin' => $tour->origin,
             'destination' => $tour->destination,
             'staying_nights' => $tour->staying_nights,
+            'agency_name' => $tour->agency->name,
+            'hotel' => $this->getHotel($this->hotel),
+            'transportation' => $tour->isSysTrans() ? $this->getSysTrans($tour) : $tour->transportations->sortBy("sort"),
             'cost' => parent::toArray($request),
             'date' => $this->findDate($tour, $request->query('start')),
         ];
+    }
+
+    public function getSysTrans(Tour $tour)
+    {
+        return $tour->sysTransport->map(function ($transport) {
+            return ['transportation_id' => $transport->id, 'flight' => $transport->flight];
+        });
     }
 
     public function findDate(Tour $tour, $input = null)
@@ -58,6 +70,16 @@ class CostResource extends JsonResource
             'id' => $date->id,
             'start' => $date->start,
             'end' => $date->end,
+        ];
+    }
+
+    public function getHotel(Hotel $hotel)
+    {
+        return [
+            'id' => $hotel->id,
+            'name' => $hotel->name,
+            'address' => $hotel->address,
+            'photo' => $hotel->gallery->map(fn($item) => Storage::disk('public')->url($item))
         ];
     }
 }
