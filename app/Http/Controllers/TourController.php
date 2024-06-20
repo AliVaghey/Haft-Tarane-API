@@ -450,7 +450,8 @@ class TourController extends Controller
                     $start = new Carbon($date->start);
                     if ($start == $input && $start->subDays($tour->expiration) > now()) {
                         $f = true;
-                    } else {
+                    }
+                    if ($start != $input) {
                         $tour->dates->forget($index);
                     }
                 }
