@@ -26,6 +26,7 @@ Route::get('options', [OptionsController::class, 'searchOptions']);
 Route::get('tours', [TourController::class, 'PublicGetTours']);
 Route::get('tour/{tour}', [TourController::class, 'getActiveTour']);
 Route::get('tours/nature', [TourController::class, 'publicNatureTours']);
+Route::get('cost/{cost}', [TourController::class, 'getCostInfo']);
 
 Route::get('specials', [SpecialTourController::class, 'getAll']);
 Route::get('banners', [AdsController::class, 'all']);

@@ -17,6 +17,10 @@ class TourReservationController extends Controller
         $request->validate([
             'rooms' => ['required', 'json'],
         ]);
+        $count = $this->countPassengers(json_decode($request->get('rooms'), true));
+        if ($count > $tour->capacity) {
+            return response(['message' => "ظرفیت این تور تنها {$tour->capacity} نفر می باشد."], 403);
+        }
 
         $reservation = TourReservation::create([
             'user_id' => $request->user()->id,
@@ -27,7 +31,7 @@ class TourReservationController extends Controller
             'agency_id' => $tour->agency_id,
             'total_price' => $this->totalPrice($tour, $date, $cost, $request->get('rooms')),
             'passengers' => collect(json_decode($request->get('rooms'), true)),
-            'passengers_count' => $this->countPassengers(json_decode($request->get('rooms'), true)),
+            'passengers_count' => $count,
         ]);
 
         return response($reservation, 201);

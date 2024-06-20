@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\TourStatus;
+use App\Http\Resources\CostResource;
 use App\Http\Resources\TourListResource;
 use App\Http\Resources\TourResource;
 use App\Http\Resources\TourSearchResource;
@@ -530,5 +531,13 @@ class TourController extends Controller
             return response(['message' => __('exceptions.tour-not-active')], 403);
         }
         return new TourResource($tour);
+    }
+
+    public function getCostInfo(Request $request, Costs $cost)
+    {
+        if ($cost->tour->status != "active") {
+            return response(['message' => __('exceptions.tour-not-active')], 403);
+        }
+        return new CostResource($cost);
     }
 }
