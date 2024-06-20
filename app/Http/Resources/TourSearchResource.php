@@ -3,6 +3,8 @@
 namespace App\Http\Resources;
 
 use App\Models\Hotel;
+use App\Models\Tour;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -26,13 +28,33 @@ class TourSearchResource extends JsonResource
             'destination' => $tour->destination,
             'min_cost' => $this->two_bed,
             'status' => $tour->status,
-            'dates' => $tour->dates->map(fn($date) => [
+            'dates' => $this->findDate($tour, $request->query('start')),
+            'costs' => $this->filterCosts(),
+            'transportation' => $tour->transportation,
+        ];
+    }
+
+    public function findDate(Tour $tour, $input = null)
+    {
+        $date = null;
+        if ($input) {
+            foreach ($tour->dates as $d) {
+                $start = new Carbon($d->start);
+                if ($input == $start) {
+                    $date = $d;
+                    break;
+                }
+            }
+        } else {
+            $date = $tour->dates->first();
+        }
+
+        return [
+            [
                 'id' => $date->id,
                 'start' => $date->start,
                 'end' => $date->end,
-            ]),
-            'costs' => $this->filterCosts(),
-            'transportation' => $tour->transportation,
+            ]
         ];
     }
 
