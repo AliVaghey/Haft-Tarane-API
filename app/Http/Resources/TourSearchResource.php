@@ -39,7 +39,7 @@ class TourSearchResource extends JsonResource
         if ($tour->isSysTrans()) {
             $price = $this->two_bed;
             foreach ($tour->sysTransport as $transport) {
-                $price += $transport->flight->price_final;
+                $price += ($transport->flight->price_final / 10);
             }
             return $price;
         } else {
