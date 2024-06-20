@@ -535,9 +535,9 @@ class TourController extends Controller
 
     public function getCostInfo(Request $request, Costs $cost)
     {
-        if ($cost->tour->status != "active") {
-            return response(['message' => __('exceptions.tour-not-active')], 403);
-        }
+//        if ($cost->tour->status != "active") {
+//            return response(['message' => __('exceptions.tour-not-active')], 403);
+//        }
         return new CostResource($cost);
     }
 }
