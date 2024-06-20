@@ -26,12 +26,25 @@ class TourSearchResource extends JsonResource
             'capacity' => $tour->capacity,
             'origin' => $tour->origin,
             'destination' => $tour->destination,
-            'min_cost' => $this->two_bed,
+            'min_cost' => $this->minCost($tour),
             'status' => $tour->status,
             'dates' => $this->findDate($tour, $request->query('start')),
             'costs' => $this->filterCosts(),
             'transportation' => $tour->transportation,
         ];
+    }
+
+    public function minCost(Tour $tour)
+    {
+        if ($tour->isSysTrans()) {
+            $price = $this->two_bed;
+            foreach ($tour->sysTransport as $transport) {
+                $price += $transport->flight->price_final;
+            }
+            return $price;
+        } else {
+            return $this->two_bed;
+        }
     }
 
     public function findDate(Tour $tour, $input = null)
