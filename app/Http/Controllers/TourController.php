@@ -464,7 +464,7 @@ class TourController extends Controller
         })->flatten(1);
 
 
-        return $results->isNotEmpty() ? TourSearchResource::collection($results->orderBy('two_bed')) : [];
+        return $results->isNotEmpty() ? TourSearchResource::collection($results->sortByDesc('two_bed')) : [];
     }
 
     public function publicNatureTours(Request $request)
