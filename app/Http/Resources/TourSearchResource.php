@@ -36,6 +36,9 @@ class TourSearchResource extends JsonResource
 
     public function findDate(Tour $tour, $input = null)
     {
+        if ($input) {
+            $input = new Carbon($input);
+        }
         $date = null;
         if ($input) {
             foreach ($tour->dates as $d) {
@@ -46,7 +49,10 @@ class TourSearchResource extends JsonResource
                 }
             }
         } else {
-            $date = $tour->dates->first();
+            $date = $tour->dates->map(function ($d) use ($tour) {
+                $start = new Carbon($d->start);
+                return $start->subDays($tour->expiration) > now() ? $d : null;
+            })->first();
         }
 
         return [
