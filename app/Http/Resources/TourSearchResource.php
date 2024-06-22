@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use App\Models\Hotel;
+use App\Models\SysTransport;
 use App\Models\Tour;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -38,7 +39,8 @@ class TourSearchResource extends JsonResource
     {
         if ($tour->isSysTrans()) {
             $price = $this->two_bed;
-            foreach ($tour->sysTransport as $transport) {
+            $date = $tour->dates->first();
+            foreach (SysTransport::where('date_id', $date->id)->get() as $transport) {
                 $price += ($transport->flight->price_final / 10);
             }
             return $price;
