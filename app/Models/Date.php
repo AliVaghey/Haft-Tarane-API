@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\UserAccessType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -20,7 +21,20 @@ class Date extends Model
         'tour_id',
         'start',
         'end',
+        'expired',
     ];
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'expired' => 'boolean'
+        ];
+    }
 
     /**
      * Get the tour model.
