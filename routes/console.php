@@ -2,14 +2,18 @@
 
 use App\Http\Controllers\AgencyInfoController;
 use App\Http\Controllers\AirportController;
+use App\Schedules\ExpireDates;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use Illuminate\Support\Facades\Schedule;
 
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
-})->purpose('Display an inspiring quote')->hourly();
+})->purpose('Display an inspiring quote');
+
+Schedule::call(new ExpireDates)->daily();
 
 Artisan::command('make:superadmin', function () {
     $name = $this->ask('Enter your username');
@@ -32,10 +36,3 @@ Artisan::command('make:superadmin', function () {
     $this->info("Super-Admin has been created successfully.");
 })->purpose('Make new user user.');
 
-Artisan::command('get:airports', function () {
-    air_service()->getAirports();
-});
-
-Artisan::command('lorem:send2', function () {
-    echo sms()->send('09046808112', "تست\nلغو 11");
-});
