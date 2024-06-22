@@ -18,7 +18,8 @@ class TourSearchResource extends JsonResource
     public function toArray(Request $request): array
     {
         $tour = $this->tour;
-        return [
+        $date = $this->findDate($tour, $request->query('start'));
+        return $date ? [
             'id' => $tour->id,
             'agency_name' => $tour->agency->name,
             'title' => $tour->title,
@@ -28,10 +29,10 @@ class TourSearchResource extends JsonResource
             'destination' => $tour->destination,
             'min_cost' => $this->minCost($tour),
             'status' => $tour->status,
-            'dates' => $this->findDate($tour, $request->query('start')),
+            'dates' => $date,
             'costs' => $this->filterCosts(),
             'transportation' => $tour->transportation,
-        ];
+        ] : [];
     }
 
     public function minCost(Tour $tour)
@@ -74,7 +75,7 @@ class TourSearchResource extends JsonResource
                 'start' => $date->start,
                 'end' => $date->end,
             ]
-        ] : [];
+        ] : null;
     }
 
     /**
