@@ -42,7 +42,10 @@ class CostResource extends JsonResource
     public function getSysTrans(Tour $tour)
     {
         return $tour->sysTransport->map(function ($transport) {
-            return ['transportation_id' => $transport->id, 'flight' => $transport->flight];
+            return [
+                'transportation_id' => $transport->id,
+                'flight' => $transport->flight
+            ];
         });
     }
 
