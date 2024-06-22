@@ -35,7 +35,7 @@ class CostResource extends JsonResource
             'transportation' => $tour->isSysTrans() ? $this->getSysTrans($tour) : $tour->transportations->sortBy("sort"),
             'cost' => parent::toArray($request),
             'date' => $this->findDate($tour, $request->query('start')),
-            'certificates' => $tour->certificates,
+            'certificate' => $tour->certificate,
         ];
     }
 
