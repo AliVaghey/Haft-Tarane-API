@@ -15,24 +15,26 @@ class TourSearchResource extends JsonResource
      *
      * @return array<string, mixed>
      */
-    public function toArray(Request $request): ?array
+    public function toArray(Request $request)
     {
         $tour = $this->tour;
         $date = $this->findDate($tour, $request->query('start'));
-        return $date ? [
-            'id' => $tour->id,
-            'agency_name' => $tour->agency->name,
-            'title' => $tour->title,
-            'trip_type' => $tour->trip_type,
-            'capacity' => $tour->capacity,
-            'origin' => $tour->origin,
-            'destination' => $tour->destination,
-            'min_cost' => $this->minCost($tour),
-            'status' => $tour->status,
-            'dates' => $date,
-            'costs' => $this->filterCosts(),
-            'transportation' => $tour->transportation,
-        ] : null;
+        if ($date) {
+            return [
+                'id' => $tour->id,
+                'agency_name' => $tour->agency->name,
+                'title' => $tour->title,
+                'trip_type' => $tour->trip_type,
+                'capacity' => $tour->capacity,
+                'origin' => $tour->origin,
+                'destination' => $tour->destination,
+                'min_cost' => $this->minCost($tour),
+                'status' => $tour->status,
+                'dates' => $date,
+                'costs' => $this->filterCosts(),
+                'transportation' => $tour->transportation,
+            ];
+        }
     }
 
     public function minCost(Tour $tour)
