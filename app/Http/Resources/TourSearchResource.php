@@ -15,26 +15,23 @@ class TourSearchResource extends JsonResource
      *
      * @return array<string, mixed>
      */
-    public function toArray(Request $request)
+    public function toArray(Request $request): array
     {
         $tour = $this->tour;
-        $date = $this->findDate($tour, $request->query('start'));
-        if ($date) {
-            return [
-                'id' => $tour->id,
-                'agency_name' => $tour->agency->name,
-                'title' => $tour->title,
-                'trip_type' => $tour->trip_type,
-                'capacity' => $tour->capacity,
-                'origin' => $tour->origin,
-                'destination' => $tour->destination,
-                'min_cost' => $this->minCost($tour),
-                'status' => $tour->status,
-                'dates' => $date,
-                'costs' => $this->filterCosts(),
-                'transportation' => $tour->transportation,
-            ];
-        }
+        return [
+            'id' => $tour->id,
+            'agency_name' => $tour->agency->name,
+            'title' => $tour->title,
+            'trip_type' => $tour->trip_type,
+            'capacity' => $tour->capacity,
+            'origin' => $tour->origin,
+            'destination' => $tour->destination,
+            'min_cost' => $this->minCost($tour),
+            'status' => $tour->status,
+            'dates' => $this->findDate($tour, $request->query('start')),
+            'costs' => $this->filterCosts(),
+            'transportation' => $tour->transportation,
+        ];
     }
 
     public function minCost(Tour $tour)
@@ -65,19 +62,16 @@ class TourSearchResource extends JsonResource
                 }
             }
         } else {
-            $date = $tour->dates->map(function ($d) use ($tour) {
-                $start = new Carbon($d->start);
-                return $start->subDays($tour->expiration) > now() ? $d : null;
-            })->first();
+            $date = $tour->dates->first();
         }
 
-        return $date ? [
+        return [
             [
                 'id' => $date->id,
                 'start' => $date->start,
                 'end' => $date->end,
             ]
-        ] : null;
+        ];
     }
 
     /**
