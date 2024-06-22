@@ -68,13 +68,13 @@ class TourSearchResource extends JsonResource
             })->first();
         }
 
-        return [
+        return $d ? [
             [
                 'id' => $date->id,
                 'start' => $date->start,
                 'end' => $date->end,
             ]
-        ];
+        ] : [];
     }
 
     /**
