@@ -417,6 +417,10 @@ class TourController extends Controller
                     $join->on('costs.tour_id', '=', 'tours.id')
                         ->where('tours.status', '=', 'active');
                     })
+                    ->join('dates', function (JoinClause $join) {
+                        $join->on('costs.tour_id', '=', 'dates.tour_id')
+                            ->where('dates.expired', '=', 0);
+                    })
                 ->select('costs.*')
                 ->orderBy("two_bed")
                 ->paginate(10));
@@ -458,7 +462,7 @@ class TourController extends Controller
                 }
             }
         }
-        $results = $results->sortByDesc("updated_at")->map(function ($tour) {
+        $results = $results->map(function ($tour) {
             return $tour->costs;
         })->flatten(1);
 
@@ -474,6 +478,10 @@ class TourController extends Controller
                         $join->on('costs.tour_id', '=', 'tours.id')
                             ->where('tours.trip_type', '=', "طبیعت گردی")
                             ->where('tours.status', '=', 'active');
+                    })
+                    ->join('dates', function (JoinClause $join) {
+                        $join->on('costs.tour_id', '=', 'dates.tour_id')
+                            ->where('dates.expired', '=', 0);
                     })
                     ->select('costs.*')
                     ->orderBy("two_bed")
