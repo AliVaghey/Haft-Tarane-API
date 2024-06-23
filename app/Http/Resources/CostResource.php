@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use App\Models\Hotel;
+use App\Models\SysTransport;
 use App\Models\Tour;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -33,12 +34,26 @@ class CostResource extends JsonResource
             'destination' => $tour->destination,
             'staying_nights' => $tour->staying_nights,
             'agency_name' => $tour->agency->name,
+            'min_cost' => $tour->min_cost($tour, $date),
             'hotel' => $this->getHotel($this->hotel),
             'transportation' => $tour->isSysTrans() ? $this->getSysTrans($tour, $date) : $tour->transportations->sortBy("sort"),
             'cost' => parent::toArray($request),
             'date' => $this->findDate($tour, $request->query('start')),
             'certificate' => $tour->certificate,
         ];
+    }
+
+    public function minCost(Tour $tour, $date)
+    {
+        if ($tour->isSysTrans()) {
+            $price = $this->two_bed;
+            foreach (SysTransport::where('date_id', $date[0]['id'])->get() as $transport) {
+                $price += ($transport->flight->price_final / 10);
+            }
+            return $price;
+        } else {
+            return $this->two_bed;
+        }
     }
 
     public function getSysTrans(Tour $tour, $date)
