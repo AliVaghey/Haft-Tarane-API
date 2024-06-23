@@ -34,7 +34,7 @@ class CostResource extends JsonResource
             'destination' => $tour->destination,
             'staying_nights' => $tour->staying_nights,
             'agency_name' => $tour->agency->name,
-            'min_cost' => $tour->min_cost($tour, $date),
+            'min_cost' => $this->min_cost($tour, $date),
             'hotel' => $this->getHotel($this->hotel),
             'transportation' => $tour->isSysTrans() ? $this->getSysTrans($tour, $date) : $tour->transportations->sortBy("sort"),
             'cost' => parent::toArray($request),
