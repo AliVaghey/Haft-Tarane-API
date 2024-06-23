@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\UserAccessType;
 use App\Http\Resources\TourReservationResource;
 use App\Models\Costs;
 use App\Models\Date;
@@ -14,10 +15,11 @@ class TourReservationController extends Controller
 {
     public function reserve(Request $request, Tour $tour, Date $date, Costs $cost)
     {
-        $request->validate([
-            'rooms' => ['required', 'json'],
-        ]);
+        $request->validate(['rooms' => ['required', 'json']]);
         $count = $this->countPassengers(json_decode($request->get('rooms'), true));
+        if ($request->user()->access_type != UserAccessType::User) {
+            return response(['message' => "تنها کاربران قادر به رزرو تور می باشند."]);
+        }
         if ($count > $tour->capacity) {
             return response(['message' => "ظرفیت این تور تنها {$tour->capacity} نفر می باشد."], 403);
         }
