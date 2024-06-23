@@ -44,12 +44,12 @@ class CostResource extends JsonResource
     public function getSysTrans(Tour $tour, $date)
     {
         $result = [];
-        $tour->sysTransport->where('date_id', $date['id'])->map(function ($transport) {
-            $result[] = [
+        foreach ($tour->sysTransport->where('date_id', $date['id']) as $transport) {
+            $result [] = [
                 'transportation_id' => $transport->id,
                 'flight' => $transport->flight
             ];
-        });
+        }
         return $result;
     }
 
