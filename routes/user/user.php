@@ -14,5 +14,6 @@ Route::middleware(['auth:sanctum'])->prefix('user/')->group(function () {
     Route::post('tour/{tour}/date/{date}/cost/{cost}/reserve', [TourReservationController::class, 'reserve']);
     Route::get('reservations', [TourReservationController::class, 'getReservations']);
     Route::get('reservation/{reservation}', [TourReservationController::class, 'getReservation']);
+    Route::delete('reservation/{reservation}', [TourReservationController::class, 'deleteReservation']);
 
 });

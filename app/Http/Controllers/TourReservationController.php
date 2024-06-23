@@ -36,7 +36,7 @@ class TourReservationController extends Controller
             'passengers_count' => $count,
         ]);
 
-        return response($reservation, 201);
+        return response(new TourReservationResource($reservation), 201);
     }
 
     public function getReservations(Request $request)
