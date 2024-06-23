@@ -419,7 +419,7 @@ class TourController extends Controller
                     })
                     ->join('dates', function (JoinClause $join) {
                         $join->on('costs.tour_id', '=', 'dates.tour_id')
-                            ->where('dates.expired', '=', 0);
+                            ->where('dates.expired', '=', false);
                     })
                 ->select('costs.*')
                 ->orderBy("two_bed")
