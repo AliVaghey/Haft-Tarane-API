@@ -47,7 +47,7 @@ class CostResource extends JsonResource
     {
         if ($tour->isSysTrans()) {
             $price = $this->two_bed;
-            foreach (SysTransport::where('date_id', $date[0]['id'])->get() as $transport) {
+            foreach (SysTransport::where('date_id', $date['id'])->get() as $transport) {
                 $price += ($transport->flight->price_final / 10);
             }
             return $price;
