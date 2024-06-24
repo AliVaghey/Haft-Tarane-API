@@ -24,8 +24,9 @@ class TourReservationController extends Controller
             return response(['message' => "ظرفیت این تور تنها {$tour->capacity} نفر می باشد."], 403);
         }
 
+        $user = $request->user();
         $reservation = TourReservation::create([
-            'user_id' => $request->user()->id,
+            'user_id' => $user->id,
             'tour_id' => $tour->id,
             'date_id' => $date->id,
             'cost_id' => $cost->id,
@@ -38,7 +39,7 @@ class TourReservationController extends Controller
 
         $sms = sms();
         $sms->send($reservation->agency->user->phone, "آژانس محترم یک درخواست برای تور {$reservation->tour_id} دارید. لطفا برای تامین اقدام فرمایید.");
-        $sms->send($reservation->user->phone, "{$reservation->user->username} عزیز درخواست شما ثبت شد و در حال پیگیری می باشد.");
+        $sms->send($user->phone, "{$user->username} عزیز درخواست شما ثبت شد و در حال پیگیری می باشد.");
 
         return response(new TourReservationResource($reservation), 201);
     }
