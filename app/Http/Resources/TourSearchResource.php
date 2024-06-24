@@ -20,7 +20,7 @@ class TourSearchResource extends JsonResource
     {
         $tour = $this->tour;
         $date = $this->findDate($tour, $request->query('start'));
-        return [
+        return $date === false ? [] : [
             'id' => $tour->id,
             'agency_name' => $tour->agency->name,
             'title' => $tour->title,
@@ -64,11 +64,7 @@ class TourSearchResource extends JsonResource
                 }
             }
             if (!$date) {
-                return [
-                    'id' => 0,
-                    'start' => 0,
-                    'end' => 0,
-                ];
+                return false;
             }
         } else {
             $date = $tour->dates->Where('expired', false);
