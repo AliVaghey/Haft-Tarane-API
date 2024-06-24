@@ -18,6 +18,7 @@ class TourReservationResource extends JsonResource
         $support = $tour->support;
         $hotel = $this->hotel;
         return [
+            'id' => $this->id,
             'total_price' => $this->total_price,
             'passengers_count' => $this->passengers_count,
             'passengers' => $this->passengers,
