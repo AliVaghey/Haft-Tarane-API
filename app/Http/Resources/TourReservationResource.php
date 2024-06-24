@@ -54,6 +54,7 @@ class TourReservationResource extends JsonResource
                 'stars' => $hotel->stars,
                 'photo' => $hotel->firstPhotoUrl(),
             ],
+            'user' => $this->user,
         ];
     }
 }
