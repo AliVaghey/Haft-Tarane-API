@@ -31,6 +31,7 @@ class TourReservationResource extends JsonResource
                     'name' => $support->name,
                     'phone' => $support->phone,
                 ],
+                'transportation_type' => $tour->transportation_type,
                 'trip_type' => $tour->trip_type,
                 'tour_styles' => $tour->tour_styles,
                 'evening_support' => $tour->evening_support,
