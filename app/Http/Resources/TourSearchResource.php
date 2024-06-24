@@ -64,7 +64,7 @@ class TourSearchResource extends JsonResource
                 }
             }
         } else {
-            $date = $tour->dates->first();
+            $date = $tour->dates->firstWhere('expired', false);
         }
 
         return [
