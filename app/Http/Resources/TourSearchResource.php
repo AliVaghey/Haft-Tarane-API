@@ -38,7 +38,7 @@ class TourSearchResource extends JsonResource
 
     public function minCost(Tour $tour, $date)
     {
-        if ($tour->isSysTrans()) {
+        if ($tour->isSysTrans() && $date->isNotEmpty()) {
             $price = $this->two_bed;
             foreach (SysTransport::where('date_id', $date->first()->id)->get() as $transport) {
                 $price += ($transport->flight->price_final / 10);
