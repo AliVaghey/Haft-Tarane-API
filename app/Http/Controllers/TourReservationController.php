@@ -189,7 +189,7 @@ class TourReservationController extends Controller
         $start = $this->getShamsi($date->start);
         $agency_message = "آژانس محترم {$tour->agency->name}";
         $agency_message .= "\nخواهشمند است نسبت به تامین کد تور {$tour->id}";
-        $agency_message .= "به تاریخ {$date->start}";
+        $agency_message .= "به تاریخ {$start}";
         $agency_message .= "به مدت {$tour->staying_nights}";
         $agency_message .= " شب اقدام فرمایید.";
 
