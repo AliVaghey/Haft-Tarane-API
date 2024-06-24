@@ -16,5 +16,6 @@ class ExpireDates
                 $date->update(['expire' => true]);
             }
         }
+        return true;
     }
 }

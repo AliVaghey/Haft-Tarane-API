@@ -139,8 +139,9 @@ class TourReservationController extends Controller
         $results = TourReservation::where('agency_id', $request->user()->agencyInfo->id);
         if ($request->query('pending')) {
             $results = $results->where('status', 'pending');
-        }
-        if ($request->query('checkedout')) {
+        } elseif ($request->query('all')) {
+            $results = $results->where('status', 'paid');
+        } elseif ($request->query('checkedout')) {
             $results = $results->where('status', 'checkedout');
         }
         return TourReservationResource::collection(
