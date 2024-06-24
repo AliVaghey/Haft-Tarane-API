@@ -67,7 +67,9 @@ class DateController extends Controller
         $request->validate([
             'price_change' => ['required', 'numeric'],
         ]);
+        $date->update(['price_change' => $request->get('price_change')]);
 
+        return response($date, 200);
     }
 
     public function updateExpiration(Request $request, Date $date)
