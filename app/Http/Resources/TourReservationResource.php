@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Tour;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -37,6 +38,7 @@ class TourReservationResource extends JsonResource
                 'origin' => $tour->origin,
                 'destination' => $tour->destination,
                 'staying_nights' => $tour->staying_nights,
+                'certificate' => $tour->certificate,
             ],
             'agency' => [
                 'id' => $tour->agency->id,
@@ -55,6 +57,19 @@ class TourReservationResource extends JsonResource
                 'photo' => $hotel->firstPhotoUrl(),
             ],
             'user' => $this->user,
+            'transportation' => $tour->isSysTrans() ? $this->getSysTrans($tour, $this->date) : $tour->transportations->sortBy("sort")
         ];
+    }
+
+    public function getSysTrans(Tour $tour, $date)
+    {
+        $result = [];
+        foreach ($tour->sysTransport->where('date_id', $date->id) as $transport) {
+            $result [] = [
+                'transportation_id' => $transport->id,
+                'flight' => $transport->flight
+            ];
+        }
+        return $result;
     }
 }
