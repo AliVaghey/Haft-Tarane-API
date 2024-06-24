@@ -11,6 +11,7 @@ use App\Models\Tour;
 use App\Models\TourReservation;
 use App\Models\User;
 use Illuminate\Http\Request;
+use IntlDateFormatter;
 
 class TourReservationController extends Controller
 {
@@ -185,6 +186,7 @@ class TourReservationController extends Controller
 
     private function sendMessages(User $user, Tour $tour, Date $date, Costs $cost, $reservation)
     {
+        $start = $this->getShamsi($date->start);
         $agency_message = "آژانس محترم {$tour->agency->name}";
         $agency_message .= "\nخواهشمند است نسبت به تامین کد تور {$tour->id}";
         $agency_message .= "به تاریخ {$date->start}";
@@ -199,5 +201,18 @@ class TourReservationController extends Controller
         $sms = sms();
         $sms->send($tour->agency->user->phone, $agency_message . "\nلغو 11");
         $sms->send($user->phone, $user_message . "\nلغو 11");
+    }
+
+    public function getShamsi($date)
+    {
+        $formatter = new IntlDateFormatter(
+            "fa_IR@calendar=persian",
+            IntlDateFormatter::FULL,
+            IntlDateFormatter::FULL,
+            'Asia/Tehran',
+            IntlDateFormatter::TRADITIONAL,
+            "yyyy-MM-dd");
+        $start_date = new \DateTime($date);
+        return $formatter->format($start_date);
     }
 }
