@@ -422,6 +422,7 @@ class TourController extends Controller
                         });
                     })
                 ->select('costs.*')
+                    ->distinct()
                 ->orderBy("two_bed")
                 ->paginate(10));
         }
