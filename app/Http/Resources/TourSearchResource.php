@@ -58,22 +58,23 @@ class TourSearchResource extends JsonResource
         if ($input) {
             foreach ($tour->dates as $d) {
                 $start = new Carbon($d->start);
-                if ($input == $start) {
+                if ($input == $start && !$d->expired) {
                     $date = $d;
                     break;
                 }
             }
+            if (!$date) {
+                return [
+                    'id' => 0,
+                    'start' => 0,
+                    'end' => 0,
+                ];
+            }
         } else {
-            $date = $tour->dates->firstWhere('expired', false);
+            $date = $tour->dates->Where('expired', false);
         }
 
-        return [
-            [
-                'id' => $date->id,
-                'start' => $date->start,
-                'end' => $date->end,
-            ]
-        ];
+        return [$date];
     }
 
     /**

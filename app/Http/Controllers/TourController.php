@@ -413,9 +413,9 @@ class TourController extends Controller
     {
         if ($request->query('all')) {
             return TourSearchResource::collection(
-                Costs::join('dates', function (JoinClause $join) {
-                        $join->on('costs.tour_id', '=', 'dates.tour_id')
-                            ->where('dates.expired', '=', 0);
+                Costs::join('tours', function (JoinClause $join) {
+                    $join->on('costs.tour_id', '=', 'tours.id')
+                        ->where('tours.status', '=', 'active');
                     })
                 ->select('costs.*')
                 ->orderBy("two_bed")
