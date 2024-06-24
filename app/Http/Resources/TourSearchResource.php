@@ -70,7 +70,7 @@ class TourSearchResource extends JsonResource
             $date = $tour->dates->Where('expired', false);
         }
 
-        return [$date];
+        return $date;
     }
 
     /**
