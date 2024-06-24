@@ -38,8 +38,8 @@ class TourReservationController extends Controller
         ]);
 
         $sms = sms();
-        $sms->send($tour->agency->user->phone, "آژانس محترم یک درخواست برای تور {$reservation->tour_id} دارید. لطفا برای تامین اقدام فرمایید.");
-        $sms->send($user->phone, "{$user->username} عزیز درخواست شما ثبت شد و در حال پیگیری می باشد.");
+        $sms->send($tour->agency->user->phone, "آژانس محترم یک درخواست برای تور {$reservation->tour_id} دارید. لطفا برای تامین اقدام فرمایید." . "لغو 11");
+        $sms->send($user->phone, "{$user->username} عزیز درخواست شما ثبت شد و در حال پیگیری می باشد." . "لغو 11");
 
         return response(new TourReservationResource($reservation), 201);
     }
