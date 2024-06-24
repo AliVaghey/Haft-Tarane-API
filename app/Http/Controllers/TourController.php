@@ -476,18 +476,18 @@ class TourController extends Controller
         if ($request->query('all')) {
             return TourSearchResource::collection(
                 Costs::join('tours', function (JoinClause $join) {
-                        $join->on('costs.tour_id', '=', 'tours.id')
-                            ->where('tours.trip_type', '=', "طبیعت گردی")
-                            ->where('tours.status', '=', 'active');
-                    })
-                    ->join('dates', function (JoinClause $join) {
-                        $join->on('costs.tour_id', '=', 'dates.tour_id')
-                            ->where('dates.expired', '=', false);
-                    })
+                    $join->on('costs.tour_id', '=', 'tours.id')
+                        ->where('tours.status', '=', 'active')
+                        ->where('tours.trip_type', '=', "طبیعت گردی")
+                        ->join('dates', function (JoinClause $join) {
+                            $join->on('tours.id', '=', 'dates.tour_id')
+                                ->where('dates.expired', '=', false);
+                        });
+                })
                     ->select('costs.*')
+                    ->distinct()
                     ->orderBy("two_bed")
-                    ->paginate(10)
-            );
+                    ->paginate(10));
         }
 
         $results = Tour::where('status', 'active')->where('trip_type', "طبیعت گردی");

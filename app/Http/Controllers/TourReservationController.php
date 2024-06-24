@@ -9,6 +9,7 @@ use App\Models\Date;
 use App\Models\SysTransport;
 use App\Models\Tour;
 use App\Models\TourReservation;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class TourReservationController extends Controller
@@ -37,6 +38,7 @@ class TourReservationController extends Controller
             'passengers_count' => $count,
         ]);
 
+        $this->sendMessages($user, $tour, $date, $cost, $reservation);
         $sms = sms();
         $sms->send($tour->agency->user->phone, "آژانس محترم یک درخواست برای تور {$reservation->tour_id} دارید. لطفا برای تامین اقدام فرمایید." . "\nلغو 11");
         $sms->send($user->phone, $user->username . "\n" . "عزیز درخواست شما ثبت شد و در حال پیگیری می باشد." . "\nلغو 11");
@@ -179,5 +181,23 @@ class TourReservationController extends Controller
         }
 
         return response($reservation, 200);
+    }
+
+    private function sendMessages(User $user, Tour $tour, Date $date, Costs $cost, $reservation)
+    {
+        $agency_message = "آژانس محترم {$tour->agency->name}";
+        $agency_message .= "\nخواهشمند است نسبت به تامین کد تور {$tour->id}";
+        $agency_message .= "به تاریخ {$date->start}";
+        $agency_message .= "به مدت {$tour->staying_nights}";
+        $agency_message .= " شب اقدام فرمایید.";
+
+        $user_message = "مسافر محترم {$user->username}";
+        $user_message .= "\nدرخواست شما ثبت شد و در حال پیگیری می باشد. لطفا با پشتیبان تور تماس بگیرید.";
+        $user_message .= "نام و شماره پشتیبان :\n";
+        $user_message .= $tour->support->name . " - " . $tour->support->phone;
+
+        $sms = sms();
+        $sms->send($tour->agency->user->phone, $agency_message . "\nلغو 11");
+        $sms->send($user->phone, $user_message . "\nلغو 11");
     }
 }
