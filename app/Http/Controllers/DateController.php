@@ -61,4 +61,22 @@ class DateController extends Controller
         $date->delete();
         return response()->noContent();
     }
+
+    public function addPriceChange(Request $request, Date $date)
+    {
+        $request->validate([
+            'price_change' => ['required', 'numeric'],
+        ]);
+
+    }
+
+    public function updateExpiration(Request $request, Date $date)
+    {
+        if ($request->query('expire') == 'true') {
+            $date->update(['expired' => true]);
+        } elseif ($request->query('expire') == 'false') {
+            $date->update(['expired' => false]);
+        }
+        return response($date, 200);
+    }
 }

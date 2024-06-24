@@ -22,6 +22,7 @@ class Date extends Model
         'start',
         'end',
         'expired',
+        'price_change',
     ];
 
     /**
