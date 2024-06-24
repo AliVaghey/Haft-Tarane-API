@@ -417,6 +417,10 @@ class TourController extends Controller
                     $join->on('costs.tour_id', '=', 'tours.id')
                         ->where('tours.status', '=', 'active');
                     })
+                    ->join('dates', function (JoinClause $join) {
+                        $join->on('costs.tour_id', '=', 'dates.tour_id')
+                            ->where('dates.expired', '=', 0);
+                    })
                 ->select('costs.*')
                 ->orderBy("two_bed")
                 ->paginate(10));
