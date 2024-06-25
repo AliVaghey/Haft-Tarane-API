@@ -50,9 +50,9 @@ class CostResource extends JsonResource
             foreach (SysTransport::where('date_id', $date['id'])->get() as $transport) {
                 $price += ($transport->flight->price_final / 10);
             }
-            return $price;
+            return $price + $date->price_change;
         } else {
-            return $this->two_bed;
+            return $this->two_bed + $date->price_change;
         }
     }
 
