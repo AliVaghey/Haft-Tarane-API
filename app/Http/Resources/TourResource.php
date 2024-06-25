@@ -55,6 +55,8 @@ class TourResource extends JsonResource
                     'id' => $date->id,
                     'start' => $date->start,
                     'end' => $date->end,
+                    'expired' => $date->expired,
+                    'price_change' => $date->price_change
                 ];
             }),
             'profit_rate' => $this->profit_rate
