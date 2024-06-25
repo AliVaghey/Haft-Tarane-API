@@ -13,7 +13,7 @@ class ExpireDates
         foreach ($dates as $date) {
             $start = new Carbon($date->start);
             if ($start->subDays($date->tour->expiration) < now()) {
-                $date->update(['expire' => true]);
+                $date->update(['expired' => true]);
             }
         }
     }
