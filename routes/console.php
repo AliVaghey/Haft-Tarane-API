@@ -13,7 +13,7 @@ Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
 
-Schedule::call(new ExpireDates)->twiceDaily();
+Schedule::call(new ExpireDates)->dailyAt('00:05');
 
 Artisan::command('make:superadmin', function () {
     $name = $this->ask('Enter your username');
