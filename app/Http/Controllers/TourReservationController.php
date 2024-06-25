@@ -34,7 +34,7 @@ class TourReservationController extends Controller
             'cost_id' => $cost->id,
             'hotel_id' => $cost->hotel_id,
             'agency_id' => $tour->agency_id,
-            'total_price' => $this->totalPrice($tour, $date, $cost, $request->get('rooms')),
+            'total_price' => $this->totalPrice($tour, $date, $cost, $request->get('rooms')) + ($date->price_change * $count),
             'passengers' => collect(json_decode($request->get('rooms'), true)),
             'passengers_count' => $count,
         ]);
