@@ -9,13 +9,12 @@ class ExpireDates
 {
     public function __invoke()
     {
-        $dates = Date::where('expire', '=', false)->get();
+        $dates = Date::where('expired', '=', false)->get();
         foreach ($dates as $date) {
             $start = new Carbon($date->start);
             if ($start->subDays($date->tour->expiration) < now()) {
                 $date->update(['expire' => true]);
             }
         }
-        return true;
     }
 }
