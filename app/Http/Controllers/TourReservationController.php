@@ -6,6 +6,7 @@ use App\Enums\UserAccessType;
 use App\Http\Resources\TourReservationResource;
 use App\Models\Costs;
 use App\Models\Date;
+use App\Models\PriceChange;
 use App\Models\SysTransport;
 use App\Models\Tour;
 use App\Models\TourReservation;
@@ -34,7 +35,7 @@ class TourReservationController extends Controller
             'cost_id' => $cost->id,
             'hotel_id' => $cost->hotel_id,
             'agency_id' => $tour->agency_id,
-            'total_price' => $this->totalPrice($tour, $date, $cost, $request->get('rooms')) + ($date->price_change * $count),
+            'total_price' => $this->totalPrice($tour, $date, $cost, $request->get('rooms'), $count),
             'passengers' => collect(json_decode($request->get('rooms'), true)),
             'passengers_count' => $count,
         ]);
@@ -58,7 +59,7 @@ class TourReservationController extends Controller
         return new TourReservationResource($reservation);
     }
 
-    private function totalPrice(Tour $tour, Date $date, Costs $cost, $passengers)
+    private function totalPrice(Tour $tour, Date $date, Costs $cost, $passengers, int $count)
     {
         $passengers = json_decode($passengers, true);
         $total_price = 0;
@@ -101,6 +102,11 @@ class TourReservationController extends Controller
                     }
                 }
             }
+        }
+        $price_change = PriceChange::where('date_id', $date->id)->where('cost_id', $cost->id)->get();
+        if ($price_change->isNotEmpty()) {
+            $price_change = $price_change->first();
+            $total_price += ($count * $price_change->price_change);
         }
         return $total_price;
     }

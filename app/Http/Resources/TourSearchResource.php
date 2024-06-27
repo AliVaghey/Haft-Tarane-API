@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use App\Models\Hotel;
+use App\Models\PriceChange;
 use App\Models\SysTransport;
 use App\Models\Tour;
 use Carbon\Carbon;
@@ -39,14 +40,19 @@ class TourSearchResource extends JsonResource
     public function minCost(Tour $tour, $date)
     {
         if ($tour->isSysTrans()) {
-            $price = $this->two_bed;
+            $total_price = $this->two_bed;
             foreach (SysTransport::where('date_id', $date[0]['id'])->get() as $transport) {
-                $price += ($transport->flight->price_final / 10);
+                $total_price += ($transport->flight->price_final / 10);
             }
-            return $price;
         } else {
-            return $this->two_bed;
+            $total_price = $this->two_bed;
         }
+        $price_change = PriceChange::where('date_id', $date[0]['id'])->where('cost_id', $this->id)->get();
+        if ($price_change->isNotEmpty()) {
+            $price_change = $price_change->first();
+            $total_price += $price_change->price_change;
+        }
+        return $total_price;
     }
 
     public function findDate(Tour $tour, $input = null)

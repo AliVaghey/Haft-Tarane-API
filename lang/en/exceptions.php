@@ -28,4 +28,5 @@ return [
     'sms-went-wrong' => "something went wrong with the sms panel.",
     'sys-transport' => "This tour has system transportation type.",
     'not-own-res' => "This reservation is not yours.",
+    'price-change-exists' => "This change of price already exists.",
 ];
