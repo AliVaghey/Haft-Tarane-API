@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use App\Models\Hotel;
+use App\Models\PriceChange;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Collection;
@@ -59,8 +60,18 @@ class TourResource extends JsonResource
                     'price_change' => $date->price_change
                 ];
             }),
-            'profit_rate' => $this->profit_rate
+            'profit_rate' => $this->profit_rate,
+            'price_changes' => $this->getPriceChanges($this->costs),
         ];
+    }
+
+    public function getPriceChanges($costs)
+    {
+        $priceChanges = collect();
+        foreach ($costs as $cost) {
+            $priceChanges->push(PriceChange::where('cost_id', $cost->id)->get());
+        }
+        return $priceChanges->flatten(1);
     }
 
 //    /**
