@@ -36,6 +36,8 @@ Route::middleware(['auth:sanctum', 'isAgency'])->prefix('agency/')->group(functi
     Route::delete('tour/transportation/{transportation}', [TransportationController::class, 'deleteTransport']);
     Route::post('tour/{tour}/sys-transportation', [SysTransportController::class, 'addTransport']);
     Route::delete('tour/sys-transportation/{transportation}', [SysTransportController::class, 'deleteTransport']);
+    Route::post('date/{date}/price-change', [DateController::class, 'addPriceChange']);
+    Route::post('date/{date}/expiration', [DateController::class, 'updateExpiration']);
 
     //------------------------- Support Team -------------------------
     Route::post('support', [SupportController::class, 'new']);
