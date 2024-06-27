@@ -549,4 +549,37 @@ class TourController extends Controller
         }
         return new CostResource($cost);
     }
+
+    public function copy(Request $request, Tour $tour)
+    {
+        $new = $tour->replicate();
+        $new->save();
+        $new->refresh();
+
+        //Certificates :
+        $new_certificate = $tour->certificate->replicate();
+        $new_certificate->tour_id = $new->id;
+        $new_certificate->save();
+
+        //Costs :
+        foreach ($tour->costs as $cost) {
+            $new_cost = $cost->replicate();
+            $new_cost->tour_id = $new->id;
+            $new_cost->save();
+        }
+
+        //Transportation :
+        if (!$tour->isSysTrans()) {
+            foreach ($tour->transportations as $transportation) {
+                $new_transportation = $transportation->replicate();
+                $new_transportation->tour_id = $new->id;
+                $new_transportation->save();
+            }
+        }
+
+        $new->status = TourStatus::Pending;
+        $new->save();
+
+        return response($new, 201);
+    }
 }

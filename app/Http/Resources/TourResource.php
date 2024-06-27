@@ -71,7 +71,7 @@ class TourResource extends JsonResource
         foreach ($costs as $cost) {
             $priceChanges->push(PriceChange::where('cost_id', $cost->id)->get());
         }
-        return $priceChanges->flatten(1);
+        return PriceChangeResource::collection($priceChanges->flatten(1));
     }
 
 //    /**

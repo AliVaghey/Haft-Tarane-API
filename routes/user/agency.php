@@ -42,6 +42,8 @@ Route::middleware(['auth:sanctum', 'isAgency'])->prefix('agency/')->group(functi
     Route::post('date/{date}/cost/{cost}/price-change', [PriceChangeController::class, 'add']);
     Route::delete('price-change/{price_change}', [PriceChangeController::class, 'delete']);
 
+    Route::post('tour/{tour}/copy', [TourController::class, 'copy']);
+
     //------------------------- Support Team -------------------------
     Route::post('support', [SupportController::class, 'new']);
     Route::get('supports', [SupportController::class, 'getAll']);
