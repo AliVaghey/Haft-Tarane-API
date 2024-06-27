@@ -557,9 +557,11 @@ class TourController extends Controller
         $new->refresh();
 
         //Certificates :
-        $new_certificate = $tour->certificate->replicate();
-        $new_certificate->tour_id = $new->id;
-        $new_certificate->save();
+        if ($tour->certificate) {
+            $new_certificate = $tour->certificate->replicate();
+            $new_certificate->tour_id = $new->id;
+            $new_certificate->save();
+        }
 
         //Costs :
         foreach ($tour->costs as $cost) {
@@ -577,7 +579,7 @@ class TourController extends Controller
             }
         }
 
-        $new->status = TourStatus::Pending;
+        $new->status = TourStatus::Draft;
         $new->save();
 
         return response($new, 201);
