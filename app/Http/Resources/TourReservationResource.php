@@ -5,6 +5,7 @@ namespace App\Http\Resources;
 use App\Models\Tour;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Storage;
 
 class TourReservationResource extends JsonResource
 {
@@ -27,10 +28,10 @@ class TourReservationResource extends JsonResource
             'tour' => [
                 'id' => $tour->id,
                 'title' => $tour->title,
-                'support' => [
-                    'name' => $support->name,
-                    'phone' => $support->phone,
-                ],
+//                'support' => [
+//                    'name' => $support->name,
+//                    'phone' => $support->phone,
+//                ],
                 'transportation_type' => $tour->transportation_type,
                 'trip_type' => $tour->trip_type,
                 'tour_styles' => $tour->tour_styles,
@@ -58,7 +59,10 @@ class TourReservationResource extends JsonResource
                 'photo' => $hotel->firstPhotoUrl(),
             ],
             'user' => $this->user,
-            'transportation' => $tour->isSysTrans() ? $this->getSysTrans($tour, $this->date) : $tour->transportations->sortBy("sort")
+            'transportation' => $tour->isSysTrans() ? $this->getSysTrans($tour, $this->date) : $tour->transportations->sortBy("sort"),
+            'files' => $this->files->files->map(function ($path) {
+                return Storage::disk('public')->url($path);
+            }),
         ];
     }
 

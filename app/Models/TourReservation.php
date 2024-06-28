@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Casts\AsCollection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class TourReservation extends Model
 {
@@ -56,5 +57,10 @@ class TourReservation extends Model
     public function hotel(): BelongsTo
     {
         return $this->belongsTo(Hotel::class, 'hotel_id');
+    }
+
+    public function files(): HasOne
+    {
+        return $this->hasOne(ReservationFile::class, 'reservation_id');
     }
 }
