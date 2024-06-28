@@ -33,7 +33,7 @@ class TourSearchResource extends JsonResource
             'status' => $tour->status,
             'dates' => $date,
             'costs' => $this->filterCosts(),
-            'transportation' => $tour->transportation,
+            'transportation' => null,
         ];
     }
 
