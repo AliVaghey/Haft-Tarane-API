@@ -1,11 +1,10 @@
 <?php
 
 use App\Http\Controllers\AgencyInfoController;
-use App\Http\Controllers\AirportController;
+use App\Schedules\DeleteSpecialTours;
 use App\Schedules\ExpireDates;
 use App\Schedules\ExpireTours;
 use App\Schedules\ResetVisits;
-use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
@@ -13,9 +12,10 @@ use Illuminate\Support\Facades\Schedule;
 
 //---Schedules :
 
+Schedule::call(new ResetVisits)->daily();
 Schedule::call(new ExpireDates)->dailyAt('00:05');
 Schedule::call(new ExpireTours)->dailyAt('00:15');
-Schedule::call(new ResetVisits)->daily();
+Schedule::call(new DeleteSpecialTours)->dailyAt('00:30');
 
 //---Artisan Commands :
 

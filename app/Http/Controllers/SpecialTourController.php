@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\CostResource;
 use App\Http\Resources\SpecialTourResource;
+use App\Models\Date;
 use App\Models\SpecialTour;
 use App\Models\Tour;
 use Illuminate\Http\Request;
@@ -38,12 +40,27 @@ class SpecialTourController extends Controller
             return response(['message' => 'این تور قبلا به عنوان تور خاص انتخاب شده است.'], 403);
         }
 
+        $dates = collect(json_decode($request->get('dates'), true))->map(function ($date) {
+            return Date::find($date);
+        });
+        foreach ($dates as $key => $date) {
+            if ($date->expired) {
+                $dates->forget($key);
+            }
+        }
+        if ($dates->isEmpty()) {
+            return response(['message' => "همه تاریخ های انتخاب شده منقضی شده اند."], 403);
+        }
+
         $photo_path = $request->hasFile('photo') ? $request->file('photo')->store('special-tours', ['disk' => 'public']) : null;
         $model = SpecialTour::create([
             'tour_id' => $tour->id,
             'photo' => $photo_path,
             'importance' => $request->get('importance', 1),
             'advertisement' => $request->get('advertisement'),
+            'dates' => $dates->map(function ($date) {
+                return $date->id;
+            })
         ]);
 
         return response(new SpecialTourResource($model), 201);
@@ -77,10 +94,25 @@ class SpecialTourController extends Controller
             $photo_path = $tour->photo;
         }
 
+        $dates = collect(json_decode($request->get('dates'), true))->map(function ($date) {
+            return Date::find($date);
+        });
+        foreach ($dates as $key => $date) {
+            if ($date->expired) {
+                $dates->forget($key);
+            }
+        }
+        if ($dates->isEmpty()) {
+            return response(['message' => "همه تاریخ های انتخاب شده منقضی شده اند."], 403);
+        }
+
         $tour->update([
             'photo' => $photo_path,
             'importance' => $request->get('importance') ?? $tour->importance,
             'advertisement' => $request->get('advertisement') ?? $tour->advertisement,
+            'dates' => $dates->map(function ($date) {
+                return $date->id;
+            })
         ]);
 
         return response(new SpecialTourResource($tour), 200);
@@ -97,5 +129,10 @@ class SpecialTourController extends Controller
         $tour->removePhoto();
         $tour->delete();
         return response()->noContent();
+    }
+
+    public function getSpecialTourCosts(SpecialTour $tour)
+    {
+        return CostResource::collection($tour->tour->costs);
     }
 }

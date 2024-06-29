@@ -31,7 +31,9 @@ Route::get('cost/{cost}', [TourController::class, 'getCostInfo']);
 Route::get('similar-dates', [TourController::class, 'similarDates']);
 
 Route::get('specials', [SpecialTourController::class, 'getAll']);
+Route::get('special/{tour}', [SpecialTourController::class, 'getSpecialTourCosts']);
 Route::get('banners', [AdsController::class, 'all']);
 
 Route::post('visit', [ConfigController::class, 'countVisit']);
 Route::get('visits', [ConfigController::class, 'getVisits']);
+

@@ -16,7 +16,7 @@ use App\Http\Controllers\TourController;
 
 Route::middleware(['auth:sanctum', 'isAdmin'])->prefix('admin/')->group(function () {
 
-    //************************* Super Admin *************************
+    //*********************************** Super Admin ***********************************
     //----------------------------- ads -----------------------------
     Route::get('banners', [AdsController::class, 'all'])->middleware('superAdmin');
     Route::get('banner/{ad}', [AdsController::class, 'read'])->middleware('superAdmin');
@@ -38,9 +38,15 @@ Route::middleware(['auth:sanctum', 'isAdmin'])->prefix('admin/')->group(function
     Route::post('option', [OptionsController::class, 'add'])->middleware('superAdmin');
     Route::delete('option/{option}', [OptionsController::class, 'remove'])->middleware('superAdmin');
 
+    //------------------------ Special Tours -------------------------
+    Route::post('tour/{tour}/special', [SpecialTourController::class, 'create'])->middleware('superAdmin');
+    Route::post('special-tour/{tour}', [SpecialTourController::class, 'edit'])->middleware('superAdmin');
+    Route::delete('special-tour/{tour}', [SpecialTourController::class, 'delete'])->middleware('superAdmin');
+    Route::get('special-tours', [SpecialTourController::class, 'getAll'])->middleware('superAdmin');
+    Route::get('special-tour/{tour}', [SpecialTourController::class, 'read'])->middleware('superAdmin');
 
 
-    //============================ Admin =============================
+    //====================================== Admin ========================================
     //------------------------- Profile Info -------------------------
     Route::get('info', [RegisteredUserController::class, 'getInfo']);
     Route::put('info', [RegisteredUserController::class, 'updateInfo']);
@@ -81,12 +87,6 @@ Route::middleware(['auth:sanctum', 'isAdmin'])->prefix('admin/')->group(function
     Route::post('tour/{id}/approve', [TourController::class, 'approve']);
     Route::post('tour/{id}/reject', [TourController::class, 'reject']);
 
-    //------------------------ Special Tours -------------------------
-    Route::post('tour/{tour}/special', [SpecialTourController::class, 'create']);
-    Route::post('special-tour/{tour}', [SpecialTourController::class, 'edit']);
-    Route::delete('special-tour/{tour}', [SpecialTourController::class, 'delete']);
-    Route::get('special-tours', [SpecialTourController::class, 'getAll']);
-    Route::get('special-tour/{tour}', [SpecialTourController::class, 'read']);
 
     //------------------------- Reservations -------------------------
 //    Route::get('reservations', )
