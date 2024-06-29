@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdsController;
 use App\Http\Controllers\AirportController;
+use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\FlightInfoController;
 use App\Http\Controllers\OptionsController;
 use App\Http\Controllers\PlaceController;
@@ -31,3 +32,6 @@ Route::get('similar-dates', [TourController::class, 'similarDates']);
 
 Route::get('specials', [SpecialTourController::class, 'getAll']);
 Route::get('banners', [AdsController::class, 'all']);
+
+Route::post('visit', [ConfigController::class, 'countVisit']);
+Route::get('visits', [ConfigController::class, 'getVisits']);

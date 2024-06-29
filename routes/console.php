@@ -4,6 +4,7 @@ use App\Http\Controllers\AgencyInfoController;
 use App\Http\Controllers\AirportController;
 use App\Schedules\ExpireDates;
 use App\Schedules\ExpireTours;
+use App\Schedules\ResetVisits;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Hash;
@@ -14,6 +15,7 @@ use Illuminate\Support\Facades\Schedule;
 
 Schedule::call(new ExpireDates)->dailyAt('00:05');
 Schedule::call(new ExpireTours)->dailyAt('00:15');
+Schedule::call(new ResetVisits)->daily();
 
 //---Artisan Commands :
 
