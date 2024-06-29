@@ -21,7 +21,7 @@ class TourReservationController extends Controller
         $request->validate(['rooms' => ['required', 'json']]);
         $count = $this->countPassengers(json_decode($request->get('rooms'), true));
         if ($request->user()->access_type != UserAccessType::User) {
-            return response(['message' => "تنها کاربران قادر به رزرو تور می باشند."]);
+            return response(['message' => "تنها کاربران قادر به رزرو تور می باشند."], 403);
         }
         if ($count > $tour->capacity) {
             return response(['message' => "ظرفیت این تور تنها {$tour->capacity} نفر می باشد."], 403);
