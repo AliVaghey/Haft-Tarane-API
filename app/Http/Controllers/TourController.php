@@ -591,6 +591,6 @@ class TourController extends Controller
         if($cost = Costs::find($request->query('cost_id'))) {
             return SimilarDateResource::collection($cost->tour->dates->where('expired', false));
         }
-        return response('not found', 404);
+        return response([]);
     }
 }

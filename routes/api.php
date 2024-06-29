@@ -27,7 +27,7 @@ Route::get('tours', [TourController::class, 'PublicGetTours']);
 Route::get('tour/{tour}', [TourController::class, 'getActiveTour']);
 Route::get('tours/nature', [TourController::class, 'publicNatureTours']);
 Route::get('cost/{cost}', [TourController::class, 'getCostInfo']);
-Route::get('cost/similar-dates', [TourController::class, 'similarDates']);
+Route::get('similar-dates', [TourController::class, 'similarDates']);
 
 Route::get('specials', [SpecialTourController::class, 'getAll']);
 Route::get('banners', [AdsController::class, 'all']);
