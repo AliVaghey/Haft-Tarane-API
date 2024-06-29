@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\TourStatus;
 use App\Http\Resources\CostResource;
+use App\Http\Resources\SimilarDateResource;
 use App\Http\Resources\TourListResource;
 use App\Http\Resources\TourResource;
 use App\Http\Resources\TourSearchResource;
@@ -583,5 +584,13 @@ class TourController extends Controller
         $new->save();
 
         return response($new, 201);
+    }
+
+    public function similarDates(Request $request)
+    {
+        if($cost = Costs::find($request->query('cost_id'))) {
+            return SimilarDateResource::collection($cost->tour->dates->where('expired', false));
+        }
+        return response('not found', 404);
     }
 }

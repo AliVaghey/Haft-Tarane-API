@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\PriceChangeController;
 use App\Http\Controllers\ProfitRateController;
+use App\Http\Controllers\ReservationFileController;
 use App\Http\Controllers\SysTransportController;
 use App\Http\Controllers\TourReservationController;
 use App\Http\Controllers\TransportationController;
@@ -62,5 +63,6 @@ Route::middleware(['auth:sanctum', 'isAgency'])->prefix('agency/')->group(functi
     Route::get('reservations', [TourReservationController::class, 'getAgencyReservations']);
     Route::get('reservation/{reservation}', [TourReservationController::class, 'getAgencyReservation']);
     Route::post('reservation/{reservation}/change-status', [TourReservationController::class, 'changeReservationStatus']);
-
+    Route::post('reservation/{reservation}/files', [ReservationFileController::class, 'upload']);
+    Route::delete('reservation/{reservation}/files', [ReservationFileController::class, 'remove']);
 });

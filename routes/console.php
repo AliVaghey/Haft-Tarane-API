@@ -3,17 +3,19 @@
 use App\Http\Controllers\AgencyInfoController;
 use App\Http\Controllers\AirportController;
 use App\Schedules\ExpireDates;
+use App\Schedules\ExpireTours;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Illuminate\Support\Facades\Schedule;
 
-Artisan::command('inspire', function () {
-    $this->comment(Inspiring::quote());
-})->purpose('Display an inspiring quote');
+//---Schedules :
 
 Schedule::call(new ExpireDates)->dailyAt('00:05');
+Schedule::call(new ExpireTours)->dailyAt('00:15');
+
+//---Artisan Commands :
 
 Artisan::command('make:superadmin', function () {
     $name = $this->ask('Enter your username');

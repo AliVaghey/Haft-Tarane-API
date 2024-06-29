@@ -7,6 +7,7 @@ use App\Http\Resources\TourReservationResource;
 use App\Models\Costs;
 use App\Models\Date;
 use App\Models\PriceChange;
+use App\Models\ReservationFile;
 use App\Models\SysTransport;
 use App\Models\Tour;
 use App\Models\TourReservation;
@@ -38,6 +39,11 @@ class TourReservationController extends Controller
             'total_price' => $this->totalPrice($tour, $date, $cost, $request->get('rooms'), $count),
             'passengers' => collect(json_decode($request->get('rooms'), true)),
             'passengers_count' => $count,
+        ]);
+
+        ReservationFile::create([
+            'reservation_id' => $reservation->id,
+            'files' => collect()
         ]);
 
         $this->sendMessages($user, $tour, $date, $cost, $reservation);
