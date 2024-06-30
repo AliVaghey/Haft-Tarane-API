@@ -183,7 +183,7 @@ class TourController extends Controller
         }
 
         if ($tour->transportations->isNotEmpty()) {
-            $tour->transportation->each(function ($t) {
+            $tour->transportations->each(function ($t) {
                 $t->delete();
             });
         }
