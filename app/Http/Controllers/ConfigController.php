@@ -9,7 +9,7 @@ class ConfigController extends Controller
 {
     private function makeVisitConfig()
     {
-        $config = Config::where('key', 'visit_count')->get();
+        $config = Config::where('key', 'visit_count')->get()->first();
         if ($config->isEmpty()) {
             $config = Config::create(['key' => 'visit_count', 'value' => collect(['all' => 0, 'today' => 0])]);
         }
