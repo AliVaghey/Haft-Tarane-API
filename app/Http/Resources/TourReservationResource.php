@@ -24,14 +24,14 @@ class TourReservationResource extends JsonResource
             'total_price' => $this->total_price,
             'passengers_count' => $this->passengers_count,
             'passengers' => $this->passengers,
-            'status' => $this->status,
+            'status' => ($this->status == 'checkedout' && $request->user()->isUser()) ? 'paid' : $this->status,
             'tour' => [
                 'id' => $tour->id,
                 'title' => $tour->title,
-//                'support' => [
-//                    'name' => $support->name,
-//                    'phone' => $support->phone,
-//                ],
+                'support' => [
+                    'name' => $support->name,
+                    'phone' => $support->phone,
+                ],
                 'transportation_type' => $tour->transportation_type,
                 'trip_type' => $tour->trip_type,
                 'tour_styles' => $tour->tour_styles,
