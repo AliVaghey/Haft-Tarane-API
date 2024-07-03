@@ -28,10 +28,10 @@ class TourReservationResource extends JsonResource
             'tour' => [
                 'id' => $tour->id,
                 'title' => $tour->title,
-//                'support' => [
-//                    'name' => $support->name,
-//                    'phone' => $support->phone,
-//                ],
+                'support' => [
+                    'name' => $support->name,
+                    'phone' => $support->phone,
+                ],
                 'transportation_type' => $tour->transportation_type,
                 'trip_type' => $tour->trip_type,
                 'tour_styles' => $tour->tour_styles,
