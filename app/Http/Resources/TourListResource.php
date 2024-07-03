@@ -20,6 +20,7 @@ class TourListResource extends JsonResource
             'id' => $this->id,
             'agency_name' => $this->agency->name,
             'title' => $this->title,
+            'staying_nights' => $this->staying_nights,
             'trip_type' => $this->trip_type,
             'capacity' => $this->capacity,
             'origin' => $this->origin,
