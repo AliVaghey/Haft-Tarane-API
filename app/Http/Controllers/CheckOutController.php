@@ -115,8 +115,8 @@ class CheckOutController extends Controller
         return CheckoutResource::collection($user->checkouts()->paginate(10));
     }
 
-    public function getSaleCheckoutsForAgency()
+    public function getSaleCheckoutsForAgency(Request $request, CheckOut $checkout)
     {
-
+        return TourReservationResource::collection($checkout->reservations()->paginate($request->query('per_page', 10)));
     }
 }
