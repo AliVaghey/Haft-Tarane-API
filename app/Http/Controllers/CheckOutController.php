@@ -97,6 +97,7 @@ class CheckOutController extends Controller
     public function getAgencyCheckouts(Request $request, AgencyInfo $agency)
     {
         return CheckOut::where('agency_id', $agency->id)
+            ->orderBy('created_at', 'desc')
             ->paginate($request->query('per_page', 10));
     }
 
@@ -111,8 +112,12 @@ class CheckOutController extends Controller
 
     public function getMyCheckoutsForAgency(Request $request)
     {
-        $user = $request->user()->agencyInfo;
-        return CheckoutResource::collection($user->checkouts()->paginate(10));
+        $agencyId = $request->user()->agencyInfo->id;
+        return CheckoutResource::collection(
+            CheckOut::where('agency_id', $agencyId)
+                ->orderBy('created_at', 'desc')
+                ->paginate(10)
+        );
     }
 
     public function getSaleCheckoutsForAgency(Request $request, CheckOut $checkout)
