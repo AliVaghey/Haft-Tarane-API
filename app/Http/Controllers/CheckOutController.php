@@ -25,6 +25,7 @@ class CheckOutController extends Controller
         return TourReservationResource::collection(
             TourReservation::where('agency_id', $agency->id)
                 ->where('status', 'paid')
+                ->orderBy('updated_at', 'desc')
                 ->paginate(
                     $request->query('per_page', 10)
                 )
@@ -112,16 +113,12 @@ class CheckOutController extends Controller
 
     public function getMyCheckoutsForAgency(Request $request)
     {
-        $agencyId = $request->user()->agencyInfo->id;
-        return CheckoutResource::collection(
-            CheckOut::where('agency_id', $agencyId)
-                ->orderBy('created_at', 'desc')
-                ->paginate(10)
-        );
+        $user = $request->user()->agencyInfo;
+        return CheckoutResource::collection($user->checkouts()->orderByDesc('created_at')->paginate(10));
     }
 
     public function getSaleCheckoutsForAgency(Request $request, CheckOut $checkout)
     {
-        return TourReservationResource::collection($checkout->reservations()->paginate($request->query('per_page', 10)));
+        return TourReservationResource::collection($checkout->reservations()->orderByDesc('created_at')->paginate($request->query('per_page', 10)));
     }
 }
