@@ -96,7 +96,7 @@ class AgencyInfoController extends Controller
     {
         $admin = $request->user();
         return $request->query('name') ?
-            AgencyResource::collection($admin->agencies()->where('name', $request->query('name'))->get()) :
+            AgencyResource::collection($admin->agencies()->where('name', 'like', '%' . $request->query('name')) . '%') :
             AgencyResource::collection($admin->agencies()->paginate(10));
     }
 

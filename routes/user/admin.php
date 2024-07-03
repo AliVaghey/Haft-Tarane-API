@@ -3,6 +3,7 @@
 
 use App\Http\Controllers\AdsController;
 use App\Http\Controllers\AirportController;
+use App\Http\Controllers\CheckOutController;
 use App\Http\Controllers\OptionsController;
 use App\Http\Controllers\ProfitRateController;
 use App\Http\Controllers\SpecialTourController;
@@ -88,7 +89,7 @@ Route::middleware(['auth:sanctum', 'isAdmin'])->prefix('admin/')->group(function
     Route::post('tour/{id}/reject', [TourController::class, 'reject']);
 
 
-    //------------------------- Reservations -------------------------
-//    Route::get('reservations', )
+    //-------------------------- CheckOuts --------------------------
+    Route::get('agencies/checkouts', [CheckoutController::class, 'getAgencies']);
 
 });
