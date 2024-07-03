@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CheckOutController;
 use App\Http\Controllers\PriceChangeController;
 use App\Http\Controllers\ProfitRateController;
 use App\Http\Controllers\ReservationFileController;
@@ -65,4 +66,9 @@ Route::middleware(['auth:sanctum', 'isAgency'])->prefix('agency/')->group(functi
     Route::post('reservation/{reservation}/change-status', [TourReservationController::class, 'changeReservationStatus']);
     Route::post('reservation/{reservation}/files', [ReservationFileController::class, 'upload']);
     Route::delete('reservation/{reservation}/files', [ReservationFileController::class, 'remove']);
+
+    //--------------------------- Checkouts --------------------------
+    Route::get('checkouts', [CheckoutController::class, 'getMyCheckoutsForAgency']);
+    Route::get('checkout/{checkout}', [CheckoutController::class, 'getSaleCheckoutsForAgency']);
+
 });

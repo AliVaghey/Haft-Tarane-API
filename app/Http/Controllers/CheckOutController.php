@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\AgenciesCheckOutResource;
+use App\Http\Resources\CheckoutResource;
 use App\Http\Resources\TourReservationResource;
 use App\Models\AgencyInfo;
 use App\Models\CheckOut;
@@ -106,5 +107,16 @@ class CheckOutController extends Controller
             'check_out' => $checkout,
             'sales' => $checkout->reservations,
         ]);
+    }
+
+    public function getMyCheckoutsForAgency(Request $request)
+    {
+        $user = $request->user()->agencyInfo;
+        return CheckoutResource::collection($user->checkouts()->paginate(10));
+    }
+
+    public function getSaleCheckoutsForAgency()
+    {
+
     }
 }
