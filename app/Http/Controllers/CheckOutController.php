@@ -10,6 +10,7 @@ use App\Models\TourReservation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class CheckOutController extends Controller
 {
@@ -100,6 +101,7 @@ class CheckOutController extends Controller
 
     public function getCheckOutsDetails(Request $request, Checkout $checkout)
     {
+        $checkout->receipt = Storage::disk('public')->url($checkout->receipt);
         return response([
             'check_out' => $checkout,
             'sales' => $checkout->reservations,
