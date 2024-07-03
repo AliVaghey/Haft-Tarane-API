@@ -17,7 +17,7 @@ class CheckOut extends Model
         'total_price',
         'profit',
         'real_price',
-        'receipt_photo'
+        'receipt'
     ];
 
     public function agency(): BelongsTo
