@@ -24,7 +24,7 @@ class TourReservationResource extends JsonResource
             'total_price' => $this->total_price,
             'passengers_count' => $this->passengers_count,
             'passengers' => $this->passengers,
-            'status' => $this->status,
+            'status' => ($this->status == 'checkedout' && $request->user()->isUser()) ? 'paid' : $this->status,
             'tour' => [
                 'id' => $tour->id,
                 'title' => $tour->title,

@@ -83,6 +83,11 @@ class User extends Authenticatable
         return $this->access_type === UserAccessType::Agency || $this->access_type === UserAccessType::SuperAdmin;
     }
 
+    public function isUser(): bool
+    {
+        return $this->access_type == UserAccessType::User;
+    }
+
     /**
      * Get the agency_info model.
      */
