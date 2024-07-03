@@ -91,4 +91,18 @@ class CheckOutController extends Controller
 
         return response($checkout, 201);
     }
+
+    public function getAgencyCheckouts(Request $request, AgencyInfo $agency)
+    {
+        return CheckOut::where('agency_id', $agency->id)
+            ->paginate($request->query('per_page', 10));
+    }
+
+    public function getCheckOutsDetails(Request $request, Checkout $checkout)
+    {
+        return response([
+            'check_out' => $checkout,
+            'sales' => $checkout->reservations,
+        ]);
+    }
 }

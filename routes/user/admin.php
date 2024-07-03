@@ -94,5 +94,7 @@ Route::middleware(['auth:sanctum', 'isAdmin'])->prefix('admin/')->group(function
     Route::get('agency/{agency}/sales', [CheckoutController::class, 'getAgencySales']);
     Route::get('agency/{agency}/checkout', [CheckoutController::class, 'getAgencyCheckout']);
     Route::post('agency/{agency}/checkout', [CheckoutController::class, 'checkOut']);
+    Route::get('agency/{agency}/checkouts', [CheckoutController::class, 'getAgencyCheckouts']);
+    Route::get('checkout/{checkout}', [CheckOutController::class, 'getCheckOutsDetails']);
 
 });
