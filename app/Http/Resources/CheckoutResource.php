@@ -26,6 +26,7 @@ class CheckoutResource extends JsonResource
                 'name' => $this->admin->username,
             ],
             'total_price' => $this->total_price,
+            'profit' => $this->profit,
             'receipt' => Storage::disk('public')->url($this->receipt),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,

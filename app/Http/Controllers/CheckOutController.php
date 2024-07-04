@@ -97,9 +97,9 @@ class CheckOutController extends Controller
 
     public function getAgencyCheckouts(Request $request, AgencyInfo $agency)
     {
-        return CheckOut::where('agency_id', $agency->id)
+        return CheckoutResource::collection(CheckOut::where('agency_id', $agency->id)
             ->orderBy('created_at', 'desc')
-            ->paginate($request->query('per_page', 10));
+            ->paginate($request->query('per_page', 10)));
     }
 
     public function getCheckOutsDetails(Request $request, Checkout $checkout)
@@ -107,7 +107,7 @@ class CheckOutController extends Controller
         $checkout->receipt = Storage::disk('public')->url($checkout->receipt);
         return response([
             'check_out' => $checkout,
-            'sales' => $checkout->reservations,
+            'sales' => TourReservationResource::collection($checkout->reservations),
         ]);
     }
 
