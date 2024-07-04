@@ -70,5 +70,6 @@ Route::middleware(['auth:sanctum', 'isAgency'])->prefix('agency/')->group(functi
     //--------------------------- Checkouts --------------------------
     Route::get('checkouts', [CheckoutController::class, 'getMyCheckoutsForAgency']);
     Route::get('checkout/{checkout}', [CheckoutController::class, 'getSaleCheckoutsForAgency']);
+    Route::get('not-checkouts', [CheckoutController::class, 'getNotMyCheckoutsForAgency']);
 
 });

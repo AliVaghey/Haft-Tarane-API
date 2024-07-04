@@ -122,4 +122,14 @@ class CheckOutController extends Controller
     {
         return TourReservationResource::collection($checkout->reservations()->orderByDesc('created_at')->paginate($request->query('per_page', 10)));
     }
+
+    public function getNotMyCheckoutsForAgency(Request $request)
+    {
+        return TourReservationResource::collection(
+            TourReservation::where('agency_id', $request->user()->agencyInfo->id)
+                ->where('status', 'paid')
+                ->orderBy('updated_at', 'desc')
+                ->paginate(10)
+        );
+    }
 }
