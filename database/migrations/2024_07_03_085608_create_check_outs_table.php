@@ -17,6 +17,7 @@ return new class extends Migration {
             $table->decimal('total_price', 10, 0);
             $table->decimal('profit', 10, 0);
             $table->decimal('real_price', 10, 0);
+            $table->string('description')->nullable();
             $table->string('receipt')->nullable();
             $table->timestamps();
         });

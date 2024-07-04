@@ -82,6 +82,7 @@ class CheckOutController extends Controller
             'profit' => $numbers['profit'],
             'real_price' => $numbers['total'],
             'receipt' => $path,
+            'description' => $request->get('description')
         ]);
         $checkout->refresh();
 
