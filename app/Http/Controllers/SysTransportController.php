@@ -7,6 +7,7 @@ use App\Models\FlightInfo;
 use App\Models\SysTransport;
 use App\Models\Tour;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class SysTransportController extends Controller
 {
@@ -24,6 +25,10 @@ class SysTransportController extends Controller
             'date_flight' => ['date'],
             'capacity' => ['numeric', 'max:255'],
         ]);
+
+        if ($request->get('capacity') == 0) {
+            return response(['message' => "ظرفیت پرواز انتخاب شده صفر می باشد."], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
 
         $flight = FlightInfo::create($request->only([
             'uniqueID',
