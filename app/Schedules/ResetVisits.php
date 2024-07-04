@@ -12,6 +12,7 @@ class ResetVisits
         if ($config->isEmpty()) {
             $config = Config::create(['key' => 'visit_count', 'value' => collect(['all' => 0, 'today' => 0])]);
         }
+        $config = $config->first();
         $config->value->put('today', 0);
         $config->save();
     }
