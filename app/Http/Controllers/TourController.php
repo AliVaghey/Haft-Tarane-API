@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\TourStatus;
+use App\Http\Resources\AvailableToursResource;
 use App\Http\Resources\CostResource;
 use App\Http\Resources\SimilarDateResource;
 use App\Http\Resources\TourListResource;
@@ -416,7 +417,7 @@ class TourController extends Controller
         return TourListResource::collection($results->orderBy('updated_at', 'desc')->paginate(10));
     }
 
-    public function PublicGetTours(Request $request)
+    public function OLD_PublicGetTours(Request $request)
     {
         if ($request->query('all')) {
             return TourSearchResource::collection(
@@ -432,6 +433,65 @@ class TourController extends Controller
                     ->distinct()
                 ->orderBy("two_bed")
                 ->paginate(10));
+        }
+
+        $results = Tour::where('status', 'active');
+        if ($request->query('origin')) {
+            $results->where('origin', $request->query('origin'));
+        }
+        if ($request->query('destination')) {
+            $results->where('destination', $request->query('destination'));
+        }
+        $results = $results->get();
+        foreach ($results as $key => $tour) {
+            $f = false;
+            foreach ($tour->dates as $date) {
+                $start = new Carbon($date->start);
+                if ($start->subDays($tour->expiration) > now()) {
+                    $f = true;
+                    break;
+                }
+            }
+            if (!$f) {
+                $results->forget($key);
+            }
+        }
+        if ($request->query('start')) {
+            $input = new Carbon ($request->query('start'));
+            foreach ($results as $key => $tour) {
+                $f = false;
+                foreach ($tour->dates as $date) {
+                    $start = new Carbon($date->start);
+                    if ($start == $input && $start->subDays($tour->expiration) > now()) {
+                        $f = true;
+                    }
+                }
+                if (!$f) {
+                    $results->forget($key);
+                }
+            }
+        }
+        $results = $results->map(function ($tour) {
+            return $tour->costs;
+        })->flatten(1);
+
+
+        return $results->isNotEmpty() ? TourSearchResource::collection($results->sortByDesc('two_bed')) : [];
+    }
+
+    public function PublicGetTours(Request $request)
+    {
+        if ($request->query('all')) {
+            return AvailableToursResource::collection(
+                Available::where('expired', false)
+                ->join('tours', function (JoinClause $join) {
+                    $join->on('availables.tour_id', '=', 'tours.id')
+                        ->where('tours.status', '=', 'active');
+                })
+                ->select('availables.*')
+                ->orderBy('min_cost')
+                ->paginate(10)
+            );
         }
 
         $results = Tour::where('status', 'active');
