@@ -27,7 +27,7 @@ class AvailableToursResource extends JsonResource
             'capacity' => $tour->capacity,
             'origin' => $tour->origin,
             'destination' => $tour->destination,
-            'min_cost' => $this->min_cost,
+            'min_cost' => (int)$this->min_cost,
             'status' => $tour->status,
             'dates' => [[
                 'id' => $date->id,
