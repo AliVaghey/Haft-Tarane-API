@@ -40,3 +40,10 @@ Artisan::command('make:superadmin', function () {
     $this->info("Super-Admin has been created successfully.");
 })->purpose('Make new user user.');
 
+Artisan::command('generate:availables', function () {
+    foreach (\App\Models\Tour::all() as $tour) {
+        if ($tour->status == \App\Enums\TourStatus::Active) {
+            \App\Http\Controllers\AvailableController::generate($tour);
+        }
+    }
+});
