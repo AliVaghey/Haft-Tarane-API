@@ -2,6 +2,7 @@
 
 namespace App\Schedules;
 
+use App\Models\Available;
 use App\Models\Date;
 use Carbon\Carbon;
 
@@ -14,6 +15,7 @@ class ExpireDates
             $start = new Carbon($date->start);
             if ($start->subDays($date->tour->expiration) < now()) {
                 $date->update(['expired' => true]);
+                Available::where('date_id', $date->id)->update(['expired' => true]);
             }
         }
     }

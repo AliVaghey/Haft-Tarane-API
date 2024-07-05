@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Available;
 use App\Models\Date;
 use App\Models\Tour;
 use Carbon\Carbon;
@@ -76,8 +77,10 @@ class DateController extends Controller
     {
         if ($request->query('expire') == 'true') {
             $date->update(['expired' => true]);
+            Available::where('date_id', $date->id)->update(['expired' => true]);
         } elseif ($request->query('expire') == 'false') {
             $date->update(['expired' => false]);
+            Available::where('date_id', $date->id)->update(['expired' => false]);
         }
         return response($date, 200);
     }

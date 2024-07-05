@@ -8,6 +8,7 @@ use App\Http\Resources\SimilarDateResource;
 use App\Http\Resources\TourListResource;
 use App\Http\Resources\TourResource;
 use App\Http\Resources\TourSearchResource;
+use App\Models\Available;
 use App\Models\certificate;
 use App\Models\Costs;
 use App\Models\Rejection;
@@ -267,6 +268,7 @@ class TourController extends Controller
             return response(['message' => __('exceptions.tour-not-found')], 404);
         }
         $tour->fill(['status' => TourStatus::Draft])->save();
+        AvailableController::generate($tour);
         return response()->noContent();
     }
 
@@ -345,6 +347,8 @@ class TourController extends Controller
         $tour->status = TourStatus::Active;
         $tour->save();
 
+        AvailableController::generate($tour);
+
         return response()->noContent();
     }
 
@@ -371,6 +375,8 @@ class TourController extends Controller
         }
         $tour->status = TourStatus::Rejected;
         $tour->save();
+
+        AvailableController::generate($tour);
 
         return response()->noContent();
     }

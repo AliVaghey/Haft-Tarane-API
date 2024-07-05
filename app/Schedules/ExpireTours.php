@@ -4,6 +4,7 @@ namespace App\Schedules;
 
 
 use App\Enums\TourStatus;
+use App\Models\Available;
 use App\Models\Tour;
 
 class ExpireTours
@@ -21,6 +22,7 @@ class ExpireTours
             }
             if ($f) {
                 $tour->update(['status' => TourStatus::Expired]);
+                Available::where('tour_id', $tour->id)->update(['expired' => true]);
             }
         }
     }
