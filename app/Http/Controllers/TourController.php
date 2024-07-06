@@ -494,21 +494,48 @@ class TourController extends Controller
             );
         }
 
-        $results = Available::join('tours', function (JoinClause $join) use ($request) {
-            $join->on('availables.tour_id', '=', 'tours.id')
-                ->where('tours.status', '=', 'active')
-                ->where('tours.origin', '=', $request->query('origin'))
-                ->where('tours.destination', '=', $request->query('destination'));
-        })
-            ->where('expired', false);
-        if ($request->query('start')) {
-            $results->join('dates', function (JoinClause $join) use ($request) {
-                $join->on('availables.date_id', '=', 'dates.id')
-                    ->where('dates.expired', '=', false)
-                    ->where('dates.start', '=', $request->query('start'));
-            });
+        $results = Tour::where('status', 'active');
+        if ($request->query('origin')) {
+            $results->where('origin', $request->query('origin'));
         }
-        return AvailableToursResource::collection($results->orderBy('min_cost')->paginate(10));
+        if ($request->query('destination')) {
+            $results->where('destination', $request->query('destination'));
+        }
+        $results = $results->get();
+        foreach ($results as $key => $tour) {
+            $f = false;
+            foreach ($tour->dates as $date) {
+                $start = new Carbon($date->start);
+                if ($start->subDays($tour->expiration) > now()) {
+                    $f = true;
+                    break;
+                }
+            }
+            if (!$f) {
+                $results->forget($key);
+            }
+        }
+        if ($request->query('start')) {
+            $input = new Carbon ($request->query('start'));
+            foreach ($results as $key => $tour) {
+                $f = false;
+                foreach ($tour->dates as $date) {
+                    $start = new Carbon($date->start);
+                    if ($start == $input && $start->subDays($tour->expiration) > now()) {
+                        $f = true;
+                        break;
+                    }
+                }
+                if (!$f) {
+                    $results->forget($key);
+                }
+            }
+        }
+        $results = $results->map(function ($tour) {
+            return $tour->costs;
+        })->flatten(1);
+
+        return $results->isNotEmpty() ? TourSearchResource::collection($results->sortByDesc('two_bed')) : [];
     }
 
     public function publicNatureTours(Request $request)
