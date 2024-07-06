@@ -500,15 +500,15 @@ class TourController extends Controller
                 ->where('tours.status', '=', 'active')
                 ->where('tours.origin', '=', $request->query('origin'))
                 ->where('tours.destination', '=', $request->query('destination'));
-        })->select('availables.*');
+        });
         if ($request->query('start')) {
             $results->join('dates', function (JoinClause $join) use ($request) {
                 $join->on('availables.date_id', '=', 'dates.id')
                     ->where('dates.expired', '=', false)
                     ->where('dates.start', '=', $request->query('start'));
-            })->select('availables.*');
+            });
         }
-        return AvailableToursResource::collection($results->paginate(10));
+        return AvailableToursResource::collection($results->orderBy('min_cost')->paginate(10));
     }
 
     public function publicNatureTours(Request $request)
