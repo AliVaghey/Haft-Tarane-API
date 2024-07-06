@@ -497,13 +497,9 @@ class TourController extends Controller
         $results = Available::where('expired', false);
         $results->join('tours', function (JoinClause $join) use ($request) {
             $join->on('availables.tour_id', '=', 'tours.id')
-                ->where('tours.status', '=', 'active');
-            if ($request->query('origin')) {
-                $join->where('tours.origin', '=', $request->query('origin'));
-            }
-            if ($request->query('destination')) {
-                $join->where('tours.destination', '=', $request->query('destination'));
-            }
+                ->where('tours.status', '=', 'active')
+                ->where('tours.origin', '=', $request->query('origin'))
+                ->where('tours.destination', '=', $request->query('destination'));
         })->select('availables.*');
         if ($request->query('start')) {
             $results->join('dates', function (JoinClause $join) use ($request) {
