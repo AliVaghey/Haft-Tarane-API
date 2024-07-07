@@ -637,6 +637,13 @@ class TourController extends Controller
             $new_cost->save();
         }
 
+        //Dates :
+        foreach ($tour->dates as $date) {
+            $new_date = $date->replicate();
+            $new_date->tour_id = $new->id;
+            $new_date->save();
+        }
+
         //Transportation :
         if (!$tour->isSysTrans()) {
             foreach ($tour->transportations as $transportation) {
