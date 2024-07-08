@@ -26,7 +26,7 @@ class AgenciesCheckOutResource extends JsonResource
             $total_sales += $sale->total_price;
         }
         return [
-            parent::toArray($request),
+            'agency' => parent::toArray($request),
             'dept' => $dept,
             'profit' => $profit,
             'total_sales' => $total_sales,
