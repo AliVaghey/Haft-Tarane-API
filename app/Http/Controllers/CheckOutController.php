@@ -47,7 +47,7 @@ class CheckOutController extends Controller
         $profit = 0;
         $total = 0;
         foreach ($sales as $sale) {
-            $debt = $sale->total_price - ($sale->tour->profit_rate * $sale->total_price / 100);
+            $debt += $sale->total_price - ($sale->tour->profit_rate * $sale->total_price / 100);
             $profit += $sale->total_price * ($sale->tour->profit_rate / 100);
             $total += $sale->total_price;
         }
