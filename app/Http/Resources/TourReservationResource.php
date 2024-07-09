@@ -63,6 +63,8 @@ class TourReservationResource extends JsonResource
             'files' => $this->files->files->map(function ($path) {
                 return Storage::disk('public')->url($path);
             }),
+            'updated_at' => $this->updated_at,
+            'created_at' => $this->created_at,
         ];
     }
 
