@@ -8,7 +8,6 @@ use App\Http\Resources\TourReservationResource;
 use App\Models\AgencyInfo;
 use App\Models\CheckOut;
 use App\Models\TourReservation;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
@@ -36,11 +35,9 @@ class CheckOutController extends Controller
     private function calculateAgencySales(Request $request, AgencyInfo $agency)
     {
         if ($request->query('start') && $request->query('end')) {
-            $start = (new Carbon($request->query('start')))->format('Y-m-d');
-            $end = (new Carbon($request->query('end')))->format('Y-m-d');
-            $sales = TourReservation::where('agency_id')
+            $sales = TourReservation::where('agency_id', $agency->id)
                 ->where('status', 'paid')
-                ->whereBetween('created_at', [$start, $end])
+                ->whereBetween('created_at', [$request->query('start'), $request->query('end')])
                 ->get();
         } else {
             $sales = TourReservation::where('agency_id', $agency->id)->where('status', 'paid')->get();
