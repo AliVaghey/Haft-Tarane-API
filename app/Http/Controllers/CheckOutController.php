@@ -36,8 +36,8 @@ class CheckOutController extends Controller
     private function calculateAgencySales(Request $request, AgencyInfo $agency)
     {
         if ($request->query('start') && $request->query('end')) {
-            $start = new Carbon($request->query('start'));
-            $end = new Carbon($request->query('end'));
+            $start = (new Carbon($request->query('start')))->format('Y-m-d');
+            $end = (new Carbon($request->query('end')))->format('Y-m-d');
             $sales = TourReservation::where('agency_id')
                 ->where('status', 'paid')
                 ->whereBetween('created_at', [$start, $end])
