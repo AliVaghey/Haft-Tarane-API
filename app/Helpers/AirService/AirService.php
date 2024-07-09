@@ -66,6 +66,7 @@ class AirService
                     ]);
                 }
             } else {
+                $this->checkSessionProblems($response);
                 throw new \Exception($response->json('Error')['code'] . ': ' . $response->json('Error')['message']);
             }
         } else {
@@ -86,10 +87,19 @@ class AirService
             if ($response->json('Status')) {
                 return $response->json('Result');
             } else {
+                $this->checkSessionProblems($response);
                 throw new \Exception($response->json('Error')['code'] . ': ' . $response->json('Error')['message']);
             }
         } else {
             throw new \Exception("Something went wrong!");
+        }
+    }
+
+    private function checkSessionProblems($response)
+    {
+        if ($response->json('Error')['code'] == 1013 || $response->json('Error')['code'] == 1014) {
+            $this->login(Config::where('key', 'air_service_credentials')->first());
+            throw new \Exception("مشکلی با سیستم پرواز پیش آمده. لطفا دوباره تلاش کنید.");
         }
     }
 }
