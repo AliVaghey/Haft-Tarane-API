@@ -54,4 +54,9 @@ class AgencyInfo extends Model
     {
         return $this->belongsTo(User::class, 'admin_id');
     }
+
+    public function checkouts(): HasMany
+    {
+        return $this->hasMany(Checkout::class, 'agency_id');
+    }
 }

@@ -40,10 +40,25 @@ Artisan::command('make:superadmin', function () {
     $this->info("Super-Admin has been created successfully.");
 })->purpose('Make new user user.');
 
-Artisan::command('generate:availables', function () {
-    foreach (\App\Models\Tour::all() as $tour) {
-        if ($tour->status == \App\Enums\TourStatus::Active) {
-            \App\Http\Controllers\AvailableController::generate($tour);
+Artisan::command('lorem', function () {
+    try {
+        $flights = air_service()->getAvailabeFlights("THR", "MHD", "2024-07-09");
+        print_r($flights);
+    } catch (Exception $e) {
+        $this->error($e->getMessage());
+    }
+    $i = $this->ask('Select a flight');
+    $flight = $flights[$i];
+    try {
+        $flights = air_service()->getAvailabeFlights($flight['from'], $flight['to'], $flight['date_flight']);
+        print_r($flights);
+    } catch (Exception $e) {
+        $this->error($e->getMessage());
+    }
+    foreach ($flights as $f) {
+        if ($f == $flight) {
+            $this->info("Flight has been found.");
+            break;
         }
     }
 });
