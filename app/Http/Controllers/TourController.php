@@ -12,6 +12,7 @@ use App\Http\Resources\TourSearchResource;
 use App\Models\Available;
 use App\Models\certificate;
 use App\Models\Costs;
+use App\Models\Date;
 use App\Models\Rejection;
 use App\Models\Support;
 use App\Models\Tour;
@@ -611,8 +612,25 @@ class TourController extends Controller
         if ($cost->tour->status != TourStatus::Active) {
             return response(['message' => __('exceptions.tour-not-active')], 403);
         }
+        $f = true;
         if ($cost->tour->isSysTrans()) {
-
+            $date = Date::where('tour_id', $cost->tour->id)->where('start', $request->query('start'))->first();
+            foreach ($cost->tour->sysTransport->where('date_id', $date->id) as $transport) {
+                try {
+                    $f1 = air_service()->checkFlightAvailability($transport->flight);
+                } catch (\Exception $exception) {
+                    return response($exception->getMessage(), 404);
+                }
+                if (!$f1) {
+                    $f = false;
+                    break;
+                }
+            }
+        }
+        if (!$f) {
+            $date->expired = true;
+            Available::where('cost_id', $cost->id)->where('date_id', $date->id)->update(['expired' => true]);
+            return response(['message' => "پرواز های این تور پر شده اند."], 403);
         }
         return new CostResource($cost);
     }
