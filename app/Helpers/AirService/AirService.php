@@ -4,6 +4,7 @@ namespace App\Helpers\AirService;
 
 use App\Models\Airport;
 use App\Models\Config;
+use App\Models\FlightInfo;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
 
@@ -93,6 +94,29 @@ class AirService
         } else {
             throw new \Exception("Something went wrong!");
         }
+    }
+
+    public function checkFlightAvailability(FlightInfo $flight)
+    {
+        $available = $this->getAvailabeFlights($flight->from, $flight->to, $flight->date_flight);
+        foreach ($available as $f) {
+            if (
+                $f['number_flight'] == $flight->number_flight &&
+                $f['time_flight'] == $flight->time_flight &&
+                $f['airline'] == $flight->airline &&
+                $f['type_flight'] == $flight->type_flight &&
+                $f['IATA_code'] == $flight->IATA_code
+            ) {
+                if ($f['capacity'] > 0) {
+                    $flight->capacity = $f['capacity'];
+                    $flight->save();
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        }
+        return false;
     }
 
     private function checkSessionProblems($response)

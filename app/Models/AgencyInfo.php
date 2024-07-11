@@ -57,6 +57,6 @@ class AgencyInfo extends Model
 
     public function checkouts(): HasMany
     {
-        return $this->hasMany(Checkout::class, 'agency_id');
+        return $this->hasMany(CheckOut::class, 'agency_id');
     }
 }
