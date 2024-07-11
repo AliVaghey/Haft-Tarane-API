@@ -50,6 +50,6 @@ class Hotel extends Model
 
     public function firstPhotoUrl()
     {
-        return Storage::disk("public")->url($this->gallery->first() ?? "");
+        return $this->gallery->isNotEmpty() ? Storage::disk("public")->url($this->gallery->first() ?? "") : null;
     }
 }
