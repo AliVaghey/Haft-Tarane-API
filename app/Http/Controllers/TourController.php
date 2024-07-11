@@ -611,6 +611,9 @@ class TourController extends Controller
         if ($cost->tour->status != TourStatus::Active) {
             return response(['message' => __('exceptions.tour-not-active')], 403);
         }
+        if ($cost->tour->isSysTrans()) {
+
+        }
         return new CostResource($cost);
     }
 
