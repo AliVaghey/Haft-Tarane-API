@@ -316,7 +316,7 @@ return [
             'zaringateApiVerificationUrl' => 'https://ir.zarinpal.com/pg/services/WebGate/wsdl',
 
             'mode' => 'normal', // can be normal, sandbox, zaringate
-            'merchantId' => '',
+            'merchantId' => env('ZARINPAL_MERCHANTID', ''),
             'callbackUrl' => 'http://yoursite.com/path/to',
             'description' => 'payment using zarinpal',
             'currency' => 'T', //Can be R, T (Rial, Toman)
