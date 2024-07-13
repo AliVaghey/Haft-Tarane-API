@@ -9,11 +9,12 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "ext-intl": "*",
+        "ext-soap": "*",
         "laravel/framework": "^11.0",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
-        "ext-soap": "*",
-        "ext-intl": "*"
+        "shetabit/payment": "^5.8"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
