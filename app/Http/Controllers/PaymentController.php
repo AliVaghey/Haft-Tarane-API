@@ -22,28 +22,43 @@ class PaymentController extends Controller
         }
 
         return Payment::amount($reservation->total_price)->purchase(null,
-            function ($driver, $transactionId) use ($request) {
-                $transaction = Transaction::create([
+            function ($driver, $transactionId) use ($request, $reservation) {
+                $transaction = Transaction::firstOrCreate([
                     'user_id' => $request->user()->id,
                     'transaction_id' => $transactionId,
+                    'type' => 'tour_reservation',
+                    'object_id' => $reservation->id
                 ]);
-                $request->session()->put('transaction_id', $transaction->id);
+                session(['transaction_id' => $transaction->id]);
             }
         )->pay()->render();
     }
 
-    public function verifyReservation(Request $request)
+    public function verifyPayment(Request $request)
     {
-        $transaction_id = Transaction::find($request->session()->get('transactionId'));
-        if (!$transaction_id) {
-            return "مشکلی پیش آمده است. مبلغ پرداخت شده تا 48 ساعت آینده به حساب شما باز میگردد.";
+        $transaction = Transaction::find(session('transaction_id'));
+        if (!$transaction) {
+            echo "مشکلی پیش آمده است. مبلغ پرداخت شده تا 48 ساعت آینده به حساب شما باز میگردد.";
+            return null;
         }
+        $object = $transaction->getObject();
+        session()->forget('transaction_id');
         try {
-            $receipt = Payment::amount(1000)->transactionId($transaction_id)->verify();
-            // You can show payment referenceId to the user.
-            return redirect();
+            $receipt = Payment::amount($object->total_price)->transactionId($transaction->transaction_id)->verify();
+            $transaction->update([
+                'reference_id' => $receipt->getReferenceId(),
+                'status' => 'paid'
+            ]);
+            $object->update([
+                'status' => 'paid',
+                'transaction_id' => $transaction->id
+            ]);
+            return redirect(env('FRONTEND_URL') . '/fa/user/tours');
+
         } catch (InvalidPaymentException $exception) {
+            $transaction->update(['status' => 'failed']);
             echo $exception->getMessage();
+            return null;
         }
     }
 }

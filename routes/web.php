@@ -11,31 +11,31 @@ Route::get('/', function () {
     return ['Laravel' => app()->version()];
 });
 
-Route::post('pay/{reservation}', [PaymentController::class, 'payReservation']);
-Route::get('payment/verify', [PaymentController::class, 'verifyReservation']);
+Route::post('pay/reservation/{reservation}', [PaymentController::class, 'payReservation']);
+Route::get('payment/verify', [PaymentController::class, 'verifyPayment']);
 
-Route::get('payment', function (Request $request) {
-    return Payment::purchase(
-        (new Invoice)->amount(200),
-        function ($driver, $transactionId) use ($request) {
-            // Store transactionId in database.
-            // We need the transactionId to verify payment in the future.
-            $request->session()->put('transactionId', $transactionId);
-        }
-    )->pay()->render();
-});
+//Route::get('payment', function (Request $request) {
+//    return Payment::purchase(
+//        (new Invoice)->amount(200),
+//        function ($driver, $transactionId) use ($request) {
+//            // Store transactionId in database.
+//            // We need the transactionId to verify payment in the future.
+//            $request->session()->put('transactionId', $transactionId);
+//        }
+//    )->pay()->render();
+//});
 
-Route::get('payment/verify', function (Request $request) {
-    $transaction_id = $request->session()->get('transactionId');
-    try {
-        $receipt = Payment::amount(1000)->transactionId($transaction_id)->verify();
-        // You can show payment referenceId to the user.
-        return redirect('https://bibaksafar.com/fa');
-//        echo $receipt->getReferenceId();
-
-    } catch (InvalidPaymentException $exception) {
-        echo $exception->getMessage();
-    }
-})->name('payment.verify');
+//Route::get('payment/verify', function (Request $request) {
+//    $transaction_id = $request->session()->get('transactionId');
+//    try {
+//        $receipt = Payment::amount(1000)->transactionId($transaction_id)->verify();
+//        // You can show payment referenceId to the user.
+//        return redirect('https://bibaksafar.com/fa');
+////        echo $receipt->getReferenceId();
+//
+//    } catch (InvalidPaymentException $exception) {
+//        echo $exception->getMessage();
+//    }
+//})->name('payment.verify');
 
 require __DIR__ . '/auth.php';
