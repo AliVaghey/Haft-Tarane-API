@@ -27,6 +27,7 @@ Route::get('options', [OptionsController::class, 'searchOptions']);
 Route::get('tours', [TourController::class, 'PublicGetTours']);
 Route::get('tour/{tour}', [TourController::class, 'getActiveTour']);
 Route::get('tours/nature', [TourController::class, 'publicNatureTours']);
+Route::get('tours/hotel', [TourController::class, 'PublicGetHotelTours']);
 Route::get('cost/{cost}', [TourController::class, 'getCostInfo']);
 Route::get('similar-dates', [TourController::class, 'similarDates']);
 Route::get('close-dates', [TourController::class, 'closeDates']);
