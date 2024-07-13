@@ -40,31 +40,3 @@ Artisan::command('make:superadmin', function () {
     $this->info("Super-Admin has been created successfully.");
 })->purpose('Make new user user.');
 
-Artisan::command('lorem', function () {
-    try {
-        $flights = air_service()->getAvailabeFlights("THR", "MHD", "2024-07-14");
-        print_r($flights);
-    } catch (Exception $e) {
-        $this->error($e->getMessage());
-    }
-    $i = $this->ask('Select a flight');
-    $flight = $flights[$i];
-    try {
-        $flights = air_service()->getAvailabeFlights($flight['from'], $flight['to'], $flight['date_flight']);
-        print_r($flights);
-    } catch (Exception $e) {
-        $this->error($e->getMessage());
-    }
-    foreach ($flights as $f) {
-        if (
-            $f['number_flight'] == $flight['number_flight'] &&
-            $f['time_flight'] == $flight['time_flight'] &&
-            $f['airline'] == $flight['airline'] &&
-            $f['type_flight'] == $flight['type_flight'] &&
-            $f['IATA_code'] == $flight['IATA_code']
-        ) {
-            $this->info("Flight has been found.");
-            break;
-        }
-    }
-});

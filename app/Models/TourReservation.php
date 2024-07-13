@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\ReservationStatus;
 use Illuminate\Database\Eloquent\Casts\AsCollection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -26,13 +27,16 @@ class TourReservation extends Model
     ];
 
     /**
-     * The attributes that should be hidden for serialization.
+     * Get the attributes that should be cast.
      *
-     * @var array<int, string>
+     * @return array<string, string>
      */
-    protected $hidden = [
-        'passengers' => AsCollection::class,
-    ];
+    protected function casts(): array
+    {
+        return [
+            'passengers' => AsCollection::class,
+        ];
+    }
 
     public function user(): BelongsTo
     {
@@ -62,5 +66,10 @@ class TourReservation extends Model
     public function files(): HasOne
     {
         return $this->hasOne(ReservationFile::class, 'reservation_id');
+    }
+
+    public function isPaid(): bool
+    {
+        return $this->status == 'paid' || $this->status == 'checkedout';
     }
 }

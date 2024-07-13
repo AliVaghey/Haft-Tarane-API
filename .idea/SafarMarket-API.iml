@@ -237,6 +237,10 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/voku/portable-ascii" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/webmozart/assert" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/spatie/error-solutions" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/chillerlan/php-cache" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/chillerlan/php-settings-container" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/shetabit/multipay" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/shetabit/payment" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

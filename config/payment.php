@@ -317,7 +317,7 @@ return [
 
             'mode' => 'normal', // can be normal, sandbox, zaringate
             'merchantId' => env('ZARINPAL_MERCHANTID', ''),
-            'callbackUrl' => 'http://yoursite.com/path/to',
+            'callbackUrl' => env('APP_URL') . '/payment/verify',
             'description' => 'payment using zarinpal',
             'currency' => 'T', //Can be R, T (Rial, Toman)
         ],

@@ -244,6 +244,10 @@
       <path value="$PROJECT_DIR$/vendor/laravel/breeze" />
       <path value="$PROJECT_DIR$/vendor/laravel/sanctum" />
       <path value="$PROJECT_DIR$/vendor/spatie/error-solutions" />
+      <path value="$PROJECT_DIR$/vendor/chillerlan/php-cache" />
+      <path value="$PROJECT_DIR$/vendor/chillerlan/php-settings-container" />
+      <path value="$PROJECT_DIR$/vendor/shetabit/multipay" />
+      <path value="$PROJECT_DIR$/vendor/shetabit/payment" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.1">
