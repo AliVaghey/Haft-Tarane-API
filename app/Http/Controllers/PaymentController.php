@@ -13,7 +13,6 @@ class PaymentController extends Controller
 {
     public function payReservation(Request $request, TourReservation $reservation)
     {
-        $request->validate(['reservation_id' => ['required', 'exists:tour_reservations,id']]);
         if ($request->user()->id != $reservation->user_id) {
             return response(['message' => "این خرید به شما تعلق ندارد."]);
         }
