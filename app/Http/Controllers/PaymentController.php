@@ -21,7 +21,8 @@ class PaymentController extends Controller
             return response(['message' => "این رزرویشن قبلا پرداخت شده است."]);
         }
 
-        return Payment::amount($reservation->total_price)->purchase(null,
+        return Payment::purchase(
+            (new Invoice)->amount($reservation->total_price),
             function ($driver, $transactionId) use ($request, $reservation) {
                 $transaction = Transaction::firstOrCreate([
                     'user_id' => $request->user()->id,
