@@ -31,12 +31,12 @@ class TourReservation extends Model
      *
      * @return array<string, string>
      */
-    protected function casts(): array
-    {
-        return [
-            'passengers' => AsCollection::class,
-        ];
-    }
+//    protected function casts(): array
+//    {
+//        return [
+//            'passengers' => AsCollection::class,
+//        ];
+//    }
 
     public function user(): BelongsTo
     {
