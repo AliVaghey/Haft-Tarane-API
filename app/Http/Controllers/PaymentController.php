@@ -50,7 +50,7 @@ class PaymentController extends Controller
                 'status' => 'paid'
             ]);
             $object->update([
-                'status' => 'paid',
+                'status' => 'successful',
                 'transaction_id' => $transaction->id
             ]);
             return redirect(env('FRONTEND_URL') . '/fa/user/tours');
