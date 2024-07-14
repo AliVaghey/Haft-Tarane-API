@@ -47,10 +47,10 @@ class PaymentController extends Controller
             $receipt = Payment::amount($object->total_price)->transactionId($transaction->transaction_id)->verify();
             $transaction->update([
                 'reference_id' => $receipt->getReferenceId(),
-                'status' => 'paid'
+                'status' => 'successful'
             ]);
             $object->update([
-                'status' => 'successful',
+                'status' => 'paid',
                 'transaction_id' => $transaction->id
             ]);
             return redirect(env('FRONTEND_URL') . '/fa/user/tours');
