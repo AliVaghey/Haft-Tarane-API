@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\PlaceResource;
 use App\Models\Place;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Auth\Access\AuthorizationException;
 
@@ -93,5 +94,29 @@ class PlaceController extends Controller
 
         $place->save();
         return response()->noContent();
+    }
+
+    public function getAllTourOrigin(Request $request)
+    {
+        $result = DB::table('tours')
+            ->where('status', 'active')
+            ->where('transportation_type', '!=', 'hotel')
+            ->select('origin')
+            ->distinct()
+            ->get();
+        if ($request->query('name')) {
+            $result = $result->where('name', 'like', '%' . $request->query('name') . '%');
+        }
+        return $result;
+    }
+
+    public function getAllTourDestination(Request $request)
+    {
+        return DB::table('tours')
+            ->where('status', 'active')
+            ->where('transportation_type', '!=', 'hotel')
+            ->select('destination')
+            ->distinct()
+            ->get();
     }
 }

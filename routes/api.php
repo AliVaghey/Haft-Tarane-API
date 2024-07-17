@@ -17,6 +17,8 @@ require __DIR__ . '/user/user.php';
 
 
 Route::get('cities', [PlaceController::class, 'getAllPlaces']);
+Route::get('tour-origin', [PlaceController::class, 'getAllTourOrigin']);
+Route::get('tour-destination', [PlaceController::class, 'getAllTourDestination']);
 
 Route::get('panel', [NavigationsController::class, 'redirectPanel'])->middleware(['auth:sanctum'])->name('panel');
 Route::get('airports', [AirportController::class, 'AllAirports']);
