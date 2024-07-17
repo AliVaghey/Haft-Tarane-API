@@ -127,7 +127,7 @@ class PlaceController extends Controller
         }
         $response = [];
         foreach ($result as $item) {
-            $response[] = $item->origin;
+            $response[] = $item->destination;
         }
         return $response;
     }
