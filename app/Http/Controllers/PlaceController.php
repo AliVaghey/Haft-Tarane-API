@@ -107,9 +107,12 @@ class PlaceController extends Controller
         if ($request->query('name')) {
             $result = $result->where('origin', '=', $request->query('name'));
         }
-        $response = [];
+        $response['data'] = [];
         foreach ($result as $item) {
-            $response[] = $item->origin;
+            $response['data'][] = [
+                'id' => -1,
+                'name' => $item->origin
+            ];
         }
         return $response;
     }
@@ -125,9 +128,12 @@ class PlaceController extends Controller
         if ($request->query('name')) {
             $result = $result->where('destination', '=', $request->query('name'));
         }
-        $response = [];
+        $response['data'] = [];
         foreach ($result as $item) {
-            $response[] = $item->destination;
+            $response['data'][] = [
+                'id' => -1,
+                'name' => $item->destination
+            ];
         }
         return $response;
     }
