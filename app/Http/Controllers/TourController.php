@@ -553,6 +553,7 @@ class TourController extends Controller
                 $join->on('availables.date_id', '=', 'dates.id')
                     ->where('dates.start', '=', $request->query('start'));
             })
+            ->sortBy('min_cost', 'desc')
             ->get();
 
         return AvailableToursResource::collection($results);
@@ -779,7 +780,8 @@ class TourController extends Controller
                  $join->on('availables.date_id', '=', 'dates.id')
                     ->whereBetween('start', [$start, $end]);
              })
-         ->get();
+             ->sortBy('min_cost', 'desc')
+             ->get();
 
         return AvailableToursResource::collection($results);
     }
