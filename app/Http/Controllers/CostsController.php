@@ -65,4 +65,10 @@ class CostsController extends Controller
 
         return response()->noContent();
     }
+
+    public function updateCost(Request $request, Costs $cost)
+    {
+        $cost->update($request->all());
+        return response($cost, 200);
+    }
 }

@@ -33,6 +33,7 @@ Route::middleware(['auth:sanctum', 'isAgency'])->prefix('agency/')->group(functi
     Route::get('tours', [TourController::class, 'getTours']);
     Route::post('tour/{tour_id}/cost/{hotel_id}', [CostsController::class, 'addCost']);
     Route::delete('tour/cost/{id}', [CostsController::class, 'deleteCost']);
+    Route::put('tour/cost/{cost}', [CostsController::class, 'updateCost']);
     Route::post('tour/{id}/date', [DateController::class, 'addDate']);
     Route::delete('tour/date/{id}', [DateController::class, 'deleteDate']);
     Route::post('tour/{tour}/transportation', [TransportationController::class, 'addTransport']);
