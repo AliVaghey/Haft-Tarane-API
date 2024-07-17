@@ -794,7 +794,7 @@ class TourController extends Controller
 
 //        return $results->isNotEmpty() ? TourSearchResource::collection($results->sortByDesc('two_bed')) : [];
 
-     $results = Available::where('expired', false)
+     $results = Available::where('availables.expired', false)
          ->join('tours', function (JoinClause $join) use ($request) {
                 $join->on('availables.tour_id', '=', 'tours.id')
                     ->where('tours.status', '=', 'active')
