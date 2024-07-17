@@ -105,9 +105,9 @@ class PlaceController extends Controller
             ->distinct()
             ->get();
         if ($request->query('name')) {
-            $result = $result->where('name', '=', $request->query('name'));
+            $result = $result->where('origin', '=', $request->query('name'));
         }
-        return $result;
+        return $result->flatten();
     }
 
     public function getAllTourDestination(Request $request)
