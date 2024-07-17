@@ -46,4 +46,10 @@ class TransportationController extends Controller
         $transportation->delete();
         return response()->noContent();
     }
+
+    public function updateTransport(Request $request, Transportation $transportation)
+    {
+        $transportation->update($request->all());
+        return response($transportation, 200);
+    }
 }
