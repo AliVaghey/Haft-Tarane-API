@@ -105,7 +105,7 @@ class PlaceController extends Controller
             ->distinct()
             ->get();
         if ($request->query('name')) {
-            $result = $result->where('name', 'like', '%' . $request->query('name') . '%');
+            $result = $result->where('name', '=', $request->query('name'));
         }
         return $result;
     }
