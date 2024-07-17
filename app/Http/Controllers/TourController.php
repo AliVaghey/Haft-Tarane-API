@@ -801,6 +801,12 @@ class TourController extends Controller
                     ->where('tours.origin', '=', $request->query('origin'))
                     ->where('tours.destination', '=', $request->query('destination'));
      })
+         ->join('dates', function (JoinClause $join) use ($request) {
+             $start = (new Carbon($request->query('start')))->subDays(5);
+             $end = (new Carbon($request->query('start')))->addDays(5);
+             $join->on('availables.date_id', '=', 'dates.id')
+                ->whereBetween('start', [$start, $end]);
+         })
      ->get();
 
      return AvailableToursResource::collection($results);
