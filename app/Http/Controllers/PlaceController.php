@@ -107,16 +107,28 @@ class PlaceController extends Controller
         if ($request->query('name')) {
             $result = $result->where('origin', '=', $request->query('name'));
         }
-        return $result->flatten();
+        $response = [];
+        foreach ($result as $item) {
+            $response[] = $item->origin;
+        }
+        return $response;
     }
 
     public function getAllTourDestination(Request $request)
     {
-        return DB::table('tours')
+        $result = DB::table('tours')
             ->where('status', 'active')
             ->where('transportation_type', '!=', 'hotel')
             ->select('destination')
             ->distinct()
             ->get();
+        if ($request->query('name')) {
+            $result = $result->where('destination', '=', $request->query('name'));
+        }
+        $response = [];
+        foreach ($result as $item) {
+            $response[] = $item->origin;
+        }
+        return $response;
     }
 }
