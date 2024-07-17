@@ -257,6 +257,8 @@ class TourController extends Controller
             'status' => TourStatus::Pending,
             'profit_rate' => $request->get('profit_rate', 0)
         ]);
+        $tour->refresh();
+        AvailableController::deactive($tour);
 
         return response()->noContent();
     }
@@ -270,7 +272,8 @@ class TourController extends Controller
             return response(['message' => __('exceptions.tour-not-found')], 404);
         }
         $tour->fill(['status' => TourStatus::Draft])->save();
-        AvailableController::generate($tour);
+        $tour->refresh();
+        AvailableController::deactive($tour);
         return response()->noContent();
     }
 

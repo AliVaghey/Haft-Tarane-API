@@ -15,7 +15,9 @@ class AvailableController extends Controller
 {
     static public function generate(Tour $tour)
     {
-        if($tour->status != TourStatus::Active) { return; }
+        if ($tour->status != TourStatus::Active) {
+            return;
+        }
 
         foreach ($tour->dates as $date) {
             foreach ($tour->costs as $cost) {
@@ -23,9 +25,28 @@ class AvailableController extends Controller
                     'tour_id' => $tour->id,
                     'date_id' => $date->id,
                     'cost_id' => $cost->id,
-                ],[
+                ], [
                     'min_cost' => self::calculateMinCost($tour, $date, $cost),
                     'expired' => !(!$date->expired && $tour->status == TourStatus::Active)
+                ]);
+            }
+        }
+    }
+
+    static public function deactive(Tour $tour)
+    {
+        if ($tour->status == TourStatus::Active) {
+            return;
+        }
+
+        foreach ($tour->dates as $date) {
+            foreach ($tour->costs as $cost) {
+                Available::updateOrCreate([
+                    'tour_id' => $tour->id,
+                    'date_id' => $date->id,
+                    'cost_id' => $cost->id,
+                ], [
+                    'expired' => true
                 ]);
             }
         }
