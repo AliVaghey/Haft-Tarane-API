@@ -14,6 +14,12 @@ class PriceChange extends Model
         'date_id',
         'cost_id',
         'price_change',
+        'one_bed',
+        'two_bed',
+        'plus_one',
+        'cld_6',
+        'cld_2',
+        'baby'
     ];
 
     public function date(): BelongsTo
