@@ -63,6 +63,29 @@ class DateController extends Controller
         return response()->noContent();
     }
 
+    public function updateDate(Request $request, Date $date)
+    {
+        $tour = $date->tour;
+        $request->validate([
+            'start' => ['required', 'date'],
+            'end' => ['required', 'date'],
+        ]);
+        $start = new Carbon($request->start);
+        $end = new Carbon($request->end);
+        if ($end <= $start) {
+            return response(['message' => __('exceptions.date-invalid')], 403);
+        }
+        foreach ($tour->dates as $date) {
+            if ($date->start == $request['start'] && $date->end == $request['end']) {
+                return response(['message' => __('exceptions.date-exists')], 403);
+            }
+        }
+        $date->update($request->only(['start', 'end']));
+        $date->refresh();
+
+        return response($date, 200);
+    }
+
     public function addPriceChange(Request $request, Date $date)
     {
         $request->validate([
