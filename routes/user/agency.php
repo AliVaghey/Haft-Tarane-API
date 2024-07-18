@@ -45,7 +45,7 @@ Route::middleware(['auth:sanctum', 'isAgency'])->prefix('agency/')->group(functi
     Route::post('date/{date}/expiration', [DateController::class, 'updateExpiration']);
 
     Route::post('date/{date}/cost/{cost}/price-change', [PriceChangeController::class, 'add']);
-    Route::post('date/{date}/price-change', [PriceChangeController::class, 'all']);
+    Route::post('date/{date}/price-change', [PriceChangeController::class, 'addAll']);
     Route::put('price-change/{price_change}', [PriceChangeController::class, 'update']);
     Route::delete('price-change/{price_change}', [PriceChangeController::class, 'delete']);
 

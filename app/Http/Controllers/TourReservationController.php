@@ -69,27 +69,43 @@ class TourReservationController extends Controller
     {
         $passengers = json_decode($passengers, true);
         $total_price = 0;
+        $price_change = PriceChange::where('date_id', $date->id)->where('cost_id', $cost->id)->first();
         foreach ($passengers as $room) {
             foreach ($room['passengers'] as $passenger) {
                 switch (strtolower($passenger['type'])) {
                     case 'adl':
                         $total_price += $room['room_type'] == 'one_bed' ? $cost->one_bed : $cost->two_bed;
+                        if ($price_change) {
+                            $total_price += $room['room_type'] == 'one_bed' ? $price_change->one_bed : $price_change->two_bed;
+                        }
                         break;
 
                     case 'cld_2':
                         $total_price += $cost->cld_2;
+                        if ($price_change) {
+                            $total_price += $price_change->cld_2;
+                        }
                         break;
 
                     case 'cld_6':
                         $total_price += $cost->cld_6;
+                        if ($price_change) {
+                            $total_price += $price_change->cld_6;
+                        }
                         break;
 
                     case 'baby':
                         $total_price += $cost->baby;
+                        if ($price_change) {
+                            $total_price += $price_change->baby;
+                        }
                         break;
                 }
             }
             $total_price += $cost->plus_one * $room['plus_one'];
+            if ($price_change) {
+                $total_price += $price_change->plus_one * $room['plus_one'];
+            }
         }
         if ($tour->isSysTrans()) {
             foreach($passengers as $room) {
@@ -109,11 +125,11 @@ class TourReservationController extends Controller
                 }
             }
         }
-        $price_change = PriceChange::where('date_id', $date->id)->where('cost_id', $cost->id)->get();
-        if ($price_change->isNotEmpty()) {
-            $price_change = $price_change->first();
-            $total_price += ($count * $price_change->price_change);
-        }
+//        $price_change = PriceChange::where('date_id', $date->id)->where('cost_id', $cost->id)->get();
+//        if ($price_change->isNotEmpty()) {
+//            $price_change = $price_change->first();
+//            $total_price += ($count * $price_change->price_change);
+//        }
         return $total_price;
     }
 
