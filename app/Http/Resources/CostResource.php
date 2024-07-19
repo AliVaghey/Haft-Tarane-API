@@ -71,7 +71,11 @@ class CostResource extends JsonResource
                 'plus_one' => $this->plus_one,
                 'cld_6' => $this->cld_6,
                 'cld_2' => $this->cld_2,
-                'baby' => $this->baby
+                'baby' => $this->baby,
+                'created_at' => $this->created_at,
+                'updated_at' => $this->updated_at,
+                'tour' => $this->tour,
+                'hotel' => $this->hotel
             ];
         }
     }
