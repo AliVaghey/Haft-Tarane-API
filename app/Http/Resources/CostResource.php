@@ -38,10 +38,42 @@ class CostResource extends JsonResource
             'min_cost' => $this->minCost($tour, $date),
             'hotel' => $this->getHotel($this->hotel),
             'transportation' => $tour->isSysTrans() ? $this->getSysTrans($tour, $date) : $tour->transportations->sortBy("sort"),
-            'cost' => parent::toArray($request),
-            'date' => $this->findDate($tour, $request->query('start')),
+            'cost' => $this->costDetails($date),
+            'date' => $date,
             'certificate' => $tour->certificate,
         ];
+    }
+
+    private function costDetails($date)
+    {
+        $price_change = PriceChange::where('cost_id', $this->id)->where('date_id', $date['id'])->first();
+        if ($price_change) {
+            return [
+                'id' => $this->id,
+                'tour_id' => $this->tour_id,
+                'hotel_id' => $this->hotel_id,
+                'room_type' => $this->room_type,
+                'one_bed' => $this->one_bed + $price_change->one_bed,
+                'two_bed' => $this->two_bed + $price_change->two_bed,
+                'plus_one' => $this->plus_one + $price_change->plus_one,
+                'cld_6' => $this->cld_6 + $price_change->cld_6,
+                'cld_2' => $this->cld_2 + $price_change->cld_2,
+                'baby' => $this->baby + $price_change->baby
+            ];
+        } else {
+            return [
+                'id' => $this->id,
+                'tour_id' => $this->tour_id,
+                'hotel_id' => $this->hotel_id,
+                'room_type' => $this->room_type,
+                'one_bed' => $this->one_bed,
+                'two_bed' => $this->two_bed,
+                'plus_one' => $this->plus_one,
+                'cld_6' => $this->cld_6,
+                'cld_2' => $this->cld_2,
+                'baby' => $this->baby
+            ];
+        }
     }
 
     public function minCost(Tour $tour, $date)
@@ -55,10 +87,9 @@ class CostResource extends JsonResource
         } else {
             $total_price = $this->two_bed;
         }
-        $price_change = PriceChange::where('date_id', $date['id'])->where('cost_id', $this->id)->get();
-        if ($price_change->isNotEmpty()) {
-            $price_change = $price_change->first();
-            $total_price += $price_change->price_change;
+        $price_change = PriceChange::where('date_id', $date['id'])->where('cost_id', $this->id)->first();
+        if ($price_change) {
+            $total_price += $price_change->two_bed;
         }
         return $total_price;
     }

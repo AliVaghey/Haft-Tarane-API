@@ -62,10 +62,9 @@ class AvailableController extends Controller
         } else {
             $total_price = $cost->two_bed;
         }
-        $price_change = PriceChange::where('date_id', $date->id)->where('cost_id', $cost->id)->get();
-        if ($price_change->isNotEmpty()) {
-            $price_change = $price_change->first();
-            $total_price += $price_change->price_change;
+        $price_change = PriceChange::where('date_id', $date->id)->where('cost_id', $cost->id)->first();
+        if ($price_change) {
+            $total_price += $price_change->two_bed;
         }
         return $total_price;
     }
