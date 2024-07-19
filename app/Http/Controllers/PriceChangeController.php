@@ -34,6 +34,7 @@ class PriceChangeController extends Controller
             'cld_2' => $request->get('cld_2'),
             'baby' => $request->get('baby'),
         ]);
+        AvailableController::update($date, $cost);
         return response($price_change, 201);
     }
 
@@ -65,6 +66,7 @@ class PriceChangeController extends Controller
                 'baby' => $request->get('baby'),
             ]);
         }
+        AvailableController::generate($date->tour);
         return response($prices, 201);
     }
 

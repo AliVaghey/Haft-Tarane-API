@@ -68,4 +68,16 @@ class AvailableController extends Controller
         }
         return $total_price;
     }
+
+    static public function update(Date $date, Costs $cost)
+    {
+        Available::updateOrCreate([
+            'tour_id' => $cost->tour->id,
+            'date_id' => $date->id,
+            'cost_id' => $cost->id,
+        ], [
+            'min_cost' => self::calculateMinCost($cost->tour, $date, $cost),
+            'expired' => !(!$date->expired && $cost->tour->status == TourStatus::Active)
+        ]);
+    }
 }
