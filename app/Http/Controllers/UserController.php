@@ -6,6 +6,7 @@ use App\Enums\UserAccessType;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Database\Query\JoinClause;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
@@ -122,5 +123,37 @@ class UserController extends Controller
         }
 
         return response()->noContent();
+    }
+
+    public function adminDashboardInfo(Request $request)
+    {
+        $user = $request->user();
+
+        $agency_count = DB::table('agency_infos')
+            ->where('admin_id', $user->id)
+            ->count();
+
+        $today_sales = DB::table('tour_reservations')
+            ->join('agency_infos', function (JoinClause $join) use ($user) {
+                $join->on('tour_reservations.agency_id', '=', 'agency_infos.id')
+                    ->where('agency_infos.admin_id', '=', $user->id);
+            })
+            ->whereBetween('created_at', [now()->setTime(0, 0), now()->setTime(23, 59)])
+            ->count();
+
+        $month_sales = DB::table('tour_reservations')
+            ->join('agency_infos', function (JoinClause $join) use ($user) {
+                $join->on('tour_reservations.agency_id', '=', 'agency_infos.id')
+                    ->where('agency_infos.admin_id', '=', $user->id);
+            })
+            ->whereBetween('created_at', [now()->firstOfMonth(), now()->endOfMonth()])
+            ->count();
+
+        return [
+            'admin_info' => new UserResource($user),
+            'your_agency_count' => $agency_count,
+            'today_sales' => $today_sales,
+            'month_sales' => $month_sales,
+        ];
     }
 }

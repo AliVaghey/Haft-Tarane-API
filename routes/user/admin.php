@@ -88,7 +88,6 @@ Route::middleware(['auth:sanctum', 'isAdmin'])->prefix('admin/')->group(function
     Route::post('tour/{id}/approve', [TourController::class, 'approve']);
     Route::post('tour/{id}/reject', [TourController::class, 'reject']);
 
-
     //-------------------------- CheckOuts --------------------------
     Route::get('agencies/checkouts', [CheckoutController::class, 'getAgencies']);
     Route::get('agency/{agency}/sales', [CheckoutController::class, 'getAgencySales']);
@@ -97,4 +96,6 @@ Route::middleware(['auth:sanctum', 'isAdmin'])->prefix('admin/')->group(function
     Route::get('agency/{agency}/checkouts', [CheckoutController::class, 'getAgencyCheckouts']);
     Route::get('checkout/{checkout}', [CheckOutController::class, 'getCheckOutsDetails']);
 
+    //-------------------------- Statistics --------------------------
+    Route::get('dashboard/info', [UserController::class, 'adminDashboardInfo']);
 });
