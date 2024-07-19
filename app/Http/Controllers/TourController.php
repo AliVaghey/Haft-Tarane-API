@@ -687,7 +687,7 @@ class TourController extends Controller
                  $join->on('availables.date_id', '=', 'dates.id')
                     ->whereBetween('start', [$start, $end]);
              })
-             ->orderBy('dates.start')
+             ->orderBy('min_cost')
              ->get();
 
         return AvailableToursResource::collection($results);
