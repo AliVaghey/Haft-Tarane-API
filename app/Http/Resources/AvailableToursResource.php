@@ -36,6 +36,7 @@ class AvailableToursResource extends JsonResource
             ]],
             'costs' => $this->filterCosts($cost),
             'transportation' => null,
+            'tour' => $tour,
         ];
     }
 
@@ -57,6 +58,7 @@ class AvailableToursResource extends JsonResource
                 'id' => $hotel->id,
                 'name' => $hotel->name,
                 'address' => $hotel->address,
+                'stars' => $hotel->stars,
                 'photo' => $hotel->firstPhotoUrl()
             ];
         } else {
