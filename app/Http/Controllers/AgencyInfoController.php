@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Enums\UserAccessType;
 use App\Http\Resources\AgencyInfoResource;
 use App\Http\Resources\AgencyResource;
+use App\Http\Resources\UserResource;
 use App\Models\AgencyInfo;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class AgencyInfoController extends Controller
 {
@@ -103,5 +105,46 @@ class AgencyInfoController extends Controller
     public function read(User $user)
     {
         return new AgencyInfoResource($user);
+    }
+
+    public function dashboardInfo(Request $request)
+    {
+        $user = $request->user();
+        $agency = $user->agencyInfo;
+
+        $today_sales = DB::table('tour_reservations')
+            ->where('agency_id', $agency->id)
+            ->whereBetween('created_at', [now()->setTime(0, 0), now()->setTime(23, 59, 59)])
+            ->count();
+
+        $pending_sales = DB::table('tour_reservations')
+            ->where('agency_id', $agency->id)
+            ->where('status', 'pending')
+            ->count();
+
+        $active_tours = DB::table('tours')
+            ->where('agency_id', $agency->id)
+            ->where('status', 'active')
+            ->count();
+
+        $draft_tours = DB::table('tours')
+            ->where('agency_id', $agency->id)
+            ->where('status', 'draft')
+            ->count();
+
+        $rejected_tours =  DB::table('tours')
+            ->where('agency_id', $agency->id)
+            ->where('status', 'rejected')
+            ->count();
+
+        return [
+            'agency_info' => new AgencyInfoResource($user),
+            'admin' => new UserResource($user->agencyInfo->admin),
+            'today_sales' => $today_sales,
+            'pending_sales' => $pending_sales,
+            'active_tours' => $active_tours,
+            'draft_tours' => $draft_tours,
+            'rejected_tours' => $rejected_tours,
+        ];
     }
 }
