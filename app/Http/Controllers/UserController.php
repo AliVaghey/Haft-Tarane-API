@@ -138,7 +138,7 @@ class UserController extends Controller
                 $join->on('tour_reservations.agency_id', '=', 'agency_infos.id')
                     ->where('agency_infos.admin_id', '=', $user->id);
             })
-            ->whereBetween('created_at', [now()->setTime(0, 0), now()->setTime(23, 59)])
+            ->whereBetween('tour_reservations.created_at', [now()->setTime(0, 0), now()->setTime(23, 59)])
             ->count();
 
         $month_sales = DB::table('tour_reservations')
@@ -146,7 +146,7 @@ class UserController extends Controller
                 $join->on('tour_reservations.agency_id', '=', 'agency_infos.id')
                     ->where('agency_infos.admin_id', '=', $user->id);
             })
-            ->whereBetween('created_at', [now()->firstOfMonth(), now()->endOfMonth()])
+            ->whereBetween('tour_reservations.created_at', [now()->firstOfMonth(), now()->endOfMonth()])
             ->count();
 
         return [
