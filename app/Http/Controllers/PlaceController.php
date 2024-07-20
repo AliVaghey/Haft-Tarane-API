@@ -137,4 +137,25 @@ class PlaceController extends Controller
         }
         return $response;
     }
+
+    public function getAllHotelPlaces(Request $request)
+    {
+        $result = DB::table('tours')
+            ->where('status', 'active')
+            ->where('transportation_type', '=', 'hotel')
+            ->select('destination')
+            ->distinct()
+            ->get();
+        if ($request->query('name')) {
+            $result = $result->where('destination', '=', $request->query('name'));
+        }
+        $response['data'] = [];
+        foreach ($result as $item) {
+            $response['data'][] = [
+                'id' => -1,
+                'name' => $item->destination
+            ];
+        }
+        return $response;
+    }
 }

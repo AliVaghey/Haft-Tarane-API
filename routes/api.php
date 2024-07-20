@@ -17,6 +17,7 @@ require __DIR__ . '/user/user.php';
 
 
 Route::get('cities', [PlaceController::class, 'getAllPlaces']);
+Route::get('hotel-cities', [PlaceController::class, 'getAllHotelPlaces']);
 Route::get('tour-origin', [PlaceController::class, 'getAllTourOrigin']);
 Route::get('tour-destination', [PlaceController::class, 'getAllTourDestination']);
 
