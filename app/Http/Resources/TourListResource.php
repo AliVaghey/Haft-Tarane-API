@@ -32,6 +32,7 @@ class TourListResource extends JsonResource
                 'start' => $date->start,
                 'end' => $date->end,
             ]),
+            'labels' => $this->labels,
             'costs' => $this->filterCosts(),
             'transportation' => $this->transportations,
         ];

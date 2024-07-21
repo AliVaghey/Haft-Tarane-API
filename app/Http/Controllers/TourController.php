@@ -44,6 +44,7 @@ class TourController extends Controller
             'staying_nights' => ['required', 'numeric'],
             'transportation_type' => ['required', 'string'],
             'support' => ['required', 'numeric', 'exists:supports,id'],
+            'labels' => ['nullable', 'json']
         ]);
         if ($request->midnight_support) {
             if (!$request->evening_support) {
@@ -73,6 +74,7 @@ class TourController extends Controller
             'status' => TourStatus::Draft,
             'hotels' => collect(),
             'support_id' => $sup->id,
+            'labels' => collect(json_decode($request->get('labels'), true)),
         ]);
 
         return new TourResource($tour);
@@ -107,6 +109,7 @@ class TourController extends Controller
             'staying_nights' => ['required', 'numeric'],
             'transportation_type' => ['required', 'string'],
             'support' => ['required', 'numeric', 'exists:supports,id'],
+            'labels' => ['nullable', 'json'],
         ]);
         if ($request->midnight_support) {
             if (!$request->evening_support) {
@@ -143,6 +146,7 @@ class TourController extends Controller
             'transportation_type' => $request->transportation_type,
             'status' => TourStatus::Draft,
             'support_id' => $sup->id,
+            'labels' => collect(json_decode($request->get('labels'), true)),
         ])->save();
 
         return response()->noContent();

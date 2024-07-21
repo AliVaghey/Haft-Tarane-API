@@ -62,6 +62,7 @@ class TourResource extends JsonResource
             }),
             'profit_rate' => $this->profit_rate,
             'price_changes' => $this->getPriceChanges($this->costs),
+            'labels' => $this->labels,
         ];
     }
 

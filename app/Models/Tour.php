@@ -37,6 +37,7 @@ class Tour extends Model
         'transportation_type',
         'status',
         'profit_rate',
+        'labels',
     ];
 
     /**
@@ -50,6 +51,7 @@ class Tour extends Model
             'status' => TourStatus::class,
             'tour_styles' => AsCollection::class,
             'hotels' => AsCollection::class,
+            'labels' => AsCollection::class,
             'evening_support' => 'boolean',
             'midnight_support' => 'boolean',
         ];
