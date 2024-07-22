@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Available;
 use App\Models\Costs;
 use App\Models\Hotel;
 use App\Models\Tour;
@@ -59,6 +60,11 @@ class CostsController extends Controller
             Gate::authorize('isTourOwner', $cost->tour);
         } catch (AuthorizationException $exception) {
             return response(['message' => $exception->getMessage()], 403);
+        }
+
+        $availables = Available::where('cost_id', $cost->id)->get();
+        foreach ($availables as $available) {
+            $available->delete();
         }
 
         $cost->delete();
