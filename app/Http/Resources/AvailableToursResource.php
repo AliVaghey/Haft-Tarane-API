@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use App\Models\Costs;
 use App\Models\Hotel;
+use App\Models\SysTransport;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -35,9 +36,16 @@ class AvailableToursResource extends JsonResource
                 'end' => $date->end
             ]],
             'costs' => $this->filterCosts($cost),
-            'transportation' => null,
+            'transportation' => $this->isSysTrans() ? $this->getSysTrans() : $this->transportations->sortBy("sort"),
             'tour' => $tour,
         ];
+    }
+
+    private function getSysTrans()
+    {
+        return SysTransport::where('date_id', $this->date->id)->get()->map(function ($item) {
+            return ['transportation_id' => $item->id, 'flight' => $item->flight];
+        });
     }
 
     private function filterCosts(Costs $cost_model)
