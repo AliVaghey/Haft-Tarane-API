@@ -59,6 +59,11 @@ class DateController extends Controller
             return response(['message' => __('exceptions.date-not-found')], 404);
         }
 
+        $availables = Available::where('date_id', $date->id)->get();
+        foreach ($availables as $available) {
+            $available->delete();
+        }
+
         $date->delete();
         return response()->noContent();
     }
