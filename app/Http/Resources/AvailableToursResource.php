@@ -36,7 +36,7 @@ class AvailableToursResource extends JsonResource
                 'end' => $date->end
             ]],
             'costs' => $this->filterCosts($cost),
-            'transportation' => $this->isSysTrans() ? $this->getSysTrans() : $this->transportations->sortBy("sort"),
+            'transportation' => $this->tour->isSysTrans() ? $this->getSysTrans() : $this->transportations->sortBy("sort"),
             'tour' => $tour,
         ];
     }
