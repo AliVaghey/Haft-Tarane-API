@@ -241,6 +241,7 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/chillerlan/php-settings-container" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/shetabit/multipay" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/shetabit/payment" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/cryptommer/smsir" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

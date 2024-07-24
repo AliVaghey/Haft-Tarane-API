@@ -33,14 +33,9 @@ class AuthenticatedSessionController extends Controller
         $request->session()->put('otp.expires_at', now()->addMinutes(2));
         $request->session()->save();
 
-        $results = sms()->send($request->get('phone'), "رمز یکبار مصرف شما :\n$code\nلغو 11");
-        $f = match ($results) {
-            "-5", "-4", "-3", "-2", "-1", "0", "1", "2", "3",
-            "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14" => false,
-            default => true,
-        };
+        sms()->send(['CODE' => $code], 841406 , $request->get('phone'));
 
-        return $f ? response()->noContent() : response(['message' => __('exceptions.sms-went-wrong')], 422);
+        return response()->noContent();
     }
 
     public function verifyLogin(Request $request)

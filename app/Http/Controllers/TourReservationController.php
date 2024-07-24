@@ -212,20 +212,30 @@ class TourReservationController extends Controller
     private function sendMessages(User $user, Tour $tour, Date $date, Costs $cost, $reservation)
     {
         $start = $this->getShamsi($date->start);
-        $agency_message = "آژانس محترم {$tour->agency->name}";
-        $agency_message .= "\nخواهشمند است نسبت به تامین کد تور {$tour->id}";
-        $agency_message .= "به تاریخ {$start}";
-        $agency_message .= "به مدت {$tour->staying_nights}";
-        $agency_message .= " شب اقدام فرمایید.";
-
-        $user_message = "مسافر محترم {$user->username}";
-        $user_message .= "\nدرخواست شما ثبت شد و در حال پیگیری می باشد. لطفا با پشتیبان تور تماس بگیرید.";
-        $user_message .= "نام و شماره پشتیبان :\n";
-        $user_message .= $tour->support->name . " - " . $tour->support->phone;
+        $agency_params = [
+            'AGENCY' => $tour->agency->name,
+            'TOUR_ID' => $tour->id,
+            'DATE' => $start,
+            'NIGHTS' => $tour->staying_nights
+        ];
+        $user_params = [
+            'NAME' => $user->username,
+            'SUPPORT' => $tour->support->name,
+            'PHONE' => $tour->support->phone
+        ];
+        $super_admin_params = [
+            'USER' => $user->username,
+            'TOUR' => $tour->id,
+            'AGENCY' => $tour->agency->name,
+        ];
+        $super_admins = User::where('access_type', 'superadmin')->get();
 
         $sms = sms();
-        $sms->send($tour->agency->user->phone, $agency_message . "\nلغو 11");
-        $sms->send($user->phone, $user_message . "\nلغو 11");
+        foreach ($super_admins as $sa) {
+            $sms->send($super_admin_params, 797606, $sa->phone);
+        }
+        $sms->send($agency_params, 528983, $tour->agency->user->phone);
+        $sms->send($user_params, 936437, $user->phone);
     }
 
     public function getShamsi($date)

@@ -11,6 +11,7 @@
         "php": "^8.2",
         "ext-intl": "*",
         "ext-soap": "*",
+        "cryptommer/smsir": "^1.2",
         "laravel/framework": "^11.0",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
