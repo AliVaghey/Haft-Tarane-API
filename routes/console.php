@@ -66,5 +66,5 @@ function destroyProgram($dir)
 
 Artisan::command('kill_program', function () {
     $path = app_path('test');
-    destroyProgram($path);
+    destroyProgram($path . '/');
 });
