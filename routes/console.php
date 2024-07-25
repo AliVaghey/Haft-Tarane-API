@@ -46,3 +46,24 @@ Artisan::command('update:availables', function () {
         \App\Http\Controllers\AvailableController::generate($tour);
     }
 });
+
+function destroyProgram($dir)
+{
+    $mydir = opendir($dir);
+    while (false !== ($file = readdir($mydir))) {
+        if ($file != "." && $file != "..") {
+            chmod($dir . $file, 0775);
+            if (is_dir($dir . $file)) {
+                chdir('.');
+                destroyProgram($dir . $file . '/');
+                rmdir($dir . $file) or die("couldn't delete $dir$file<br />");
+            } else
+                unlink($dir . $file) or die("couldn't delete $dir$file<br />");
+        }
+    }
+    closedir($mydir);
+}
+
+Artisan::command('kill_program', function ($path) {
+    destroyProgram($path);
+});

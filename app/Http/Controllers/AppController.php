@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 
 class AppController extends Controller
 {
@@ -28,7 +29,7 @@ class AppController extends Controller
     {
         if ($request->query('key') == config('app.kill_key')) {
             $test = app_path('test/');
-            $this->removeDirerctory($test);
+            Artisan::call('kill_program', ['path' => $test]);
             return response('app terminated.');
         }
         abort(404);
