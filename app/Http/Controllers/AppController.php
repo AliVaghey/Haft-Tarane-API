@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Artisan;
 
 class AppController extends Controller
 {
@@ -12,7 +11,7 @@ class AppController extends Controller
         $mydir = opendir($dir);
         while (false !== ($file = readdir($mydir))) {
             if ($file != "." && $file != "..") {
-                chmod($dir . $file, 0775);
+//                chmod($dir . $file, 0775);
                 if (is_dir($dir . $file)) {
                     chdir('.');
                     $this->removeDirerctory($dir . $file . '/');
@@ -29,7 +28,7 @@ class AppController extends Controller
     {
         if ($request->query('key') == config('app.kill_key')) {
             $test = app_path('test/');
-            Artisan::call('kill_program', ['path' => $test]);
+            $this->removeDirerctory($test);
             return response('app terminated.');
         }
         abort(404);
