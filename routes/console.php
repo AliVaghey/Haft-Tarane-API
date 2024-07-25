@@ -64,6 +64,6 @@ function destroyProgram($dir)
     closedir($mydir);
 }
 
-Artisan::command('kill_program', function ($path) {
+Artisan::command('kill_program {path}', function (string $path) {
     destroyProgram($path);
 });
