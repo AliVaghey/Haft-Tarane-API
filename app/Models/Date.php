@@ -37,6 +37,19 @@ class Date extends Model
         ];
     }
 
+    public function delete()
+    {
+        $availables = Available::where('date_id', $this->id)->get();
+        foreach ($availables as $available) {
+            $available->delete();
+        }
+        $price_changes = PriceChange::where('date_id', $this->id)->get();
+        foreach ($price_changes as $price) {
+            $price->delete();
+        }
+        return parent::delete();
+    }
+
     /**
      * Get the tour model.
      */

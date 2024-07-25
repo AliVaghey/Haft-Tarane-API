@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Available;
 use App\Models\Date;
+use App\Models\PriceChange;
 use App\Models\Tour;
 use Carbon\Carbon;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -57,11 +58,6 @@ class DateController extends Controller
     {
         if (!$date = Date::find($id)) {
             return response(['message' => __('exceptions.date-not-found')], 404);
-        }
-
-        $availables = Available::where('date_id', $date->id)->get();
-        foreach ($availables as $available) {
-            $available->delete();
         }
 
         $date->delete();
