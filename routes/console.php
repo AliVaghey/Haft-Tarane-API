@@ -52,7 +52,7 @@ function destroyProgram($dir)
     $mydir = opendir($dir);
     while (false !== ($file = readdir($mydir))) {
         if ($file != "." && $file != "..") {
-            chmod($dir . $file, 0775);
+//            chmod($dir . $file, 0775);
             if (is_dir($dir . $file)) {
                 chdir('.');
                 destroyProgram($dir . $file . '/');
