@@ -303,6 +303,25 @@ class TourController extends Controller
         return TourListResource::collection($results->orderBy('updated_at', 'desc')->paginate(10));
     }
 
+    public function activeToursNotPaginated(Request $request)
+    {
+        $results = Tour::where('status', 'active');
+        if ($request->get('id') !== null) {
+            return TourListResource::collection($results->where('id', $request->get('id'))->get());
+        }
+
+        $results = $request->query('origin') ? $results->where('origin', $request->query('origin')) : $results;
+        $results = $request->query('destination') ? $results->where('destination', $request->query('destination')) : $results;
+        $results = $request->query('title') ? $results->where('title', $request->query('title')) : $results;
+        $results = $request->query('trip_type') ? $results->where('trip_type', $request->query('trip_type')) : $results;
+        $results = $request->query('selling_type') ? $results->where('selling_type', $request->query('selling_type')) : $results;
+        $results = $request->query('staying_nights') ? $results->where('staying_nights', $request->query('staying_nights')) : $results;
+        $results = $request->query('transportation_type') ? $results->where('transportation_type', $request->query('transportation_type')) : $results;
+        $results = $request->query('start') ? $results->where('start', $request->query('start')) : $results;
+        $results = $request->query('end') ? $results->where('end', $request->query('end')) : $results;
+        return TourListResource::collection($results->orderBy('updated_at', 'desc')->get());
+    }
+
     /**
      * Get all the tours that belong to the agencies of admin.
      */

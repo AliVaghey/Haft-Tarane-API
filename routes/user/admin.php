@@ -83,6 +83,7 @@ Route::middleware(['auth:sanctum', 'isAdmin'])->prefix('admin/')->group(function
     //----------------------- Tour Management ------------------------
     Route::get('tour/{id}', [TourController::class, 'read']);
     Route::get('active-tours', [TourController::class, 'activeTours']);
+    Route::get('active-tours/not-paginated', [TourController::class, 'activeToursNotPaginated']);
     Route::get('my-tours', [TourController::class, 'adminMyTours']);
     Route::get('my-pending-tours', [TourController::class, 'adminPendingTours']);
     Route::post('tour/{id}/approve', [TourController::class, 'approve']);
