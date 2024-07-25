@@ -123,4 +123,5 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    'kill_key' => 'EKj1gBCOMzZ8uMNOmiVOvvNcO5jkbwNPDorn30vt',
 ];
