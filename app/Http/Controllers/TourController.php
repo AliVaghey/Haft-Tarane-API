@@ -293,7 +293,7 @@ class TourController extends Controller
 
         $results = $request->query('origin') ? $results->where('origin', $request->query('origin')) : $results;
         $results = $request->query('destination') ? $results->where('destination', $request->query('destination')) : $results;
-        $results = $request->query('title') ? $results->where('title', $request->query('title')) : $results;
+        $results = $request->query('title') ? $results->where('title', 'like','%' . $request->query('title') . '%') : $results;
         $results = $request->query('trip_type') ? $results->where('trip_type', $request->query('trip_type')) : $results;
         $results = $request->query('selling_type') ? $results->where('selling_type', $request->query('selling_type')) : $results;
         $results = $request->query('staying_nights') ? $results->where('staying_nights', $request->query('staying_nights')) : $results;
@@ -312,7 +312,7 @@ class TourController extends Controller
 
         $results = $request->query('origin') ? $results->where('origin', $request->query('origin')) : $results;
         $results = $request->query('destination') ? $results->where('destination', $request->query('destination')) : $results;
-        $results = $request->query('title') ? $results->where('title', $request->query('title')) : $results;
+        $results = $request->query('title') ? $results->where('title', 'like','%' . $request->query('title') . '%') : $results;
         $results = $request->query('trip_type') ? $results->where('trip_type', $request->query('trip_type')) : $results;
         $results = $request->query('selling_type') ? $results->where('selling_type', $request->query('selling_type')) : $results;
         $results = $request->query('staying_nights') ? $results->where('staying_nights', $request->query('staying_nights')) : $results;
