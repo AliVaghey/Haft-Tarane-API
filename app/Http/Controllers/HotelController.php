@@ -126,15 +126,15 @@ class HotelController extends Controller
         }
 
         $request->validate([
-            'photo_0' => ['nullable', 'mimes:jpg,jpeg,png', 'max:1024'],
-            'photo_1' => ['nullable', 'mimes:jpg,jpeg,png', 'max:1024'],
-            'photo_2' => ['nullable', 'mimes:jpg,jpeg,png', 'max:1024'],
-            'photo_3' => ['nullable', 'mimes:jpg,jpeg,png', 'max:1024'],
-            'photo_5' => ['nullable', 'mimes:jpg,jpeg,png', 'max:1024'],
-            'photo_6' => ['nullable', 'mimes:jpg,jpeg,png', 'max:1024'],
-            'photo_7' => ['nullable', 'mimes:jpg,jpeg,png', 'max:1024'],
-            'photo_8' => ['nullable', 'mimes:jpg,jpeg,png', 'max:1024'],
-            'photo_9' => ['nullable', 'mimes:jpg,jpeg,png', 'max:1024'],
+            'photo_0' => ['nullable', 'mimes:jpg,jpeg,png,webp', 'max:1024'],
+            'photo_1' => ['nullable', 'mimes:jpg,jpeg,png,webp', 'max:1024'],
+            'photo_2' => ['nullable', 'mimes:jpg,jpeg,png,webp', 'max:1024'],
+            'photo_3' => ['nullable', 'mimes:jpg,jpeg,png,webp', 'max:1024'],
+            'photo_5' => ['nullable', 'mimes:jpg,jpeg,png,webp', 'max:1024'],
+            'photo_6' => ['nullable', 'mimes:jpg,jpeg,png,webp', 'max:1024'],
+            'photo_7' => ['nullable', 'mimes:jpg,jpeg,png,webp', 'max:1024'],
+            'photo_8' => ['nullable', 'mimes:jpg,jpeg,png,webp', 'max:1024'],
+            'photo_9' => ['nullable', 'mimes:jpg,jpeg,png,webp', 'max:1024'],
         ]);
 
         $gallery = $hotel->gallery ?? collect();
