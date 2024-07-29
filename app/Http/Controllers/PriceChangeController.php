@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Costs;
 use App\Models\Date;
 use App\Models\PriceChange;
+use App\Models\Tour;
 use Illuminate\Http\Request;
 
 class PriceChangeController extends Controller
@@ -97,5 +98,13 @@ class PriceChangeController extends Controller
     {
         $price_change->delete();
         return response()->noContent();
+    }
+
+    public function deleteAll(Request $request, Tour $tour)
+    {
+        foreach ($tour->dates as $date) {
+            PriceChange::where('date_id', $date->id)->delete();
+        }
+        return response(null, 204);
     }
 }
