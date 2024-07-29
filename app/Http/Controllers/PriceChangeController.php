@@ -105,6 +105,7 @@ class PriceChangeController extends Controller
         foreach ($tour->dates as $date) {
             PriceChange::where('date_id', $date->id)->delete();
         }
+        AvailableController::generate($tour);
         return response(null, 204);
     }
 }
