@@ -666,10 +666,12 @@ class TourController extends Controller
         }
 
         //Dates :
-        foreach ($tour->dates as $date) {
-            $new_date = $date->replicate();
-            $new_date->tour_id = $new->id;
-            $new_date->save();
+        if (!$tour->isSysTrans()) {
+            foreach ($tour->dates as $date) {
+                $new_date = $date->replicate();
+                $new_date->tour_id = $new->id;
+                $new_date->save();
+            }
         }
 
         //Transportation :
