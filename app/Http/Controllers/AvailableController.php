@@ -54,13 +54,12 @@ class AvailableController extends Controller
 
     static private function calculateMinCost(Tour $tour, Date $date, Costs $cost)
     {
+        $total_price = $cost->two_bed;
         if ($tour->isSysTrans()) {
-            $total_price = $cost->two_bed;
             foreach (SysTransport::where('date_id', $date->id)->get() as $transport) {
                 $total_price += ($transport->flight->price_final / 10);
             }
         } else {
-            $total_price = $cost->two_bed;
             foreach ($tour->transportations as $transport) {
                 $total_price += $transport->price;
             }
