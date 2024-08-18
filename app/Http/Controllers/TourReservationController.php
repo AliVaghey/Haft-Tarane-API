@@ -124,6 +124,11 @@ class TourReservationController extends Controller
                     }
                 }
             }
+        } else {
+            $count = $this->countPassengers($passengers);
+            foreach ($tour->transportations as $transportation) {
+                $total_price += $transportation->price * $count;
+            }
         }
 //        $price_change = PriceChange::where('date_id', $date->id)->where('cost_id', $cost->id)->get();
 //        if ($price_change->isNotEmpty()) {
