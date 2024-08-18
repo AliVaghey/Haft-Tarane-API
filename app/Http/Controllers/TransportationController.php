@@ -19,6 +19,7 @@ class TransportationController extends Controller
             'duration' => ['nullable', 'string'],
             'company_name' => ['nullable', 'string'],
             'transportation_type' => ['nullable', 'string'],
+            'price' => ['nullable', 'integer'],
         ]);
         if ($tour->transportation_type == "system") {
             return response(['message' => __('exceptions.sys-transport')], 403);
@@ -36,6 +37,7 @@ class TransportationController extends Controller
             'duration' => $request->get('duration'),
             'company_name' => $request->get('company_name'),
             'transportation_type' => $request->get('transportation_type'),
+            'price' => $request->get('price'),
         ]);
 
         return response($transport, 201);

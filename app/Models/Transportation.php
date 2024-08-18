@@ -21,6 +21,7 @@ class Transportation extends Model
         'duration',
         'company_name',
         'transportation_type',
+        'price',
     ];
 
     public function tour(): BelongsTo

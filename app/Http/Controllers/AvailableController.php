@@ -61,6 +61,9 @@ class AvailableController extends Controller
             }
         } else {
             $total_price = $cost->two_bed;
+            foreach ($tour->transportations as $transport) {
+                $total_price += $transport->price;
+            }
         }
         $price_change = PriceChange::where('date_id', $date->id)->where('cost_id', $cost->id)->first();
         if ($price_change) {
