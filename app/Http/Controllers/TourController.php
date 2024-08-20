@@ -729,7 +729,7 @@ class TourController extends Controller
 
     public function getDrafts(Request $request)
     {
-        $resualts = Tour::wehre('status', 'draft');
+        $resualts = Tour::where('status', 'draft');
         if ($request->query('id')) {
             $resualts->where('id', $request->query('id'));
         }
@@ -738,7 +738,7 @@ class TourController extends Controller
 
     public function getActives(Request $request)
     {
-        $resualts = Tour::wehre('status', 'active');
+        $resualts = Tour::where('status', 'active');
         if ($request->query('id')) {
             $resualts->where('id', $request->query('id'));
         }
@@ -747,7 +747,7 @@ class TourController extends Controller
 
     public function getExpired(Request $request)
     {
-        $resualts = Tour::wehre('status', 'expired');
+        $resualts = Tour::where('status', 'expired');
         if ($request->query('id')) {
             $resualts->where('id', $request->query('id'));
         }
@@ -756,7 +756,7 @@ class TourController extends Controller
 
     public function getPending(Request $request)
     {
-        $resualts = Tour::wehre('status', 'expired');
+        $resualts = Tour::where('status', 'expired');
         if ($request->query('id')) {
             $resualts->where('id', $request->query('id'));
         }
@@ -765,7 +765,7 @@ class TourController extends Controller
 
     public function getRejected(Request $request)
     {
-        $resualts = Tour::wehre('status', 'expired');
+        $resualts = Tour::where('status', 'expired');
         if ($request->query('id')) {
             $resualts->where('id', $request->query('id'));
         }
