@@ -2,13 +2,15 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\MassPrunable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Available extends Model
 {
-    use HasFactory;
+    use HasFactory, MassPrunable;
 
     protected $fillable = [
         'tour_id',
@@ -25,6 +27,14 @@ class Available extends Model
         ];
     }
 
+    /**
+     * Get the prunable model query.
+     */
+    public function prunable(): Builder
+    {
+        return static::where('expired', true)->where('updated_at', '<=', now()->subMonth());
+    }
+
     public function tour(): BelongsTo
     {
         return $this->belongsTo(Tour::class, 'tour_id');
@@ -35,7 +45,7 @@ class Available extends Model
         return $this->belongsTo(Date::class, 'date_id');
     }
 
-    public function  cost(): BelongsTo
+    public function cost(): BelongsTo
     {
         return $this->belongsTo(Costs::class, 'cost_id');
     }

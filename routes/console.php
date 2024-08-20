@@ -16,6 +16,7 @@ Schedule::call(new ResetVisits)->daily();
 Schedule::call(new ExpireDates)->dailyAt('00:05');
 Schedule::call(new ExpireTours)->dailyAt('00:15');
 Schedule::call(new DeleteSpecialTours)->dailyAt('00:30');
+Schedule::command('model:prune')->daily();
 
 //---Artisan Commands :
 
