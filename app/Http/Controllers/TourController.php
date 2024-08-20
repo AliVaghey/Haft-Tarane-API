@@ -717,4 +717,58 @@ class TourController extends Controller
 
         return AvailableToursResource::collection($results);
     }
+
+    public function getAll(Request $request)
+    {
+        $resualts = Tour::latest();
+        if ($request->query('id')) {
+            $resualts->where('id', $request->query('id'));
+        }
+        return $resualts->paginate(10);
+    }
+
+    public function getDrafts(Request $request)
+    {
+        $resualts = Tour::wehre('status', 'draft');
+        if ($request->query('id')) {
+            $resualts->where('id', $request->query('id'));
+        }
+        return $resualts->latest()->paginate(10);
+    }
+
+    public function getActives(Request $request)
+    {
+        $resualts = Tour::wehre('status', 'active');
+        if ($request->query('id')) {
+            $resualts->where('id', $request->query('id'));
+        }
+        return $resualts->latest()->paginate(10);
+    }
+
+    public function getExpired(Request $request)
+    {
+        $resualts = Tour::wehre('status', 'expired');
+        if ($request->query('id')) {
+            $resualts->where('id', $request->query('id'));
+        }
+        return $resualts->latest()->paginate(10);
+    }
+
+    public function getPending(Request $request)
+    {
+        $resualts = Tour::wehre('status', 'expired');
+        if ($request->query('id')) {
+            $resualts->where('id', $request->query('id'));
+        }
+        return $resualts->latest()->paginate(10);
+    }
+
+    public function getRejected(Request $request)
+    {
+        $resualts = Tour::wehre('status', 'expired');
+        if ($request->query('id')) {
+            $resualts->where('id', $request->query('id'));
+        }
+        return $resualts->latest()->paginate(10);
+    }
 }

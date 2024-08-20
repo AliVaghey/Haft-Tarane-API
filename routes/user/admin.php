@@ -46,6 +46,15 @@ Route::middleware(['auth:sanctum', 'isAdmin'])->prefix('admin/')->group(function
     Route::get('special-tours', [SpecialTourController::class, 'getAll'])->middleware('superAdmin');
     Route::get('special-tour/{tour}', [SpecialTourController::class, 'read'])->middleware('superAdmin');
 
+    //----------------------------- Tours ----------------------------
+    Route::get('/super-admin/tours/all', [TourController::class, 'getAll'])->middleware('superAdmin');
+    Route::get('/super-admin/tours/draft', [TourController::class, 'getDrafts'])->middleware('superAdmin');
+    Route::get('/super-admin/tours/active', [TourController::class, 'getActives'])->middleware('superAdmin');
+    Route::get('/super-admin/tours/expired', [TourController::class, 'getExpired'])->middleware('superAdmin');
+    Route::get('/super-admin/tours/pending', [TourController::class, 'getPending'])->middleware('superAdmin');
+    Route::get('/super-admin/tours/rejected', [TourController::class, 'getRejected'])->middleware('superAdmin');
+
+
 
     //====================================== Admin ========================================
     //------------------------- Profile Info -------------------------
