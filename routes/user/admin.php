@@ -54,6 +54,8 @@ Route::middleware(['auth:sanctum', 'isAdmin'])->prefix('admin/')->group(function
     Route::get('/super-admin/tours/pending', [TourController::class, 'getPending'])->middleware('superAdmin');
     Route::get('/super-admin/tours/rejected', [TourController::class, 'getRejected'])->middleware('superAdmin');
 
+    //---------------------------- Statistics --------------------------
+    Route::get('/super-admin/statistics', [UserController::class, 'SuperAdminStatistics'])->middleware('superAdmin');
 
 
     //====================================== Admin ========================================

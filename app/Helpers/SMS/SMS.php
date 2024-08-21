@@ -2,6 +2,7 @@
 
 namespace App\Helpers\SMS;
 
+use Cryptommer\Smsir\Classes\Setting;
 use Cryptommer\Smsir\Classes\Smsir;
 //use Cryptommer\Smsir\Smsir;
 use Cryptommer\Smsir\Objects\Parameters;
@@ -46,6 +47,12 @@ class SMS
             $p[] = new Parameters($key, $parameter);
         }
         $send->Verify($phone, $template_id, $p);
+    }
+
+    public function getCredit()
+    {
+        $response = (new Setting(new Smsir()))->getCredit();
+        return $response->Data;
     }
 }
 

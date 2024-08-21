@@ -164,4 +164,45 @@ class UserController extends Controller
             'all_sales' => $all_sales
         ];
     }
+
+    public function SuperAdminStatistics(Request $request)
+    {
+        $admin_count = DB::table('users')
+            ->where('access_type', 'admin')
+            ->count();
+
+        $agency_count = DB::table('users')
+            ->where('access_type', 'agency')
+            ->count();
+
+        $user_count = DB::table('users')
+            ->where('access_type', 'user')
+            ->count();
+
+        $today_sales = DB::table('tour_reservations')
+            ->whereBetween('created_at', [now()->setTime(0, 0), now()->setTime(23, 59, 59)])
+            ->count();
+
+        $month_sales = DB::table('tour_reservations')
+            ->whereBetween('created_at', [now()->firstOfMonth(), now()->lastOfMonth()])
+            ->count();
+
+        $all_sales = DB::table('tour_reservations')
+            ->count();
+
+        $active_tours = DB::table('tours')
+            ->where('status', 'active')
+            ->count();
+
+        return [
+            'admin_count' => $admin_count,
+            'agency_count' => $agency_count,
+            'user_count' => $user_count,
+            'today_sales' => $today_sales,
+            'month_sales' => $month_sales,
+            'all_sales' => $all_sales,
+            'active_tours' => $active_tours,
+            'sms_left' => sms()->getCredit()
+        ];
+    }
 }
