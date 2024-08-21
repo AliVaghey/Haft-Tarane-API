@@ -48,3 +48,6 @@ Artisan::command('update:availables', function () {
     }
 });
 
+Artisan::command('loremtest', function () {
+    var_dump((new \Cryptommer\Smsir\Classes\Setting(new \Cryptommer\Smsir\Classes\Smsir()))->getCredit());
+});

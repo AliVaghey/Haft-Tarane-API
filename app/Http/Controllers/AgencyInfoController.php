@@ -117,6 +117,15 @@ class AgencyInfoController extends Controller
             ->whereBetween('created_at', [now()->setTime(0, 0), now()->setTime(23, 59, 59)])
             ->count();
 
+        $month_sales = DB::table('tour_reservations')
+            ->where('agency_id', $agency->id)
+            ->whereBetween('created_at', [now()->firstOfMonth(), now()->lastOfMonth()])
+            ->count();
+
+        $all_sales = DB::table('tour_reservations')
+            ->where('agency_id', $agency->id)
+            ->count();
+
         $pending_sales = DB::table('tour_reservations')
             ->where('agency_id', $agency->id)
             ->where('status', 'pending')
@@ -141,6 +150,8 @@ class AgencyInfoController extends Controller
             'agency_info' => new AgencyInfoResource($user),
             'admin' => new UserResource($user->agencyInfo->admin),
             'today_sales' => $today_sales,
+            'month_sales' => $month_sales,
+            'all_sales' => $all_sales,
             'pending_sales' => $pending_sales,
             'active_tours' => $active_tours,
             'draft_tours' => $draft_tours,

@@ -149,11 +149,19 @@ class UserController extends Controller
             ->whereBetween('tour_reservations.created_at', [now()->firstOfMonth(), now()->endOfMonth()])
             ->count();
 
+        $all_sales = DB::table('tour_reservations')
+            ->join('agency_infos', function (JoinClause $join) use ($user) {
+                $join->on('tour_reservations.agency_id', '=', 'agency_infos.id')
+                    ->where('agency_infos.admin_id', '=', $user->id);
+            })
+            ->count();
+
         return [
             'admin_info' => new UserResource($user),
             'your_agency_count' => $agency_count,
             'today_sales' => $today_sales,
             'month_sales' => $month_sales,
+            'all_sales' => $all_sales
         ];
     }
 }
