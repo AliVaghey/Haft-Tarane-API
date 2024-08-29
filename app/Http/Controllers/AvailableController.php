@@ -21,7 +21,7 @@ class AvailableController extends Controller
 
         foreach ($tour->dates as $date) {
             foreach ($tour->costs as $cost) {
-                $available = Available::firstOrMake([
+                $available = Available::firstOrCreate([
                     'tour_id' => $tour->id,
                     'date_id' => $date->id,
                     'cost_id' => $cost->id,
