@@ -65,10 +65,10 @@ class AvailableController extends Controller
                 $total_price += $transport->price;
             }
         }
-        $price_change = PriceChange::where('date_id', $date->id)->where('cost_id', $cost->id)->first();
-        if ($price_change) {
-            $total_price += $price_change->two_bed;
-        }
+//        $price_change = PriceChange::where('date_id', $date->id)->where('cost_id', $cost->id)->first();
+//        if ($price_change) {
+//            $total_price += $price_change->two_bed;
+//        }
         return $total_price;
     }
 
