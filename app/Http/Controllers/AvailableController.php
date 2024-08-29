@@ -21,14 +21,15 @@ class AvailableController extends Controller
 
         foreach ($tour->dates as $date) {
             foreach ($tour->costs as $cost) {
-                Available::updateOrCreate([
+                $available = Available::firstOrMake([
                     'tour_id' => $tour->id,
                     'date_id' => $date->id,
                     'cost_id' => $cost->id,
-                ], [
+                ]);
+                $available->fill([
                     'min_cost' => self::calculateMinCost($tour, $date, $cost),
                     'expired' => !(!$date->expired && $tour->status == TourStatus::Active)
-                ]);
+                ])->save();
             }
         }
     }

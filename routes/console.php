@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AgencyInfoController;
+use App\Models\Tour;
 use App\Schedules\DeleteSpecialTours;
 use App\Schedules\ExpireDates;
 use App\Schedules\ExpireTours;
@@ -48,6 +49,7 @@ Artisan::command('update:availables', function () {
     }
 });
 
-Artisan::command('loremtest', function () {
-    var_dump((new \Cryptommer\Smsir\Classes\Setting(new \Cryptommer\Smsir\Classes\Smsir()))->getCredit());
+Artisan::command('generate:available', function () {
+    $tour_id = $this->ask('Enter tour ID : ');
+    \App\Http\Controllers\AvailableController::generate(Tour::find($tour_id));
 });
