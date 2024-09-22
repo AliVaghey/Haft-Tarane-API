@@ -3,6 +3,7 @@
 
 use App\Http\Controllers\AdsController;
 use App\Http\Controllers\AirportController;
+use App\Http\Controllers\BannerController;
 use App\Http\Controllers\CheckOutController;
 use App\Http\Controllers\OptionsController;
 use App\Http\Controllers\ProfitRateController;
@@ -57,6 +58,12 @@ Route::middleware(['auth:sanctum', 'isAdmin'])->prefix('admin/')->group(function
     //---------------------------- Statistics --------------------------
     Route::get('/super-admin/statistics', [UserController::class, 'SuperAdminStatistics'])->middleware('superAdmin');
 
+    //---------------------------- Banners --------------------------
+    Route::get('/super-admin/slider-cards', [BannerController::class, 'all'])->middleware('superAdmin');
+    Route::get('/super-admin/slider-cards/{banner}', [BannerController::class, 'read'])->middleware('superAdmin');
+    Route::post('/super-admin/slider-cards', [BannerController::class, 'create'])->middleware('superAdmin');
+    Route::post('/super-admin/slider-cards/{banner}', [BannerController::class, 'update'])->middleware('superAdmin');
+    Route::delete('/super-admin/slider-cards/{banner}', [BannerController::class, 'delete'])->middleware('superAdmin');
 
     //====================================== Admin ========================================
     //------------------------- Profile Info -------------------------
