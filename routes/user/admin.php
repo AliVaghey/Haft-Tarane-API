@@ -59,11 +59,11 @@ Route::middleware(['auth:sanctum', 'isAdmin'])->prefix('admin/')->group(function
     Route::get('/super-admin/statistics', [UserController::class, 'SuperAdminStatistics'])->middleware('superAdmin');
 
     //---------------------------- Banners --------------------------
-    Route::get('/super-admin/slider-cards', [BannerController::class, 'all'])->middleware('superAdmin');
-    Route::get('/super-admin/slider-cards/{banner}', [BannerController::class, 'read'])->middleware('superAdmin');
-    Route::post('/super-admin/slider-cards', [BannerController::class, 'create'])->middleware('superAdmin');
-    Route::post('/super-admin/slider-cards/{banner}', [BannerController::class, 'update'])->middleware('superAdmin');
-    Route::delete('/super-admin/slider-cards/{banner}', [BannerController::class, 'delete'])->middleware('superAdmin');
+    Route::get('/slider-cards', [BannerController::class, 'all'])->middleware('superAdmin');
+    Route::get('/slider-cards/{banner}', [BannerController::class, 'read'])->middleware('superAdmin');
+    Route::post('/slider-cards', [BannerController::class, 'create'])->middleware('superAdmin');
+    Route::post('/slider-cards/{banner}', [BannerController::class, 'update'])->middleware('superAdmin');
+    Route::delete('/slider-cards/{banner}', [BannerController::class, 'delete'])->middleware('superAdmin');
 
     //====================================== Admin ========================================
     //------------------------- Profile Info -------------------------

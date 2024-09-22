@@ -38,6 +38,7 @@ Route::get('close-dates', [TourController::class, 'closeDates']);
 Route::get('specials', [SpecialTourController::class, 'getAll']);
 Route::get('special/{tour}', [SpecialTourController::class, 'getSpecialTourCosts']);
 Route::get('banners', [AdsController::class, 'all']);
+Route::get('slider-cards', [\App\Http\Controllers\BannerController::class, 'all']);
 
 Route::post('visit', [ConfigController::class, 'countVisit']);
 Route::get('visits', [ConfigController::class, 'getVisits']);
