@@ -24,7 +24,8 @@ class BannerController extends Controller
         $request->validate([
             'photo' => ['nullable', 'image', 'max:2048'],
             'description' => ['nullable', 'string'],
-            'link' => ['nullable', 'string', 'max:255']
+            'link' => ['nullable', 'string', 'max:255'],
+            'description_color' => ['nullable', 'string'],
         ]);
 
         $photo_path = null;
@@ -34,6 +35,7 @@ class BannerController extends Controller
         $banner = Banner::create([
             'photo' => $photo_path,
             'description' => $request->description,
+            'description_color' => $request->description_color ?? '#000000',
             'link' => $request->link
         ]);
 
@@ -45,7 +47,8 @@ class BannerController extends Controller
         $request->validate([
             'photo' => ['nullable', 'image', 'max:2048'],
             'description' => ['nullable', 'string'],
-            'link' => ['nullable', 'string', 'max:255']
+            'link' => ['nullable', 'string', 'max:255'],
+            'description_color' => ['nullable', 'string'],
         ]);
 
         if ($request->hasFile('photo')) {
@@ -55,6 +58,7 @@ class BannerController extends Controller
         $banner->fill([
             'description' => $request->description,
             'link' => $request->link,
+            'description_color' => $request->description_color ?? '#000000',
         ])->save();
 
         return new BannerResource($banner);

@@ -13,7 +13,8 @@ class Banner extends Model
     protected $fillable = [
         'photo',
         'description',
-        'link'
+        'description_color',
+        'link',
     ];
 
     public function delete()
