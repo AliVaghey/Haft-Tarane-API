@@ -31,7 +31,7 @@ class SpecialTourResource extends JsonResource
             'photo' => Storage::disk('public')->url($this->photo),
             'dates' => $this->dates->map(function ($date) {
                 return Date::find($date);
-            })
+            })->toArray()
         ];
     }
 }
