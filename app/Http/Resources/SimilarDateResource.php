@@ -48,13 +48,15 @@ class SimilarDateResource extends JsonResource
 
     public function minCost(Tour $tour, $cost)
     {
+        $total_price = $cost->two_bed;
         if ($tour->isSysTrans()) {
-            $total_price = $cost->two_bed;
             foreach (SysTransport::where('date_id', $this->id)->get() as $transport) {
                 $total_price += ($transport->flight->price_final / 10);
             }
         } else {
-            $total_price = $cost->two_bed;
+            foreach($tour->transportations as $trans) {
+                $total_price += $trans->price;
+            }
         }
         $price_change = PriceChange::where('date_id', $this->id)->where('cost_id', $cost->id)->get();
         if ($price_change->isNotEmpty()) {

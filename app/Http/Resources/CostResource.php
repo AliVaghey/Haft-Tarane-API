@@ -86,14 +86,15 @@ class CostResource extends JsonResource
 
     public function minCost(Tour $tour, $date)
     {
-        $total_price = 0;
+        $total_price = $this->two_bed;
         if ($tour->isSysTrans()) {
-            $total_price = $this->two_bed;
             foreach (SysTransport::where('date_id', $date['id'])->get() as $transport) {
                 $total_price += ($transport->flight->price_final / 10);
             }
         } else {
-            $total_price = $this->two_bed;
+            foreach($tour->transportations as $trans) {
+                $total_price += $trans->price;
+            }
         }
         $price_change = PriceChange::where('date_id', $date['id'])->where('cost_id', $this->id)->first();
         if ($price_change) {
