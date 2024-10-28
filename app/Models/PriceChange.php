@@ -29,7 +29,7 @@ class PriceChange extends Model
         if ($this->currency == 'irt') {
             $unit = 1;
         } else {
-            $unit = Options::firstWhere('category', $this->currency . "-currency-unit");
+            $unit = Options::firstWhere('category', $this->currency . "-currency-unit")->value;
         }
         return (object)[
             'one_bed' => $this->one_bed * $unit,
