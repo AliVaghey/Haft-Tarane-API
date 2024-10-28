@@ -51,7 +51,7 @@ class TourSearchResource extends JsonResource
         $price_change = PriceChange::where('date_id', $date[0]['id'])->where('cost_id', $this->id)->get();
         if ($price_change->isNotEmpty()) {
             $price_change = $price_change->first();
-            $total_price += $price_change->price_change;
+            $total_price += $price_change->toCurrency()->price_change;
         }
         return $total_price;
     }

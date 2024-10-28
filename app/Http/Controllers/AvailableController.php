@@ -9,7 +9,6 @@ use App\Models\Date;
 use App\Models\PriceChange;
 use App\Models\SysTransport;
 use App\Models\Tour;
-use Illuminate\Http\Request;
 
 class AvailableController extends Controller
 {
@@ -67,7 +66,7 @@ class AvailableController extends Controller
         }
         $price_change = PriceChange::where('date_id', $date->id)->where('cost_id', $cost->id)->first();
         if ($price_change) {
-            $total_price += $price_change->two_bed;
+            $total_price += $price_change->toCurrency()->two_bed;
         }
         return $total_price;
     }

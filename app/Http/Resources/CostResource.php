@@ -53,12 +53,12 @@ class CostResource extends JsonResource
                 'tour_id' => $this->tour_id,
                 'hotel_id' => $this->hotel_id,
                 'room_type' => $this->room_type,
-                'one_bed' => $this->one_bed + $price_change->one_bed,
-                'two_bed' => $this->two_bed + $price_change->two_bed,
-                'plus_one' => $this->plus_one + $price_change->plus_one,
-                'cld_6' => $this->cld_6 + $price_change->cld_6,
-                'cld_2' => $this->cld_2 + $price_change->cld_2,
-                'baby' => $this->baby + $price_change->baby,
+                'one_bed' => $this->one_bed + $price_change->toCurrency()->one_bed,
+                'two_bed' => $this->two_bed + $price_change->toCurrency()->two_bed,
+                'plus_one' => $this->plus_one + $price_change->toCurrency()->plus_one,
+                'cld_6' => $this->cld_6 + $price_change->toCurrency()->cld_6,
+                'cld_2' => $this->cld_2 + $price_change->toCurrency()->cld_2,
+                'baby' => $this->baby + $price_change->toCurrency()->baby,
                 'created_at' => $this->created_at,
                 'updated_at' => $this->updated_at,
                 'tour' => $this->tour,
@@ -98,7 +98,7 @@ class CostResource extends JsonResource
         }
         $price_change = PriceChange::where('date_id', $date['id'])->where('cost_id', $this->id)->first();
         if ($price_change) {
-            $total_price += $price_change->two_bed;
+            $total_price += $price_change->toCurrency()->two_bed;
         }
         return $total_price;
     }

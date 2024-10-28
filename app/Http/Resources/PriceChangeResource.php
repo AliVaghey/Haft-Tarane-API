@@ -20,12 +20,12 @@ class PriceChangeResource extends JsonResource
             'start' => $this->date->start,
             'end' => $this->date->end,
             'price_change' => $this->price_change,
-            'one_bed' => $this->one_bed,
-            'two_bed' => $this->two_bed ,
-            'plus_one' => $this->plus_one ,
-            'cld_6' => $this->cld_6 ,
-            'cld_2' => $this->cld_2 ,
-            'baby' => $this->baby
+            'one_bed' => $this->toCurrency()->one_bed,
+            'two_bed' => $this->toCurrency()->two_bed ,
+            'plus_one' => $this->toCurrency()->plus_one ,
+            'cld_6' => $this->toCurrency()->cld_6 ,
+            'cld_2' => $this->toCurrency()->cld_2 ,
+            'baby' => $this->toCurrency()->baby
         ];
     }
 }
