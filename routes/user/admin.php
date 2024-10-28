@@ -40,6 +40,10 @@ Route::middleware(['auth:sanctum', 'isAdmin'])->prefix('admin/')->group(function
     Route::post('option', [OptionsController::class, 'add'])->middleware('superAdmin');
     Route::delete('option/{option}', [OptionsController::class, 'remove'])->middleware('superAdmin');
 
+    //---------------------------- Options --------------------------
+    Route::get('currency-units', [OptionsController::class, 'getCurrencies'])->middleware('superAdmin');
+    Route::post('currency-units', [OptionsController::class, 'setCurrencies'])->middleware('superAdmin');
+
     //------------------------ Special Tours -------------------------
     Route::post('tour/{tour}/special', [SpecialTourController::class, 'create'])->middleware('superAdmin');
     Route::post('special-tour/{tour}', [SpecialTourController::class, 'edit'])->middleware('superAdmin');
