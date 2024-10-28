@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\Currency;
 use App\Models\Costs;
 use App\Models\Date;
 use App\Models\PriceChange;
 use App\Models\Tour;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class PriceChangeController extends Controller
 {
@@ -23,6 +25,7 @@ class PriceChangeController extends Controller
             'cld_6' => ['nullable', 'numeric'],
             'cld_2' => ['nullable', 'numeric'],
             'baby' => ['nullable', 'numeric'],
+            'currency' => ['required', Rule::enum(Currency::class)]
         ]);
         $price_change = PriceChange::create([
             'date_id' => $date->id,
@@ -34,6 +37,7 @@ class PriceChangeController extends Controller
             'cld_6' => $request->get('cld_6'),
             'cld_2' => $request->get('cld_2'),
             'baby' => $request->get('baby'),
+            'currency' => $request->currency
         ]);
         AvailableController::update($date, $cost);
         return response($price_change, 201);
@@ -49,6 +53,7 @@ class PriceChangeController extends Controller
             'cld_6' => ['nullable', 'numeric'],
             'cld_2' => ['nullable', 'numeric'],
             'baby' => ['nullable', 'numeric'],
+            'currency' => ['required', Rule::enum(Currency::class)]
         ]);
         $prices = [];
         foreach ($date->tour->costs as $cost) {
@@ -65,6 +70,7 @@ class PriceChangeController extends Controller
                 'cld_6' => $request->get('cld_6'),
                 'cld_2' => $request->get('cld_2'),
                 'baby' => $request->get('baby'),
+                'currency' => $request->currency
             ]);
         }
         AvailableController::generate($date->tour);
@@ -81,6 +87,7 @@ class PriceChangeController extends Controller
             'cld_6' => ['nullable', 'numeric'],
             'cld_2' => ['nullable', 'numeric'],
             'baby' => ['nullable', 'numeric'],
+            'currency' => ['required', Rule::enum(Currency::class)]
         ]);
         $price_change->update($request->only([
             'price_change',
@@ -90,6 +97,7 @@ class PriceChangeController extends Controller
             'cld_6',
             'cld_2',
             'baby',
+            'currency'
         ]));
         return response($price_change, 200);
     }
