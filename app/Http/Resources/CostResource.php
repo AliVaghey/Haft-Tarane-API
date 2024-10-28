@@ -152,7 +152,7 @@ class CostResource extends JsonResource
             'name' => $hotel->name,
             'address' => $hotel->address,
             'stars' => $hotel->stars,
-            'photo' => $hotel->gallery->map(fn($item) => Storage::disk('public')->url($item))
+            'photo' => $hotel->gallery->map(fn($item) => Storage::disk('public')->url($item))->toArray()
         ];
     }
 }
