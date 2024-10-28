@@ -25,7 +25,8 @@ class PriceChangeResource extends JsonResource
             'plus_one' => $this->toCurrency()->plus_one ,
             'cld_6' => $this->toCurrency()->cld_6 ,
             'cld_2' => $this->toCurrency()->cld_2 ,
-            'baby' => $this->toCurrency()->baby
+            'baby' => $this->toCurrency()->baby,
+            'currency' => $this->currency,
         ];
     }
 }
