@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use stdClass;
 
 class PriceChange extends Model
 {
@@ -19,8 +20,26 @@ class PriceChange extends Model
         'plus_one',
         'cld_6',
         'cld_2',
-        'baby'
+        'baby',
+        'currency',
     ];
+
+    public function toCurrency(): stdClass
+    {
+        if ($this->currency == 'irt') {
+            $unit = 1;
+        } else {
+            $unit = Options::firstWhere('category', $this->currency . "-currency-unit");
+        }
+        return (object)[
+            'one_bed' => $this->one_bed * $unit,
+            'two_bed' => $this->two_bed * $unit,
+            'plus_one' => $this->plus_one * $unit,
+            'cld_6' => $this->cld_6 * $unit,
+            'cld_2' => $this->cld_2 * $unit,
+            'baby' => $this->baby * $unit,
+        ];
+    }
 
     public function date(): BelongsTo
     {
