@@ -61,7 +61,7 @@ class SimilarDateResource extends JsonResource
         $price_change = PriceChange::where('date_id', $this->id)->where('cost_id', $cost->id)->get();
         if ($price_change->isNotEmpty()) {
             $price_change = $price_change->first();
-            $total_price += $price_change->toCurrency()->price_change;
+            $total_price += $price_change->toCurrency()->two_bed;
         }
         return $total_price;
     }
