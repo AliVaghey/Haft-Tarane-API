@@ -44,9 +44,9 @@ class OptionsController extends Controller
             'aed' => ['required', 'integer', 'min:0']
         ]);
 
-        $dollar = Options::firstOrCreate(['category' => 'usd-currency-unit'], ['value' => "0"])->first();
-        $euro = Options::firstOrCreate(['category' => 'eur-currency-unit'], ['value' => "0"])->first();
-        $dirham = Options::firstOrCreate(['category' => 'aed-currency-unit'], ['value' => "0"])->first();
+        $dollar = Options::firstOrCreate(['category' => 'usd-currency-unit'], ['value' => "0"]);
+        $euro = Options::firstOrCreate(['category' => 'eur-currency-unit'], ['value' => "0"]);
+        $dirham = Options::firstOrCreate(['category' => 'aed-currency-unit'], ['value' => "0"]);
 
         $dollar->update(['value' => $request->usd]);
         $euro->update(['value' => $request->eur]);
@@ -61,9 +61,9 @@ class OptionsController extends Controller
 
     public function getCurrencies()
     {
-        $dollar = Options::firstOrCreate(['category' => 'usd-currency-unit'], ['value' => "0"])->first();
-        $euro = Options::firstOrCreate(['category' => 'eur-currency-unit'], ['value' => "0"])->first();
-        $dirham = Options::firstOrCreate(['category' => 'aed-currency-unit'], ['value' => "0"])->first();
+        $dollar = Options::firstOrCreate(['category' => 'usd-currency-unit'], ['value' => "0"]);
+        $euro = Options::firstOrCreate(['category' => 'eur-currency-unit'], ['value' => "0"]);
+        $dirham = Options::firstOrCreate(['category' => 'aed-currency-unit'], ['value' => "0"]);
 
         return [
             'usd' => (int)$dollar->value,
