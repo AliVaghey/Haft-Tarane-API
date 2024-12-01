@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PlaneTicktController;
 use App\Http\Controllers\TourReservationController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisteredUserController;
@@ -15,5 +16,9 @@ Route::middleware(['auth:sanctum'])->prefix('user/')->group(function () {
     Route::get('reservations', [TourReservationController::class, 'getReservations']);
     Route::get('reservation/{reservation}', [TourReservationController::class, 'getReservation']);
     Route::delete('reservation/{reservation}', [TourReservationController::class, 'deleteReservation']);
+
+    //--------------------- Plane Ticket --------------------
+    Route::post('plane/captcha', [PlaneTicktController::class, 'getCaptcha']);
+    Route::post('plane/reserve', [PlaneTicktController::class, 'reserveTicket']);
 
 });

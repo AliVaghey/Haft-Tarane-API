@@ -31,7 +31,8 @@ class User extends Authenticatable
         'email',
         'password',
         'access_type',
-        'national_code'
+        'national_code',
+        'balance'
     ];
 
     /**
@@ -118,5 +119,10 @@ class User extends Authenticatable
     public function agencies(): HasMany
     {
         return $this->hasMany(AgencyInfo::class, 'admin_id');
+    }
+
+    public function planeTicket(): HasMany
+    {
+        return $this->hasMany(PlaneTickt::class);
     }
 }

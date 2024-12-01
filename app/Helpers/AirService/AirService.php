@@ -96,6 +96,74 @@ class AirService
         }
     }
 
+    public function getCaptcha($uniqueID)
+    {
+        $response = Http::post($this->URL . 'flight/captcha', [
+            'sessionID' => $this->sessionId,
+            'uniqueID' => $uniqueID,
+        ]);
+
+        if ($response->successful()) {
+            if ($response->json('Status')) {
+                return $response->json('Result');
+            } else {
+                $this->checkSessionProblems($response);
+                throw new \Exception($response->json('Error')['code'] . ': ' . $response->json('Error')['message']);
+            }
+        } else {
+            throw new \Exception("Something went wrong!");
+        }
+    }
+
+    public function reserveTicket($uniqueID, $requestID, $captchaCode, $mobile, $email, $passengers)
+    {
+        $response = Http::post($this->URL . 'flight/reservation', [
+            'sessionID' => $this->sessionId,
+            'uniqueID' => $uniqueID,
+            'requestID' => $requestID,
+            'captchaCode' => $captchaCode,
+            'mobile' => $mobile,
+            'email' => $email,
+            'passengers' => $passengers,
+        ]);
+
+        if ($response->successful()) {
+            if ($response->json('Status')) {
+                return $response->json('Result');
+            } else {
+                $this->checkSessionProblems($response);
+                throw new \Exception($response->json('Error')['code'] . ': ' . $response->json('Error')['message']);
+            }
+        } else {
+            throw new \Exception("Something went wrong!");
+        }
+    }
+
+    public function buyTicket($voucher, $repeat = 0)
+    {
+        $response = Http::post($this->URL . 'flight/reservation', [
+            'sessionID' => $this->sessionId,
+            'voucher' => $voucher,
+        ]);
+
+        if ($response->successful()) {
+            if ($response->json('Status')) {
+                $reference = $response->json('Result')['reference'];
+                if ($repeat < 10 && ($reference == 112 || $reference == 110 || $reference == 101 || $reference == 98)) {
+                    $this->buyTicket($voucher, $repeat++);
+                } elseif ($repeat >= 10 || $reference == null) {
+                    throw new \Exception("مشکلی با صدور بلیط پیش آمده لطفا با پشتیبانی تماس بگیرید.", 123);
+                }
+                return $response->json('Result');
+            } else {
+                $this->checkSessionProblems($response);
+                throw new \Exception($response->json('Error')['code'] . ': ' . $response->json('Error')['message']);
+            }
+        } else {
+            throw new \Exception("Something went wrong!");
+        }
+    }
+
     public function checkFlightAvailability(FlightInfo $flight)
     {
         $available = $this->getAvailabeFlights($flight->from, $flight->to, $flight->date_flight);

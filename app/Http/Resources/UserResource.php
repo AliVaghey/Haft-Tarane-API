@@ -26,6 +26,7 @@ class UserResource extends JsonResource
             'last_name_en' => $this->last_name_en,
             'email' => $this->email,
             'access_type' => $this->access_type,
+            'balance' => $this->balance,
         ];
     }
 }
