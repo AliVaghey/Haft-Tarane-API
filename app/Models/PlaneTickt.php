@@ -66,13 +66,6 @@ class PlaneTickt extends Model
             ]);
             $this->user->appendBalance($this->total_price);
         }
-
-
-            $this->update([
-                'status' => 'paid',
-                'transaction_id' => $params[0],
-                'descriptions' => "بیلط با موفقیت صادر شد.",
-            ]);
     }
 
     public function paymentFailed(...$params)
