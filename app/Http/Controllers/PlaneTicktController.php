@@ -49,11 +49,16 @@ class PlaneTicktController extends Controller
             return response(['message' => $exception->getMessage()], 400);
         }
 
-        $ticket = $this->createTicketAndFlightInfo($request->user(),
+        $ticket = $this->createTicketAndFlightInfo(
+            $request->user(),
             $results,
             json_decode($request->get('passengers'), true),
-            $flight_info);
+            $flight_info
+        );
 
+        return response([
+            'paymentUrl' => route('payment.planeTicket', ['ticket' => $ticket->id])
+        ]);
     }
 
     private function createTicketAndFlightInfo(User $user, $result, $passengers, $flight_info): \Illuminate\Database\Eloquent\Model
@@ -62,7 +67,7 @@ class PlaneTicktController extends Controller
 
         $ticket = $user->planeTicket()->create([
             'flight_info_id' => $flight->id,
-            'total_price' => $result['totalPrice'],
+            'total_price' => (int)($result['totalPrice'] / 10),
             'passengers' => $passengers,
             'reservation_results' => $result,
             'voucher' => $result['voucher']

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\ReservationStatus;
+use App\Traits\Payable;
 use Illuminate\Database\Eloquent\Casts\AsCollection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -11,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class TourReservation extends Model
 {
-    use HasFactory;
+    use HasFactory, Payable;
 
     protected $fillable = [
         'user_id',
@@ -37,6 +38,21 @@ class TourReservation extends Model
 //            'passengers' => AsCollection::class,
 //        ];
 //    }
+
+    public function paymentFailed(...$params)
+    {
+        $this->update([
+            'transaction_id' => $params[0]
+        ]);
+    }
+
+    public function paid(...$params)
+    {
+        $this->update([
+            'status' => 'paid',
+            'transaction_id' => $params[0]
+        ]);
+    }
 
     public function user(): BelongsTo
     {

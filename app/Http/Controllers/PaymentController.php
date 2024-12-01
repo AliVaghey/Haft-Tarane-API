@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PlaneTickt;
 use App\Models\TourReservation;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
@@ -34,6 +35,29 @@ class PaymentController extends Controller
         )->pay()->render();
     }
 
+    public function payPlaneTicket(Request $request, PlaneTickt $tickt)
+    {
+        if ($request->user()->id != $tickt->user_id) {
+            return response(['message' => "این خرید به شما تعلق ندارد."]);
+        }
+        if ($tickt->notPayable()) {
+            return response(['message' => "این بلیط منقضی شده است."]);
+        }
+
+        return Payment::purchase(
+            (new Invoice)->amount($tickt->total_price),
+            function ($driver, $transactionId) use ($request, $tickt) {
+                $transaction = Transaction::firstOrCreate([
+                    'user_id' => $request->user()->id,
+                    'transaction_id' => $transactionId,
+                    'type' => PlaneTickt::class,
+                    'object_id' => $tickt->id
+                ]);
+                session(['transaction_id' => $transaction->id]);
+            }
+        )->pay()->render();
+    }
+
     public function verifyPayment(Request $request)
     {
         $transaction = Transaction::find(session('transaction_id'));
@@ -49,14 +73,16 @@ class PaymentController extends Controller
                 'reference_id' => $receipt->getReferenceId(),
                 'status' => 'successful'
             ]);
-            $object->update([
-                'status' => 'paid',
-                'transaction_id' => $transaction->id
-            ]);
-            return redirect(env('FRONTEND_URL') . '/fa/user/tours');
+
+            //only add params to the end of list. DO NOT CHANGE THE ORDER!!!.
+            $object->paid($transaction->id);
+
+            $redirect_url = $request->query('url', env('FRONTEND_URL') . '/fa/user/tours');
+            return redirect($redirect_url);
 
         } catch (InvalidPaymentException $exception) {
             $transaction->update(['status' => 'failed']);
+            $object->paymentFailed();
             echo $exception->getMessage();
             return null;
         }

@@ -12,6 +12,7 @@ Route::get('/', function () {
 });
 
 Route::get('pay/reservation/{reservation}', [PaymentController::class, 'payReservation']);
+Route::get('pay/plane-ticket/{ticket}', [PaymentController::class, 'payPlaneTicket'])->name('payment.planeTicket');
 Route::get('payment/verify', [PaymentController::class, 'verifyPayment']);
 
 
