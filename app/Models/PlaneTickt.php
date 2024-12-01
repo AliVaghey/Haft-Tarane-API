@@ -50,9 +50,21 @@ class PlaneTickt extends Model
     {
         try {
             $results = air_service()->buyTicket($this->voucher);
-
+            $this->update([
+                'buy_ticket_results' => $results,
+                'status' => 'paid',
+                'transaction_id' => $params[0],
+                'descriptions' => "بیلط با موفقیت صادر شد.",
+            ]);
         } catch (\Exception $exception) {
-
+            $description = "مشکلی برای صدور بلیط رخ داده و هزینه آن به کیف پول انتقال داده شد است. لطفا با پشتیبانی سایت تماس بگیرید.";
+            $this->update([
+                'buy_ticket_results' => $results,
+                'status' => 'paid',
+                'transaction_id' => $params[0],
+                'descriptions' => $description,
+            ]);
+            $this->user->appendBalance($this->total_price);
         }
 
 

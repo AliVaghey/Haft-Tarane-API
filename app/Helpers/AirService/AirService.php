@@ -150,7 +150,7 @@ class AirService
             if ($response->json('Status')) {
                 $reference = $response->json('Result')['reference'];
                 if ($repeat < 10 && ($reference == 112 || $reference == 110 || $reference == 101 || $reference == 98)) {
-                    $this->buyTicket($voucher, $repeat++);
+                    return $this->buyTicket($voucher, $repeat++);
                 } elseif ($repeat >= 10 || $reference == null) {
                     throw new \Exception("مشکلی با صدور بلیط پیش آمده لطفا با پشتیبانی تماس بگیرید.", 123);
                 }

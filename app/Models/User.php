@@ -125,4 +125,11 @@ class User extends Authenticatable
     {
         return $this->hasMany(PlaneTickt::class);
     }
+
+    public function appendBalance($amount)
+    {
+        $this->update([
+            'balance' => $this->balance + $amount
+        ]);
+    }
 }
