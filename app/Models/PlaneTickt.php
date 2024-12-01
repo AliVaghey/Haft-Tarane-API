@@ -50,10 +50,10 @@ class PlaneTickt extends Model
 
     public function notPayable(): bool
     {
-        if ($this->status != 'pending') {
-            return true;
+        if ($this->status == 'pending') {
+            return false;
         }
-        return false;
+        return true;
     }
 
     public function paid(...$params)
