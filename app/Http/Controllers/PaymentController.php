@@ -36,20 +36,20 @@ class PaymentController extends Controller
         )->pay()->render();
     }
 
-    public function payPlaneTicket(Request $request, PlaneTickt $tickt)
+    public function payPlaneTicket(Request $request, PlaneTickt $ticket)
     {
-        if ($tickt->status != 'pending') {
-            return response(['message' => "این بلیط منقضی شده است.  {$tickt->status}"]);
+        if ($ticket->status != 'pending') {
+            return response(['message' => "این بلیط منقضی شده است."]);
         }
 
         return Payment::purchase(
-            (new Invoice)->amount($tickt->total_price),
-            function ($driver, $transactionId) use ($request, $tickt) {
+            (new Invoice)->amount($ticket->total_price),
+            function ($driver, $transactionId) use ($request, $ticket) {
                 $transaction = Transaction::firstOrCreate([
                     'user_id' => $request->user()->id,
                     'transaction_id' => $transactionId,
                     'type' => PlaneTickt::class,
-                    'object_id' => $tickt->id
+                    'object_id' => $ticket->id
                 ]);
                 session(['transaction_id' => $transaction->id]);
             }
