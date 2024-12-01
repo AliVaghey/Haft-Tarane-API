@@ -53,3 +53,8 @@ Artisan::command('generate:available', function () {
     $tour_id = $this->ask('Enter tour ID : ');
     \App\Http\Controllers\AvailableController::generate(Tour::find($tour_id));
 });
+
+Artisan::command('KosMadareEbrahimi', function () {
+    $t = \App\Models\PlaneTickt::find(2);
+    var_dump($t->status);
+});
