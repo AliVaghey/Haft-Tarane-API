@@ -39,7 +39,7 @@ class PaymentController extends Controller
     public function payPlaneTicket(Request $request, PlaneTickt $tickt)
     {
         if ($tickt->status != 'pending') {
-            return response(['message' => "این بلیط منقضی شده است."]);
+            return response(['message' => "این بلیط منقضی شده است.  {$tickt->status}"]);
         }
 
         return Payment::purchase(
