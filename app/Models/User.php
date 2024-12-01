@@ -121,7 +121,7 @@ class User extends Authenticatable
         return $this->hasMany(AgencyInfo::class, 'admin_id');
     }
 
-    public function planeTicket(): HasMany
+    public function planeTickets(): HasMany
     {
         return $this->hasMany(PlaneTickt::class);
     }

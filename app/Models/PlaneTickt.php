@@ -38,6 +38,16 @@ class PlaneTickt extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function transaction(): BelongsTo
+    {
+        return $this->belongsTo(Transaction::class, 'transaction_id');
+    }
+
+    public function flightInfo(): BelongsTo
+    {
+        return $this->belongsTo(FlightInfo::class, 'flight_info_id');
+    }
+
     public function notPayable(): bool
     {
         if ($this->status != 'pending') {

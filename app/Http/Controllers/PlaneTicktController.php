@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\PlaneTicketResource;
 use App\Models\FlightInfo;
 use App\Models\PlaneTickt;
 use App\Models\User;
@@ -9,6 +10,16 @@ use Illuminate\Http\Request;
 
 class PlaneTicktController extends Controller
 {
+    public function getAll(Request $request)
+    {
+        return PlaneTicketResource::collection($request->user()->planeTickets()->paginate());
+    }
+
+    public function read(PlaneTickt $ticket)
+    {
+        return new PlaneTicketResource($ticket);
+    }
+
     public function getCaptcha(Request $request)
     {
         $request->validate([
@@ -65,7 +76,7 @@ class PlaneTicktController extends Controller
     {
         $flight = FlightInfo::create($flight_info);
 
-        $ticket = $user->planeTicket()->create([
+        $ticket = $user->planeTickets()->create([
             'flight_info_id' => $flight->id,
             'total_price' => (int)($result['totalPrice'] / 10),
             'passengers' => $passengers,

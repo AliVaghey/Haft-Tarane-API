@@ -20,5 +20,7 @@ Route::middleware(['auth:sanctum'])->prefix('user/')->group(function () {
     //--------------------- Plane Ticket --------------------
     Route::post('plane/captcha', [PlaneTicktController::class, 'getCaptcha']);
     Route::post('plane/reserve', [PlaneTicktController::class, 'reserveTicket']);
+    Route::get('plane/tickets', [PlaneTicktController::class, 'getAll']);
+    Route::get('plane/tickets/{ticket}', [PlaneTicktController::class, 'read']);
 
 });
