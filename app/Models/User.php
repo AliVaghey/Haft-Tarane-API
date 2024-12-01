@@ -132,4 +132,9 @@ class User extends Authenticatable
             'balance' => $this->balance + $amount
         ]);
     }
+
+    public function isNotUserOrAgency(): bool
+    {
+        return $this->isAdmin() || $this->isSuperAdmin();
+    }
 }
