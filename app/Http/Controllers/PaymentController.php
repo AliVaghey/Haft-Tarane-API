@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BalanceIncrease;
 use App\Models\PlaneTickt;
 use App\Models\TourReservation;
 use App\Models\Transaction;
@@ -37,7 +38,7 @@ class PaymentController extends Controller
 
     public function payPlaneTicket(Request $request, PlaneTickt $tickt)
     {
-        if ($tickt->notPayable()) {
+        if ($tickt->status != 'pending') {
             return response(['message' => "این بلیط منقضی شده است."]);
         }
 
@@ -49,6 +50,37 @@ class PaymentController extends Controller
                     'transaction_id' => $transactionId,
                     'type' => PlaneTickt::class,
                     'object_id' => $tickt->id
+                ]);
+                session(['transaction_id' => $transaction->id]);
+            }
+        )->pay()->render();
+    }
+
+    public function balanceIncrease(Request $request)
+    {
+        if (!($amount = (int)$request->query('amount'))) {
+            abort(422, "مبلغ مورد نظر مشخص نشده است!");
+        }
+        if ($amount < 1000 || $amount > 49999999) {
+            abort(422, "مبلغ وارد شده از محدوده مجاز درگاه پرداخت خارج می باشد!");
+        }
+
+        if (!$request->user()->id) {
+            abort(500, "User not detected!");
+        }
+        $increase = BalanceIncrease::create([
+            'user_id' => $request->user()->id,
+            'amount' => $amount,
+        ]);
+
+        return Payment::purchase(
+            (new Invoice)->amount($amount),
+            function ($driver, $transactionId) use ($increase) {
+                $transaction = Transaction::firstOrCreate([
+                    'user_id' => $increase->user_id,
+                    'transaction_id' => $transactionId,
+                    'type' => BalanceIncrease::class,
+                    'object_id' => $increase->id
                 ]);
                 session(['transaction_id' => $transaction->id]);
             }
