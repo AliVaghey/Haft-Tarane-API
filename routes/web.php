@@ -11,6 +11,7 @@ Route::get('/', function () {
     return ['Laravel' => app()->version()];
 });
 
+Route::get('pay/balance/increase', [PaymentController::class, 'balanceIncrease']);
 Route::get('pay/reservation/{reservation}', [PaymentController::class, 'payReservation']);
 Route::get('pay/plane-ticket/{ticket}', [PaymentController::class, 'payPlaneTicket'])->name('payment.planeTicket');
 Route::get('payment/verify', [PaymentController::class, 'verifyPayment']);
