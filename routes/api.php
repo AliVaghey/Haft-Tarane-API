@@ -6,8 +6,10 @@ use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\FlightInfoController;
 use App\Http\Controllers\OptionsController;
 use App\Http\Controllers\PlaceController;
+use App\Http\Controllers\PlaneTicktController;
 use App\Http\Controllers\SpecialTourController;
 use App\Http\Controllers\TourController;
+use App\Http\Middleware\OnlyUserAgency;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NavigationsController;
 
@@ -43,3 +45,10 @@ Route::get('slider-cards', [\App\Http\Controllers\BannerController::class, 'all'
 Route::post('visit', [ConfigController::class, 'countVisit']);
 Route::get('visits', [ConfigController::class, 'getVisits']);
 
+    //--------------------- Plane Ticket --------------------
+Route::middleware(['auth:sanctum', OnlyUserAgency::class])->prefix('user/')->group(function () {
+    Route::post('plane/captcha', [PlaneTicktController::class, 'getCaptcha']);
+    Route::post('plane/reserve', [PlaneTicktController::class, 'reserveTicket']);
+    Route::get('plane/tickets', [PlaneTicktController::class, 'getAll']);
+    Route::get('plane/tickets/{ticket}', [PlaneTicktController::class, 'read']);
+});

@@ -17,10 +17,4 @@ Route::middleware(['auth:sanctum'])->prefix('user/')->group(function () {
     Route::get('reservation/{reservation}', [TourReservationController::class, 'getReservation']);
     Route::delete('reservation/{reservation}', [TourReservationController::class, 'deleteReservation']);
 
-    //--------------------- Plane Ticket --------------------
-    Route::post('plane/captcha', [PlaneTicktController::class, 'getCaptcha']);
-    Route::post('plane/reserve', [PlaneTicktController::class, 'reserveTicket']);
-    Route::get('plane/tickets', [PlaneTicktController::class, 'getAll']);
-    Route::get('plane/tickets/{ticket}', [PlaneTicktController::class, 'read']);
-
 });
