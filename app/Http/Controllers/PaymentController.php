@@ -37,9 +37,6 @@ class PaymentController extends Controller
 
     public function payPlaneTicket(Request $request, PlaneTickt $tickt)
     {
-        if ($request->user()->id != $tickt->user_id) {
-            return response(['message' => "این خرید به شما تعلق ندارد."]);
-        }
         if ($tickt->notPayable()) {
             return response(['message' => "این بلیط منقضی شده است."]);
         }
