@@ -111,7 +111,7 @@ class PaymentController extends Controller
 
         } catch (InvalidPaymentException $exception) {
             $transaction->update(['status' => 'failed']);
-            $object->paymentFailed();
+            $object->paymentFailed($transaction->id);
             echo $exception->getMessage();
             return null;
         }
