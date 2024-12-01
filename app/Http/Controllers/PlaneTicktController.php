@@ -68,7 +68,8 @@ class PlaneTicktController extends Controller
         );
 
         return response([
-            'paymentUrl' => route('payment.planeTicket', ['ticket' => $ticket->id])
+            'paymentUrl' => route('payment.planeTicket', ['ticket' => $ticket->id]),
+            'reservation_results' => $results
         ]);
     }
 
