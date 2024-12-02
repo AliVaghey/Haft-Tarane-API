@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BalanceIncreaseController;
 use App\Http\Controllers\PlaneTicktController;
 use App\Http\Controllers\TourReservationController;
 use Illuminate\Support\Facades\Route;
@@ -16,5 +17,9 @@ Route::middleware(['auth:sanctum'])->prefix('user/')->group(function () {
     Route::get('reservations', [TourReservationController::class, 'getReservations']);
     Route::get('reservation/{reservation}', [TourReservationController::class, 'getReservation']);
     Route::delete('reservation/{reservation}', [TourReservationController::class, 'deleteReservation']);
+
+    //--------------------- Balance Increase --------------------
+    Route::get('balance-increases', [BalanceIncreaseController::class, 'getAll']);
+
 
 });
