@@ -23,6 +23,7 @@ class Transaction extends Model
         return match ($this->type) {
             'tour_reservation' => TourReservation::find($this->object_id),
             PlaneTickt::class => PlaneTickt::find($this->object_id),
+            BalanceIncrease::class => BalanceIncrease::find($this->object_id),
             default => null
         };
     }
