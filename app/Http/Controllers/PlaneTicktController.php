@@ -46,7 +46,7 @@ class PlaneTicktController extends Controller
         ]);
 
         $results = null;
-        $flight_info = json_decode($request->get('passengers', true));
+        $passengers = json_decode($request->get('passengers', true));
         try {
             $results = air_service()->reserveTicket(
                 $request->get('uniqueID'),
@@ -54,7 +54,7 @@ class PlaneTicktController extends Controller
                 $request->get('captchaCode'),
                 $request->get('mobile'),
                 $request->get('email'),
-                $flight_info,
+                $passengers,
             );
         } catch (\Exception $exception) {
             return response(['message' => $exception->getMessage()], 400);
@@ -63,8 +63,8 @@ class PlaneTicktController extends Controller
         $ticket = $this->createTicketAndFlightInfo(
             $request->user(),
             $results,
-            json_decode($request->get('passengers'), true),
-            $flight_info
+            $passengers,
+            json_decode($request->get('flight_info'), true)
         );
 
         return response([
