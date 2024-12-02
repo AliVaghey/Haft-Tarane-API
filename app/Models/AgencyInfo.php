@@ -28,7 +28,9 @@ class AgencyInfo extends Model
         'description',
         'instagram',
         'telegram',
-        'whatsapp'
+        'whatsapp',
+        'ticket_discount',
+        'max_discount'
     ];
 
     /**
