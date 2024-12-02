@@ -8,6 +8,6 @@ class BalanceIncreaseController extends Controller
 {
     public function getAll(Request $request)
     {
-        return $request->user()->balanceIncrease()->paginate();
+        return $request->user()->balanceIncrease()->latest()->paginate();
     }
 }

@@ -12,7 +12,7 @@ class PlaneTicktController extends Controller
 {
     public function getAll(Request $request)
     {
-        return PlaneTicketResource::collection($request->user()->planeTickets()->paginate());
+        return PlaneTicketResource::collection($request->user()->planeTickets()->latest()->paginate());
     }
 
     public function read(PlaneTickt $ticket)
